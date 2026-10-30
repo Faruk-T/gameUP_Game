@@ -1,0 +1,6 @@
+{
+  "name": "GameUp.Lead.Tests",
+  "references": ["GameUp.Contracts", "GameUp.Lead.Core"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
