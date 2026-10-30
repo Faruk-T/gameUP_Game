@@ -5,6 +5,8 @@
 > Unity Editor: **6000.3.13f1**.
 > Bu dosya uygulama planıdır. Görev kutuları tamamlanmış iş veya yapılmış test anlamına gelmez.
 
+**Dördüncü kişi uygulaması:** Ayrı entegrasyon sahnesi, gün akışı, belge kuyruğu, faks, sonuçlar ve bağlantı sözleşmeleri uygulanmıştır. Çalıştırma, adapter bağlantıları ve doğrulama komutları için [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md). Üretim kural/etkileşim sistemleri ile nihai görseller ilgili ekip üyelerinin teslimleriyle bağlanacaktır.
+
 ## 1. Kaynak, mevcut durum ve çalışma kararları
 
 - Ana kaynak: [GameUP32 Google Dokümanı — ekip planı](https://docs.google.com/document/d/1_49KPVdyfkgs8Qj4Isu6FLydY0bF-rlG-tH7xH6udXY/edit?tab=t.ha6zdj2y0k6).
