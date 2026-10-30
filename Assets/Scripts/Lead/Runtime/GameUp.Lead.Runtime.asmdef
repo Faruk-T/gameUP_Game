@@ -1,0 +1,5 @@
+{
+  "name": "GameUp.Lead.Runtime",
+  "rootNamespace": "GameUp.Lead.Unity",
+  "references": ["GameUp.Contracts", "GameUp.Lead.Core", "Unity.InputSystem", "Unity.ugui"]
+}
