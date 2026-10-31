@@ -1,0 +1,5 @@
+{
+  "name": "GameUp.Contracts",
+  "rootNamespace": "GameUp.Contracts",
+  "noEngineReferences": true
+}

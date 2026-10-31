@@ -1,0 +1,7 @@
+{
+  "name": "GameUp.Rules",
+  "rootNamespace": "GameUP.Rules",
+  "references": [
+    "GameUp.Contracts"
+  ]
+}
