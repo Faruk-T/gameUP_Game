@@ -1,0 +1,12 @@
+{
+  "name": "GameUp.Interaction.Editor",
+  "rootNamespace": "GameUP.Interaction.Editor",
+  "references": [
+    "GameUp.Interaction",
+    "GameUp.Rules",
+    "GameUp.Contracts",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

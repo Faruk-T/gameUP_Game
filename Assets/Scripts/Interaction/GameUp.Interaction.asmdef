@@ -1,0 +1,9 @@
+{
+  "name": "GameUp.Interaction",
+  "rootNamespace": "GameUP.Interaction",
+  "references": [
+    "GameUp.Rules",
+    "GameUp.Contracts",
+    "Unity.InputSystem"
+  ]
+}
