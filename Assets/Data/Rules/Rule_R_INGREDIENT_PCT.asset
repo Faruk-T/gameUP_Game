@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e4577a80f2517408eb20771acd7c5b, type: 3}
+  m_Name: Rule_R_INGREDIENT_PCT
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.RuleDefinition
+  ruleId: R_INGREDIENT_PCT
+  ruleType: 6
+  appliesToAllCategories: 0
+  applicableCategories: 0500000000000000
+  ruleTitle: "Meyve / \u0130\xE7erik Y\xFCzdesi Standard\u0131 (P1)"
+  playerVisibleDescription: "Meyveli/aromal\u0131 \xFCr\xFCnlerde ger\xE7ek meyve
+    oran\u0131 en az %10 olmal\u0131 ve \xF6n y\xFCz beyan\u0131yla e\u015Fle\u015Fmelidir
+    (%0.001 gibi yan\u0131lt\u0131c\u0131 oranlar reddedilir)."
+  shortFailureReason: "\u0130\xE7erik y\xFCzdesi yasal e\u015Fi\u011Fin (%10) alt\u0131nda
+    veya beyanla uyumsuz"
+  bannedSourceRegion: 0
+  bannedHabitat: 0
+  weightToleranceGrams: 5
+  minAllowedLengthCm: 15
+  maxAllowedLengthCm: 0
+  minRequiredIngredientPercent: 10

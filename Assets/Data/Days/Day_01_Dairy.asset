@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb90b36d054661489c2f247fd1385a5, type: 3}
+  m_Name: Day_01_Dairy
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DayDefinition
+  dayId: DAY_01
+  dayNumber: 1
+  dayTitle: "1. G\xFCn \u2014 S\xFCt \xDCr\xFCnleri Denetimi"
+  gameDate:
+    Day: 1
+    Month: 11
+    Year: 2026
+  primaryCategory: 0
+  morningNewspaper: {fileID: 11400000, guid: d12d83d30b9b3ce44aee27c5dd4b210c, type: 2}
+  initialRules:
+  - {fileID: 11400000, guid: 8ec6bcb6860a8064189a6ba64642d629, type: 2}
+  - {fileID: 11400000, guid: 9ae19980bd0f33b46aa26fcc4251089c, type: 2}
+  products:
+  - {fileID: 11400000, guid: ed813319c7c97404ca233483f31c0a6b, type: 2}
+  - {fileID: 11400000, guid: a0cddab7799006a41b76b9448acb1610, type: 2}
+  - {fileID: 11400000, guid: d33caa321cfd75e44ace6e5c1324f8ed, type: 2}
+  - {fileID: 11400000, guid: 9e37cb35ce339814e9fb4e9ae8bdd480, type: 2}
+  - {fileID: 11400000, guid: 43a54fe241522ce4f87b9089a6de3202, type: 2}
+  - {fileID: 11400000, guid: 2b0c12b274c54d24986c7abc191f9535, type: 2}
+  emergencyEvent:
+    hasEmergency: 0
+    triggerAfterCompletedProducts: 0
+    displayedClockTime: 
+    newRule: {fileID: 0}
+    emergencyDocument: {fileID: 0}
