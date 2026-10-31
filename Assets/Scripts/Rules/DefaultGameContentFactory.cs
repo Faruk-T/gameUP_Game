@@ -26,13 +26,16 @@ namespace GameUP.Rules
             public DocumentDefinition Day1Newspaper;
             public DocumentDefinition Day2Newspaper;
             public DocumentDefinition Day2EmergencyFax;
+            public DocumentDefinition Day3Newspaper;
 
             public List<ProductDefinition> Day1Products = new List<ProductDefinition>();
             public List<ProductDefinition> Day2Products = new List<ProductDefinition>();
+            public List<ProductDefinition> Day3P1Products = new List<ProductDefinition>();
             public List<ProductDefinition> P1SampleProducts = new List<ProductDefinition>();
 
             public DayDefinition Day1;
             public DayDefinition Day2;
+            public DayDefinition Day3P1;
         }
 
         /// <summary>
@@ -392,8 +395,82 @@ namespace GameUP.Rules
             ));
 
             // -----------------------------------------------------------------
-            // 6. P1 ÖRNEK ÜRÜNÜ (Muzlu Gofret %10 vs %0.001 - Bölüm 3 & 14.3)
+            // 6. P1 GENİŞLEME PAKETİ: 3. GÜN (ET, SEBZE, MEYVE, TARTI, CETVEL, GOFRET - Bölüm 3 & 14.3)
+            // Oyun Tarihi: 03.11.2026 (3 Geçerli / 3 Geçersiz = %50 denge korunur)
             // -----------------------------------------------------------------
+            catalog.Day3Newspaper = ScriptableObject.CreateInstance<DocumentDefinition>();
+            catalog.Day3Newspaper.name = "Doc_Day3_P1_Newspaper";
+            catalog.Day3Newspaper.InitializeDocument(
+                id: "DOC_DAY3_P1_NEWS",
+                type: DocumentType.Newspaper,
+                docTitle: "Hassas tartı, boy ve içerik denetimleri başladı",
+                docBody: "COP31 Antalya denetim noktasında kapsam genişletildi. Meyve, sebze, et ve paketli gıdalarda gramaj, asgari avlanma boyu ve gerçek meyve yüzdesi kontrolleri devreye alındı.",
+                taskBox: "Tartı ağırlığını (±5g), balık boyunu (en az 15 cm) ve meyve yüzdesini (en az %10) kontrol et.",
+                explicitAck: true,
+                ruleIds: new[] { RuleIds.Expiry, RuleIds.Weight, RuleIds.Length, RuleIds.IngredientPercent }
+            );
+
+            // D3-01: Finike Portakalı (Meyve - Sağlam, Tartı 500g / 500g -> Onay)
+            ProductDefinition d301 = CreateProduct(
+                assetName: "Product_D3_01_FinikePortakali_Onay",
+                id: "D3-01",
+                category: ProductCategory.Fruit,
+                displayName: "Finike Portakalı",
+                skt: new GameDate(8, 11, 2026),
+                declaredType: "Taze Finike Portakalı",
+                listedType: "Taze Finike Portakalı",
+                ingredients: "%100 Doğal Finike Portakalı (Coğrafi İşaretli).",
+                region: SourceRegion.AntalyaLocal,
+                habitat: FishHabitat.None,
+                polluted: false,
+                finding: "TEMİZ — Pestisit kalıntısı saptanmadı.",
+                packaging: WasteBinType.Paper,
+                contaminated: false
+            );
+            d301.SetP1Metrics(enableWeight: true, declaredGrams: 500f, actualGrams: 500f);
+            catalog.Day3P1Products.Add(d301);
+
+            // D3-02: Kumluca Domatesi (Sebze - Tartı Hilesi: Beyan 1000g, Gerçek 820g -> Red: R_WEIGHT)
+            ProductDefinition d302 = CreateProduct(
+                assetName: "Product_D3_02_KumlucaDomatesi_TartiRed",
+                id: "D3-02",
+                category: ProductCategory.Vegetable,
+                displayName: "Kumluca Salkım Domatesi",
+                skt: new GameDate(6, 11, 2026),
+                declaredType: "Sera Salkım Domates",
+                listedType: "Sera Salkım Domates",
+                ingredients: "Taze Kumluca Domatesi.",
+                region: SourceRegion.AntalyaLocal,
+                habitat: FishHabitat.None,
+                polluted: false,
+                finding: "TEMİZ — Kimyasal kalıntı yok (Tartı eksik gramaj uyarısı).",
+                packaging: WasteBinType.Plastic,
+                contaminated: false
+            );
+            d302.SetP1Metrics(enableWeight: true, declaredGrams: 1000f, actualGrams: 820f);
+            catalog.Day3P1Products.Add(d302);
+
+            // D3-03: Antalya Çipurası (Balık - Cetvel Boy İhlali: 11 cm < 15 cm -> Red: R_LENGTH)
+            ProductDefinition d303 = CreateProduct(
+                assetName: "Product_D3_03_AntalyaCipurasi_CetvelBoyRed",
+                id: "D3-03",
+                category: ProductCategory.Fish,
+                displayName: "Antalya Çipurası (Yavru Boy)",
+                skt: new GameDate(5, 11, 2026),
+                declaredType: "Taze Deniz Balığı",
+                listedType: "Taze Deniz Balığı",
+                ingredients: "Taze Çipura (Av Bölgesi: A, Habitat: Yüzey Balığı).",
+                region: SourceRegion.RegionA,
+                habitat: FishHabitat.Surface,
+                polluted: false,
+                finding: "TEMİZ — Kirlilik yok (Ancak cetvel boyu 11 cm: yasal sınır 15 cm altındadır).",
+                packaging: WasteBinType.Plastic,
+                contaminated: false
+            );
+            d303.SetP1Metrics(enableLength: true, lengthCm: 11f);
+            catalog.Day3P1Products.Add(d303);
+
+            // D3-04 (ve P1-01): Muzlu Gofret (%10 Muz İddiası vs %0.001 -> Red: R_INGREDIENT_PCT)
             ProductDefinition bananaWafer = CreateProduct(
                 assetName: "Product_P1_01_MuzluGofret_YuzdeRed",
                 id: "P1-01",
@@ -401,7 +478,7 @@ namespace GameUP.Rules
                 displayName: "Tropik Muzlu Gofret (Kurmaca Parti)",
                 skt: new GameDate(10, 11, 2026),
                 declaredType: "Muzlu Gofret (%10 Muz İddialı)",
-                listedType: "Muz Aromalı Gofret",
+                listedType: "Muzlu Gofret (%10 Muz İddialı)",
                 ingredients: "Buğday unu, bitkisel yağ, şeker, %0.001 muz tozu, yapay muz aroması.",
                 region: SourceRegion.AntalyaLocal,
                 habitat: FishHabitat.None,
@@ -416,9 +493,69 @@ namespace GameUP.Rules
                 enableIngredientPct: true, ingredientName: "Muz Oranı", declaredPct: 10f, actualPct: 0.001f
             );
             catalog.P1SampleProducts.Add(bananaWafer);
+            catalog.Day3P1Products.Add(bananaWafer);
+
+            // D3-05: Toros Yayla Kuzu Eti (Et Ürünü - Sağlam, Tartı 750g/750g -> Onay)
+            ProductDefinition d305 = CreateProduct(
+                assetName: "Product_D3_05_TorosKuzuEti_Onay",
+                id: "D3-05",
+                category: ProductCategory.Meat,
+                displayName: "Toros Yayla Kuzu Eti",
+                skt: new GameDate(6, 11, 2026),
+                declaredType: "Taze Yayla Kuzu Eti",
+                listedType: "Taze Yayla Kuzu Eti",
+                ingredients: "%100 Toros yaylası kuzu eti.",
+                region: SourceRegion.AntalyaLocal,
+                habitat: FishHabitat.None,
+                polluted: false,
+                finding: "TEMİZ — Çevresel atık veya ağır metal kalıntısına rastlanmadı.",
+                packaging: WasteBinType.Plastic,
+                contaminated: false
+            );
+            d305.SetP1Metrics(enableWeight: true, declaredGrams: 750f, actualGrams: 750f);
+            catalog.Day3P1Products.Add(d305);
+
+            // D3-06: Alanya Avokadosu (Meyve - Sağlam, Tartı 400g/400g -> Onay)
+            ProductDefinition d306 = CreateProduct(
+                assetName: "Product_D3_06_AlanyaAvokadosu_Onay",
+                id: "D3-06",
+                category: ProductCategory.Fruit,
+                displayName: "Alanya Avokadosu",
+                skt: new GameDate(9, 11, 2026),
+                declaredType: "Doğal Alanya Avokadosu",
+                listedType: "Doğal Alanya Avokadosu",
+                ingredients: "%100 Alanya Avokadosu.",
+                region: SourceRegion.AntalyaLocal,
+                habitat: FishHabitat.None,
+                polluted: false,
+                finding: "TEMİZ — Uygun.",
+                packaging: WasteBinType.Paper,
+                contaminated: false
+            );
+            d306.SetP1Metrics(enableWeight: true, declaredGrams: 400f, actualGrams: 400f);
+            catalog.Day3P1Products.Add(d306);
+
+            // Ek P1 Senaryosu (Madde 13: Çevreye atılan zehirli atıklardan tüketmiş hayvansal et ürünü)
+            ProductDefinition pollutedMeat = CreateProduct(
+                assetName: "Product_P1_02_KuzuEti_ZehirliAtikRed",
+                id: "P1-02",
+                category: ProductCategory.Meat,
+                displayName: "Ova Besi Eti (Şüpheli Parti)",
+                skt: new GameDate(6, 11, 2026),
+                declaredType: "Taze Dana/Kuzu Eti",
+                listedType: "Taze Dana/Kuzu Eti",
+                ingredients: "%100 Besi Eti (Sanayi havzası otlak bölgesi).",
+                region: SourceRegion.RegionA,
+                habitat: FishHabitat.None,
+                polluted: true,
+                finding: "POZİTİF — Hayvanın çevreye atılan zehirli sanayi/plastik atıklarından tükettiği saptandı! İmha edilmelidir.",
+                packaging: WasteBinType.Plastic,
+                contaminated: true
+            );
+            catalog.P1SampleProducts.Add(pollutedMeat);
 
             // -----------------------------------------------------------------
-            // 7. GÜN TANIMLARI (DAY_01 ve DAY_02)
+            // 7. GÜN TANIMLARI (DAY_01, DAY_02 ve P1 DAY_03)
             // -----------------------------------------------------------------
             catalog.Day1 = ScriptableObject.CreateInstance<DayDefinition>();
             catalog.Day1.name = "Day_01_Dairy";
@@ -452,6 +589,26 @@ namespace GameUP.Rules
                     rule: catalog.RuleSourceBan,
                     document: catalog.Day2EmergencyFax
                 )
+            );
+
+            catalog.Day3P1 = ScriptableObject.CreateInstance<DayDefinition>();
+            catalog.Day3P1.name = "Day_03_P1_Extended";
+            catalog.Day3P1.InitializeDay(
+                id: "DAY_03",
+                number: 3,
+                title: "3. Gün (P1) — Tartı, Cetvel, Meyve/Sebze/Et ve Yüzde Denetimi",
+                date: new GameDate(3, 11, 2026),
+                category: ProductCategory.Snack,
+                newspaper: catalog.Day3Newspaper,
+                startRules: new List<RuleDefinition>
+                {
+                    catalog.RuleExpiry,
+                    catalog.RuleWeight,
+                    catalog.RuleLength,
+                    catalog.RuleIngredientPct
+                },
+                dayProducts: new List<ProductDefinition>(catalog.Day3P1Products),
+                emergency: new EmergencyDefinition(false, 0, "", null, null)
             );
 
             return catalog;

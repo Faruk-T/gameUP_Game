@@ -2,7 +2,7 @@
   "name": "GameUp.Rules",
   "rootNamespace": "GameUP.Rules",
   "references": [
-    "GameUp.Contracts"
+    "GameUp.Contracts",
+    "Unity.ugui"
   ]
 }
-

@@ -505,6 +505,21 @@ namespace GameUP.Rules
                 sb.AppendLine("NOT: Kirlilik görünüşten anlaşılamaz; analiz cihazını kullan.");
             }
 
+            if (prod.HasWeightData)
+            {
+                sb.AppendLine($"ETİKET AĞIRLIĞI: {prod.DeclaredWeightGrams:0.#} g | TARTI ÖLÇÜMÜ: {prod.ActualWeightGrams:0.#} g");
+            }
+
+            if (prod.HasLengthData)
+            {
+                sb.AppendLine($"CETVEL BOY ÖLÇÜMÜ: {prod.ActualLengthCm:0.#} cm");
+            }
+
+            if (prod.HasIngredientPercentData && !string.IsNullOrWhiteSpace(prod.TrackedIngredientName))
+            {
+                sb.AppendLine($"{prod.TrackedIngredientName.ToUpperInvariant()} BEYANI: %{prod.DeclaredIngredientPercent:0.###} | GERÇEK ORAN: %{prod.ActualIngredientPercent:0.###}");
+            }
+
             sb.Append($"AMBALAJ: {prod.PackagingMaterial.ToTurkishText()}");
             return sb.ToString();
         }

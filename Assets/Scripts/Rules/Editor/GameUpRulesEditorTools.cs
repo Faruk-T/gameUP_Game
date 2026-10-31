@@ -34,7 +34,8 @@ namespace GameUP.Rules.Editor
                     return;
 
                 bool dataExists = AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_01_Dairy.asset") != null &&
-                                  AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_02_Fish.asset") != null;
+                                  AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_02_Fish.asset") != null &&
+                                  AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_03_P1_Extended.asset") != null;
 
                 if (!dataExists)
                 {
@@ -60,16 +61,17 @@ namespace GameUP.Rules.Editor
             var ruleIdentity = SaveOrUpdateAsset(catalog.RuleIdentity, $"{RulesDir}/{catalog.RuleIdentity.name}.asset");
             var rulePollution = SaveOrUpdateAsset(catalog.RulePollution, $"{RulesDir}/{catalog.RulePollution.name}.asset");
             var ruleSourceBan = SaveOrUpdateAsset(catalog.RuleSourceBan, $"{RulesDir}/{catalog.RuleSourceBan.name}.asset");
-            SaveOrUpdateAsset(catalog.RuleWeight, $"{RulesDir}/{catalog.RuleWeight.name}.asset");
-            SaveOrUpdateAsset(catalog.RuleLength, $"{RulesDir}/{catalog.RuleLength.name}.asset");
-            SaveOrUpdateAsset(catalog.RuleIngredientPct, $"{RulesDir}/{catalog.RuleIngredientPct.name}.asset");
+            var ruleWeight = SaveOrUpdateAsset(catalog.RuleWeight, $"{RulesDir}/{catalog.RuleWeight.name}.asset");
+            var ruleLength = SaveOrUpdateAsset(catalog.RuleLength, $"{RulesDir}/{catalog.RuleLength.name}.asset");
+            var ruleIngredientPct = SaveOrUpdateAsset(catalog.RuleIngredientPct, $"{RulesDir}/{catalog.RuleIngredientPct.name}.asset");
 
             // 2. Belgeleri kaydet
             var docDay1News = SaveOrUpdateAsset(catalog.Day1Newspaper, $"{DocumentsDir}/{catalog.Day1Newspaper.name}.asset");
             var docDay2News = SaveOrUpdateAsset(catalog.Day2Newspaper, $"{DocumentsDir}/{catalog.Day2Newspaper.name}.asset");
             var docDay2Fax = SaveOrUpdateAsset(catalog.Day2EmergencyFax, $"{DocumentsDir}/{catalog.Day2EmergencyFax.name}.asset");
+            var docDay3News = SaveOrUpdateAsset(catalog.Day3Newspaper, $"{DocumentsDir}/{catalog.Day3Newspaper.name}.asset");
 
-            // 3. Ürünleri kaydet (Gün 1 + Gün 2 + P1)
+            // 3. Ürünleri kaydet (Gün 1 + Gün 2 + Gün 3 P1 + Ek P1)
             var savedDay1Products = new List<ProductDefinition>();
             foreach (var p in catalog.Day1Products)
             {
@@ -82,9 +84,18 @@ namespace GameUP.Rules.Editor
                 savedDay2Products.Add(SaveOrUpdateAsset(p, $"{ProductsDir}/{p.name}.asset"));
             }
 
+            var savedDay3Products = new List<ProductDefinition>();
+            foreach (var p in catalog.Day3P1Products)
+            {
+                savedDay3Products.Add(SaveOrUpdateAsset(p, $"{ProductsDir}/{p.name}.asset"));
+            }
+
             foreach (var p in catalog.P1SampleProducts)
             {
-                SaveOrUpdateAsset(p, $"{ProductsDir}/{p.name}.asset");
+                if (!savedDay3Products.Exists(x => x != null && x.DefinitionId == p.DefinitionId))
+                {
+                    SaveOrUpdateAsset(p, $"{ProductsDir}/{p.name}.asset");
+                }
             }
 
             // 4. Günleri kalıcı asset referanslarıyla bağlayıp kaydet
@@ -119,6 +130,19 @@ namespace GameUP.Rules.Editor
                 )
             );
             SaveOrUpdateAsset(catalog.Day2, $"{DaysDir}/{catalog.Day2.name}.asset");
+
+            catalog.Day3P1.InitializeDay(
+                id: "DAY_03",
+                number: 3,
+                title: "3. Gün (P1) — Tartı, Cetvel, Meyve/Sebze/Et ve Yüzde Denetimi",
+                date: new GameDate(3, 11, 2026),
+                category: ProductCategory.Snack,
+                newspaper: docDay3News,
+                startRules: new List<RuleDefinition> { ruleExpiry, ruleWeight, ruleLength, ruleIngredientPct },
+                dayProducts: savedDay3Products,
+                emergency: new EmergencyDefinition(false, 0, "", null, null)
+            );
+            SaveOrUpdateAsset(catalog.Day3P1, $"{DaysDir}/{catalog.Day3P1.name}.asset");
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

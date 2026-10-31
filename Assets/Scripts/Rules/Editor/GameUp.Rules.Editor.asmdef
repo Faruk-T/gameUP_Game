@@ -3,7 +3,8 @@
   "rootNamespace": "GameUP.Rules.Editor",
   "references": [
     "GameUp.Contracts",
-    "GameUp.Rules"
+    "GameUp.Rules",
+    "Unity.ugui"
   ],
   "includePlatforms": [
     "Editor"
@@ -12,4 +13,3 @@
     "TestAssemblies"
   ]
 }
-

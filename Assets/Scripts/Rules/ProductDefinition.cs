@@ -142,11 +142,15 @@ namespace GameUP.Contracts
             }
             if (hasWeightData)
             {
-                sb.AppendLine($"Net Ağırlık Beyanı: {declaredWeightGrams:0.#} g");
+                sb.AppendLine($"Net Ağırlık Beyanı: {declaredWeightGrams:0.#} g | Tartı Ölçümü: {actualWeightGrams:0.#} g");
+            }
+            if (hasLengthData)
+            {
+                sb.AppendLine($"Cetvel Boy Ölçümü: {actualLengthCm:0.#} cm");
             }
             if (hasIngredientPercentData && !string.IsNullOrWhiteSpace(trackedIngredientName))
             {
-                sb.AppendLine($"Beyan Edilen {trackedIngredientName}: %{declaredIngredientPercent:0.###}");
+                sb.AppendLine($"Beyan Edilen {trackedIngredientName}: %{declaredIngredientPercent:0.###} | Gerçek Oran: %{actualIngredientPercent:0.###}");
             }
 
             sb.AppendLine($"Ambalaj: {packagingLabelText}");
