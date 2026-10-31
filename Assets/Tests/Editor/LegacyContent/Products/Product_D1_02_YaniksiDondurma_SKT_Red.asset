@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: Product_D1_02_YaniksiDondurma_SKT_Red
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D1-02
+  category: 0
+  displayName: "Korkuteli Yan\u0131ks\u0131 Dondurmas\u0131"
+  prefab: {fileID: 328846048311426157, guid: 6bc83e797e6e177488793855e399ef56, type: 3}
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 31
+    Month: 10
+    Year: 2026
+  declaredProductType: "Ke\xE7i S\xFCtl\xFC Yan\u0131ks\u0131 Dondurma"
+  listedProductType: "Ke\xE7i S\xFCtl\xFC Yan\u0131ks\u0131 Dondurma"
+  ingredientsSummary: "%100 Korkuteli ke\xE7i s\xFCt\xFC, pancar \u015Fekeri, do\u011Fal
+    salep."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 3
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "TEM\u0130Z \u2014 Kimyasal kirlilik yok (Ancak SKT ge\xE7mi\u015F)."
+  packagingMaterial: 1
+  isPackagingContaminated: 0
+  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

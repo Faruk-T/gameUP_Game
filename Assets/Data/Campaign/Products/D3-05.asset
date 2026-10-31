@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: D3-05
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D3-05
+  category: 4
+  displayName: "\xC7ilek / A"
+  prefab: {fileID: 7446042348620611019, guid: 72136accb817531429b6b21a9a85a9d4, type: 3}
+  modelSource: {fileID: 5338894034377604642, guid: 7b0f60faeb0623b488dee92129732ea3, type: 3}
+  condition: 0
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 7
+    Month: 11
+    Year: 2026
+  declaredProductType: "\xC7ilek / A"
+  listedProductType: "\xC7ilek / A"
+  ingredientsSummary: Meyve numunesi.
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 2
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
+    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
+    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  packagingMaterial: 1
+  isPackagingContaminated: 0
+  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

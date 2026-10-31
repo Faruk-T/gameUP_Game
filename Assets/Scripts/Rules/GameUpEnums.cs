@@ -16,11 +16,12 @@ namespace GameUP.Contracts
         public const string Weight = "R_WEIGHT";
         public const string Length = "R_LENGTH";
         public const string IngredientPercent = "R_INGREDIENT_PCT";
+        public const string Spoilage = "R_SPOILAGE";
+        public const string BatchRecall = "R_BATCH_RECALL";
     }
 
     /// <summary>
-    /// Ürün kategorileri. P0: Dairy (Süt Ürünleri) ve Fish (Balık).
-    /// Diğerleri P1 genişlemesi için hazırdır.
+    /// Kategori kimlikleri korunur. Aktif kampanya Dairy, Meat, Fruit ve Eggs kullanır.
     /// </summary>
     public enum ProductCategory
     {
@@ -29,7 +30,8 @@ namespace GameUP.Contracts
         Meat = 2,
         Vegetable = 3,
         Fruit = 4,
-        Snack = 5
+        Snack = 5,
+        Eggs = 6
     }
 
     /// <summary>
@@ -43,8 +45,12 @@ namespace GameUP.Contracts
         SourceHabitatBan = 3,    // R_SOURCE_BAN: Belirli kaynak bölgesi VE habitat yasağı
         WeightMismatch = 4,      // P1 - R_WEIGHT: Tartı ağırlığı ile etiket beyanı uyumsuz
         LengthBounds = 5,        // P1 - R_LENGTH: Cetvel boyu sınır dışı
-        IngredientPercentage = 6 // P1 - R_INGREDIENT_PCT: Meyve/içerik yüzdesi eşik altında veya beyanla uyumsuz
+        IngredientPercentage = 6,
+        VisibleSpoilage = 7,
+        SourceRegionBan = 8
     }
+
+    public enum FoodCondition { Fresh = 0, Spoiled = 1 }
 
     /// <summary>
     /// Oyuncu veya sistemin ürün hakkındaki kararı.
@@ -141,6 +147,7 @@ namespace GameUP.Contracts
                 ProductCategory.Vegetable => "Sebze",
                 ProductCategory.Fruit => "Meyve",
                 ProductCategory.Snack => "Atıştırmalık",
+                ProductCategory.Eggs => "Yumurta",
                 _ => category.ToString()
             };
         }

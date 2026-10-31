@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
+  m_Name: News_3
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
+  documentId: DOC_NEWS_3
+  documentType: 0
+  title: "So\u011Fuk zincir ve kaynak takibi birlikte denetleniyor"
+  body: "Yumurta grubu bug\xFCn a\xE7\u0131l\u0131yor; et, s\xFCt ve meyvelerle karma
+    vardiya ba\u015Fl\u0131yor. \u0130klim dayan\u0131kl\u0131l\u0131\u011F\u0131,
+    enerjinin ve so\u011Fuk zincirin s\xFCreklili\u011Fini de g\xFCndeme getiriyor.
+    SKT ve bozulma kontrollerini s\xFCrd\xFCr\xFCn.\n\nKaynak etiketini ve analiz
+    raporunu e\u015Fle\u015Ftirin. Bakanl\u0131k yeni bir parti duyurusu g\xF6nderebilir.
+    Acil faks\u0131 onaylad\u0131\u011F\u0131n\u0131zda yeni kural sonraki \xFCr\xFCnlere
+    uygulan\u0131r; \xF6nceki kararlar de\u011Fi\u015Fmez."
+  taskInstructionBox: "YEN\u0130 GRUP / YUMURTA \u2014 KARMA DENET\u0130M"
+  illustration: {fileID: 21300000, guid: 0a232a4bbb7e690498317ee94a8e1fba, type: 3}
+  relatedRuleIds:
+  - R_EXPIRY
+  - R_IDENTITY
+  - R_SPOILAGE
+  - R_POLLUTION
+  requiresExplicitAcknowledge: 1

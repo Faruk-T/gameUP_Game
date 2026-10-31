@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: Product_D1_04_AksekiTulumPeyniri_SktSinirOnay
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D1-04
+  category: 0
+  displayName: Akseki Tulum Peyniri
+  prefab: {fileID: 3386387672023605259, guid: 97711a930aceea1498d1cf2f34ddccf5, type: 3}
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 1
+    Month: 11
+    Year: 2026
+  declaredProductType: Geleneksel Tulum Peyniri
+  listedProductType: Geleneksel Tulum Peyniri
+  ingredientsSummary: "Akseki yayla ke\xE7i s\xFCt\xFC, do\u011Fal \u015Firden mayas\u0131,
+    kaya tuzu."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 3
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "TEM\u0130Z \u2014 Uygun."
+  packagingMaterial: 1
+  isPackagingContaminated: 0
+  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

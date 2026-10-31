@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: Product_D2_01_Balik_B_Dip_FaksOncesiOnay
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D2-01
+  category: 1
+  displayName: "Antalya Mercan Bal\u0131\u011F\u0131 (B / Dip)"
+  prefab: {fileID: 8876237337831536943, guid: c9e03fcbcf579bf4aa1edf673e86eb18, type: 3}
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 4
+    Month: 11
+    Year: 2026
+  declaredProductType: "Taze Deniz Bal\u0131\u011F\u0131"
+  listedProductType: "Taze Deniz Bal\u0131\u011F\u0131"
+  ingredientsSummary: "Taze Mercan Bal\u0131\u011F\u0131 (Av B\xF6lgesi: B, Habitat:
+    Dip Bal\u0131\u011F\u0131)."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 2
+  habitat: 2
+  isPolluted: 0
+  analysisFindingDetail: "TEM\u0130Z \u2014 Mikroplastik ve a\u011F\u0131r metal
+    de\u011Ferleri normal s\u0131n\u0131rda."
+  packagingMaterial: 3
+  isPackagingContaminated: 0
+  packagingLabelText: "Plastik At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

@@ -1,0 +1,6 @@
+{
+  "name": "GameUp.Lead.Editor",
+  "rootNamespace": "GameUp.Lead.Editor",
+  "references": ["GameUp.Application", "GameUp.Contracts", "GameUp.Lead.Core", "GameUp.Gameplay", "GameUp.Rules", "GameUp.Interaction", "Unity.InputSystem", "Unity.ugui"],
+  "includePlatforms": ["Editor"]
+}

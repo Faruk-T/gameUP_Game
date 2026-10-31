@@ -1,9 +1,15 @@
 # GameUP32 — Uygulama Planı
 
+> **Aktif kapsam güncellendi:** `feat/lead-category-progression`: yalnız Esmanur'un 31 modeli, üç gün (et/süt → meyve → yumurta), kodla üretilen sağlam/bozuk görünümler, ürünlerle eşleşen üç gazete ve üçüncü gün soğuk zincir faksı. Teşhir dolapları kaldırıldı. Güncel plan [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md), kod/çalıştırma [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md). Aşağıdaki iki günlük balıklı plan tarihsel tasarım kaydıdır; aktif veri Assets/Data/Campaign altındadır.
+
 > Hedef: 24 saat veya daha kısa sürede, Windows PC için baştan sona tamamlanabilen bir jam oyunu.
 > Çekirdek kapsam: tek oda, sabit masa başında birinci şahıs bakış, iki oyun günü, 12 ürün, bir acil faks.
 > Unity Editor: **6000.3.13f1**.
 > Bu dosya uygulama planıdır. Görev kutuları tamamlanmış iş veya yapılmış test anlamına gelmez.
+
+**Güncel entegrasyon:** Faruk'un üretim kuralları, Özgür'ün etkileşimi ve ürün sanatları `feat/lead-day-flow` dalında birleştirilmiştir. Başlangıç **First → Menu → Game**; Antalya COP31 menüsü, ayarlar, iki gün/12 ürün, belge/faks ve sonuçlar kayıtlı sahnelerle bağlanmıştır. Güncel kullanım ve doğrulama için [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md), görsel kaynakları için [ART_DIRECTION.md](Assets/Art/Menu/ART_DIRECTION.md). Aşağıdaki planın başlangıç durumu ve görev kutuları tarihsel planı korur.
+
+**Gazete / oda düzenlemesi:** `feat/lead-newspaper-room` dalı; kâğıt dokulu gazete baskısını, arkaya alınmış geri dönüşüm istasyonunu, geniş odayı ve COP31 afişlerini içerir. Esmanur'un 31 prefabı bağlıdır: 5 oynanış, 26 numune/teşhir. Ayrıntılı [model envanteri](Docs/MODEL_INVENTORY.md) ve [35/35 doğrulama sonucu](VALIDATION.md).
 
 ## 1. Kaynak, mevcut durum ve çalışma kararları
 

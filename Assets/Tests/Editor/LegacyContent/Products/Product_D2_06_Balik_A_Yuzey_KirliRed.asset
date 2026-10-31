@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: Product_D2_06_Balik_A_Yuzey_KirliRed
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D2-06
+  category: 1
+  displayName: "Akdeniz \u0130stavriti (A / Y\xFCzey)"
+  prefab: {fileID: 6420493460482282414, guid: b9a5c13c72e88d24fa9e15a735a55e8b, type: 3}
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 4
+    Month: 11
+    Year: 2026
+  declaredProductType: "Taze Deniz Bal\u0131\u011F\u0131"
+  listedProductType: "Taze Deniz Bal\u0131\u011F\u0131"
+  ingredientsSummary: "Taze \u0130stavrit (Av B\xF6lgesi: A, Habitat: Y\xFCzey Bal\u0131\u011F\u0131)."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 1
+  habitat: 1
+  isPolluted: 1
+  analysisFindingDetail: "POZ\u0130T\u0130F \u2014 A\u011F\u0131r petrol t\xFCrevi
+    ve mikroplastik kontaminasyonu tespit edildi!"
+  packagingMaterial: 3
+  isPackagingContaminated: 1
+  packagingLabelText: "Plastik At\u0131k (KONTAM\u0130NE / TEHL\u0130KEL\u0130 ATIK
+    UYARISI)"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
+  m_Name: EmergencyRecall
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
+  documentId: DOC_RECALL
+  documentType: 3
+  title: "Bakanl\u0131k: B\xF6lge B so\u011Fuk zincir duyurusu"
+  body: "B\xF6lge B sevkiyat deposunda so\u011Fuk zincir kesintisi bildirildi. Saat
+    12.00'den sonra gelen B kaynakl\u0131 ET, S\xDCT ve YUMURTA \xFCr\xFCnleri, analiz
+    temiz olsa bile tedbiren reddedilecektir.\n\nMEYVELER bu duyurunun kapsam\u0131nda
+    de\u011Fildir. \xD6nceki kararlar de\u011Fi\u015Ftirilmez."
+  taskInstructionBox: "Kaynak B + et/s\xFCt/yumurta = RED. Kaynak B meyvesi i\xE7in
+    normal kontrolleri uygula."
+  illustration: {fileID: 0}
+  relatedRuleIds:
+  - R_BATCH_RECALL
+  requiresExplicitAcknowledge: 1

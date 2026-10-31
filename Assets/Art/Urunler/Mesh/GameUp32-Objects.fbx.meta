@@ -1,0 +1,435 @@
+fileFormatVersion: 2
+guid: 379326ef9eadd0c4b97636efc562109f
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 7027261559
+    second: {fileID: 2100000, guid: de38aeb6b6a5c3742a000b5e437aafa5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_004
+    second: {fileID: 2100000, guid: 65812869f59d6b0468239ddfca8fc8d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Envase_01
+    second: {fileID: 2100000, guid: 0629f471b42735a4b8734a6866f40aab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Envase_02
+    second: {fileID: 2100000, guid: 518712cd51c80bd4b951e8054dfce1c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Envase_03
+    second: {fileID: 2100000, guid: 78ac4911857a6e348adfd1076a0a04fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Foods
+    second: {fileID: 2100000, guid: 947c6efb832f686448d3906a6200b9f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Foods_07
+    second: {fileID: 2100000, guid: bd3cfe7ba804ae140bab943bed949db8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 333b4d2b88a07414eb9487356593c461, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper
+    second: {fileID: 2100000, guid: 1f442f8a36ef3654793b4078883137c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WHEELcomp6
+    second: {fileID: 2100000, guid: e593ae5f147034f429107109376a381a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yoghurt_01_M
+    second: {fileID: 2100000, guid: 6034ed69fdd28bb4b9c05f13bf82bf2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yoghurt_02_M
+    second: {fileID: 2100000, guid: 5f3a2ad5b6ed4d04c8b9a9a3701b853c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yoghurt_03_M
+    second: {fileID: 2100000, guid: aba6aa2eb3a619140b3c83cfc7d37a9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_001]2'
+    second: {fileID: 2100000, guid: 03d0763c489cbf24491e7b19f73857c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_005]'
+    second: {fileID: 2100000, guid: 1a2cc718ce52d1148aff82e814a831b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A08]3'
+    second: {fileID: 2100000, guid: 8d8ebae9b3fdc9846af7e52409503089, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A09]1'
+    second: {fileID: 2100000, guid: a6d0a5d317eefa947a923f12b6e9d72c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A10]1'
+    second: {fileID: 2100000, guid: e787c36c0b1d71847870ca4a1ea72425, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A10]2'
+    second: {fileID: 2100000, guid: 4a7010386ea31854e8a7d5e9bda6e998, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A12]'
+    second: {fileID: 2100000, guid: 09db4bfe094df6943975843ed210192d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A13]1'
+    second: {fileID: 2100000, guid: 9e47fde2f90a4364db5488f96ebe15ea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_A14]'
+    second: {fileID: 2100000, guid: 2b6c0c311ca3b4647a0bba331f62621f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_B01]1'
+    second: {fileID: 2100000, guid: 1a0a9beeb7dc3d349a0caa1e7d615496, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_C04]'
+    second: {fileID: 2100000, guid: c070c582878af22439354142ceeef5f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_C13]'
+    second: {fileID: 2100000, guid: d4c48189ff5a4904ca5da042c328efdd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Color_C22]'
+    second: {fileID: 2100000, guid: eff2b3a24aa6321419023fb41c225091, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _23
+    second: {fileID: 2100000, guid: 5b7d96f3aa5431543a3c246ac6e764b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _25
+    second: {fileID: 2100000, guid: 8d74883f62942fb499c9621675c26c1b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: banana
+    second: {fileID: 2100000, guid: cbd3f89edca74694590426d85240c4dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chocolate
+    second: {fileID: 2100000, guid: acef3b611bb943349aa6ab05430dfa1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cow
+    second: {fileID: 2100000, guid: d8f21702ae65f584480701883d63a28a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: download (1)
+    second: {fileID: 2100000, guid: 9f802a7ca55d0684da0d683c371df033, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soya
+    second: {fileID: 2100000, guid: c0250208867799248bc0329327b73f61, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: strawberry cow
+    second: {fileID: 2100000, guid: dab79214a7821a9448dd87b486e3ca82, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: strawberry plant
+    second: {fileID: 2100000, guid: ebe4944d3f3f64a48a337700b81ff8e5, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 05f345ed2514b88222c783294ebd7047
+    second: {fileID: 2800000, guid: 05c156aa08f36694080ac576fedfb5ba, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 1e33de57ec471bef5d616c43934cad68
+    second: {fileID: 2800000, guid: b2d6481ebe61ade4690d47f43d17dae3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 365ba5fbdb57753eeff897487fe34706
+    second: {fileID: 2800000, guid: a7eb63d2d68c4904999dfd5dfd891de0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 5922787f30b80b2fde48741d2b9b9ed2
+    second: {fileID: 2800000, guid: aeaf44abcf741fd41b2daf20dafef67a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 63b14be5b3f13312ace3eec7724be2d9
+    second: {fileID: 2800000, guid: 9bd5f310606557c4f84cdd165d5304fd, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 74956182401
+    second: {fileID: 2800000, guid: 9afa653ea809b9b45b64f0a73635bea6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Backplate-2
+    second: {fileID: 2800000, guid: 91804cb0b4f7ac4428bed19599b01270, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Boar's Head Cheese_01
+    second: {fileID: 2800000, guid: b4c22f3a876ea734ea5db19aa14efb57, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Boar's Head Cheese_02
+    second: {fileID: 2800000, guid: adde4fc44b7739c49baa8e257e089e7e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cheese_4
+    second: {fileID: 2800000, guid: 2a4c2b7b10b624e41ab8b738796d67e1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Chicken Sausage
+    second: {fileID: 2800000, guid: 48f8bb161f844ac488972e40cbb03bad, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Foods
+    second: {fileID: 2800000, guid: a12facfc3345d984ab826878aaf1c8c2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Foods_07
+    second: {fileID: 2800000, guid: 4766b5d6279abf944b2d325f520f4f5b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: M-10
+    second: {fileID: 2800000, guid: f637d78a68b088643b9da50a2ef7ae65, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: PHILADELPHIA-Cream-Cheese_01
+    second: {fileID: 2800000, guid: c9846238492d51047a1a2da474bda9d4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: PHILADELPHIA-Cream-Cheese_02
+    second: {fileID: 2800000, guid: 821df9ea28c36ba41bf65be3803e9adf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Paper
+    second: {fileID: 2800000, guid: 8650f66d44562b441b6d3b8dcf6ce83f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Salami
+    second: {fileID: 2800000, guid: 152748ba526e8734397beb9d34dbdffa, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Salami-2
+    second: {fileID: 2800000, guid: 1b4c18cc55095fc4eb289c87d8f9da1e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Textura_Verde
+    second: {fileID: 2800000, guid: 13560a10e98b8594aa10f43482344714, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Turkey Salami-2
+    second: {fileID: 2800000, guid: c9800a6750dbf024d902c9c865aad455, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: amarillo_2
+    second: {fileID: 2800000, guid: 65bc2413d09b21047999f3190f4aa131, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: banana_Diffuse
+    second: {fileID: 2800000, guid: e2032adb1bdb804439d73fe83a873b3d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: bf1ce10db8cca9290fab877b9abc5150
+    second: {fileID: 2800000, guid: 3335f1e1e29f65542a316bbc5188b527, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: choco_DIffuse
+    second: {fileID: 2800000, guid: a2e8c79bf06250c43af465066f173de3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: cow_Diffuse
+    second: {fileID: 2800000, guid: ae3fa093a3ee38c43854d7febe302054, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: cowstrawberry_Diffuse
+    second: {fileID: 2800000, guid: a660b6e50277e7a49b28f33417052c35, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rosado
+    second: {fileID: 2800000, guid: ce417880c5d6ee94f94ae25584410d2d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: soya_Diffuse
+    second: {fileID: 2800000, guid: 5995cb95c221d0d40b60e1cede02c1e2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: strawberry_Diffuse
+    second: {fileID: 2800000, guid: 3cf195a55d6558d489422030e688f9ad, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

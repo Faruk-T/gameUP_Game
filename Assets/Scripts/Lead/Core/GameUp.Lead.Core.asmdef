@@ -1,0 +1,6 @@
+{
+  "name": "GameUp.Lead.Core",
+  "rootNamespace": "GameUp.Lead",
+  "references": ["GameUp.Contracts"],
+  "noEngineReferences": true
+}

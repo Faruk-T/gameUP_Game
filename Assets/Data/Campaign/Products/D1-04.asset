@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: D1-04
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D1-04
+  category: 0
+  displayName: "Yo\u011Furt / Parti 01"
+  prefab: {fileID: 1764448876212515912, guid: 14783638deed136439a0465809b5bdc6, type: 3}
+  modelSource: {fileID: 6564180886959850136, guid: b2a298f24976b62438bbd529bd01f4ef, type: 3}
+  condition: 0
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 5
+    Month: 11
+    Year: 2026
+  declaredProductType: "Yo\u011Furt / Parti 01"
+  listedProductType: "Yo\u011Furt / Parti 01"
+  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 3
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
+    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
+    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  packagingMaterial: 3
+  isPackagingContaminated: 0
+  packagingLabelText: "Plastik At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

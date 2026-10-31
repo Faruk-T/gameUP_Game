@@ -1,0 +1,5 @@
+{
+  "name": "GameUp.Gameplay",
+  "rootNamespace": "GameUp.Gameplay",
+  "references": ["GameUp.Application", "GameUp.Contracts", "GameUp.Lead.Core", "GameUp.Rules", "Unity.ugui"]
+}

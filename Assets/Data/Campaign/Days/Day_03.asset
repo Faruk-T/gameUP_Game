@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb90b36d054661489c2f247fd1385a5, type: 3}
+  m_Name: Day_03
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DayDefinition
+  dayId: DAY_03
+  dayNumber: 3
+  dayTitle: "YEN\u0130 GRUP / YUMURTA \u2014 KARMA DENET\u0130M"
+  gameDate:
+    Day: 3
+    Month: 11
+    Year: 2026
+  primaryCategory: 6
+  categoryUnlocks: 06000000
+  morningNewspaper: {fileID: 11400000, guid: 9116289088df58941aa91ccb17eec274, type: 2}
+  initialRules:
+  - {fileID: 11400000, guid: 6471f11ab8f3c7c40a1d77f7c0922c3c, type: 2}
+  - {fileID: 11400000, guid: acf24bef777c9f64489a78c3056e4b1f, type: 2}
+  - {fileID: 11400000, guid: 3a715f36abc9ba84abfce5bc8a566243, type: 2}
+  - {fileID: 11400000, guid: 13b043eecab3c15408a869e80dd004eb, type: 2}
+  products:
+  - {fileID: 11400000, guid: a337791e72ca9214e8950436790827fa, type: 2}
+  - {fileID: 11400000, guid: 35e299944746ea1438bb1dd2f3d92b82, type: 2}
+  - {fileID: 11400000, guid: 5f220fd18107b644396347eed6354602, type: 2}
+  - {fileID: 11400000, guid: cc4ba8b9d43d19e4283d7a7272fc0b97, type: 2}
+  - {fileID: 11400000, guid: 694f453031e19714899bf9840a2aa7c7, type: 2}
+  - {fileID: 11400000, guid: 08f2bbc9c48e1d945a85e62c0d693f9c, type: 2}
+  - {fileID: 11400000, guid: 332d7964e30f98748a7e118080b7c32f, type: 2}
+  - {fileID: 11400000, guid: badaae726f3664e4780cf78cd6e992e7, type: 2}
+  - {fileID: 11400000, guid: a8af0288cde7f0c4f9e0bb93335c789b, type: 2}
+  - {fileID: 11400000, guid: 2d4cffea8943ddc4aac71a5b57951503, type: 2}
+  - {fileID: 11400000, guid: 04534185981b4b94db968b22fda25e4b, type: 2}
+  - {fileID: 11400000, guid: fa4ac28f1aadb4545a94cd261e5c0bc5, type: 2}
+  - {fileID: 11400000, guid: 14b7f6a3ef1672942a90a4ee28c2ed17, type: 2}
+  emergencyEvent:
+    hasEmergency: 1
+    triggerAfterCompletedProducts: 3
+    displayedClockTime: 12.00
+    newRule: {fileID: 11400000, guid: 0cc72d3785916eb4e95b324d4383ccca, type: 2}
+    emergencyDocument: {fileID: 11400000, guid: ba3203c76a115824aabc8f49c16aabf5, type: 2}
