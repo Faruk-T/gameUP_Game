@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D1-04
   category: 0
   displayName: Akseki Tulum Peyniri
-  prefab: {fileID: 0}
+  prefab: {fileID: 3386387672023605259, guid: 97711a930aceea1498d1cf2f34ddccf5, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 1

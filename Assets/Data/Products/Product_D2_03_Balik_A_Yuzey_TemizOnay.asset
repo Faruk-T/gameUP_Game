@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D2-03
   category: 1
   displayName: "Antalya Sardalyas\u0131 (A / Y\xFCzey)"
-  prefab: {fileID: 0}
+  prefab: {fileID: 1392230501480592810, guid: 72e40d2666929ff42b5f71d920223f99, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 5

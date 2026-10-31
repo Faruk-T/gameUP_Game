@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D2-01
   category: 1
   displayName: "Antalya Mercan Bal\u0131\u011F\u0131 (B / Dip)"
-  prefab: {fileID: 0}
+  prefab: {fileID: 8876237337831536943, guid: c9e03fcbcf579bf4aa1edf673e86eb18, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 4

@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D2-06
   category: 1
   displayName: "Akdeniz \u0130stavriti (A / Y\xFCzey)"
-  prefab: {fileID: 0}
+  prefab: {fileID: 6420493460482282414, guid: b9a5c13c72e88d24fa9e15a735a55e8b, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 4

@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D1-06
   category: 0
   displayName: "Dondurmam \u2014 S\xFCtl\xFC Dondurma"
-  prefab: {fileID: 0}
+  prefab: {fileID: 8706506122768454428, guid: 165eedfe2b3d5e048b9799171bcc65c9, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 5

@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D2-02
   category: 1
   displayName: "Akdeniz Kefali (A / Y\xFCzey)"
-  prefab: {fileID: 0}
+  prefab: {fileID: 2859622911885573105, guid: f9ddf2951c4354243aeb9fc00855ecb6, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 4

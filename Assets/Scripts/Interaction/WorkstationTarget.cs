@@ -1,23 +1,26 @@
-using GameUP.Contracts;
 using UnityEngine;
 
 namespace GameUP.Interaction
 {
-    public enum WorkstationAction { Product, Analyzer, Approve, Reject, Paper, Glass, Plastic, Contaminated }
+    public enum WorkstationAction { Product, Analyzer, Approve, Reject, Paper, Glass, Plastic, Contaminated, Handbook, Report }
 
-    /// <summary>Add this to a collider to make it a raycast target for the workstation controls.</summary>
     public sealed class WorkstationTarget : MonoBehaviour
     {
         [SerializeField] private WorkstationAction action;
         public WorkstationAction Action => action;
-
-        public WasteBinType WasteBin => action switch
+        public string Hint => action switch
         {
-            WorkstationAction.Paper => WasteBinType.Paper,
-            WorkstationAction.Glass => WasteBinType.Glass,
-            WorkstationAction.Plastic => WasteBinType.Plastic,
-            WorkstationAction.Contaminated => WasteBinType.Contaminated,
-            _ => WasteBinType.None
+            WorkstationAction.Product => "E / Ürünü incele",
+            WorkstationAction.Analyzer => "Sol tık / Analiz cihazı",
+            WorkstationAction.Approve => "Sol tık / Ürünü onayla",
+            WorkstationAction.Reject => "Sol tık / Ürünü reddet",
+            WorkstationAction.Paper => "Sol tık / Kâğıt ambalaj",
+            WorkstationAction.Glass => "Sol tık / Cam ambalaj",
+            WorkstationAction.Plastic => "Sol tık / Plastik ambalaj",
+            WorkstationAction.Contaminated => "Sol tık / Kontamine atık",
+            WorkstationAction.Handbook => "B / El kitapçığı",
+            WorkstationAction.Report => "T / Son analiz raporu",
+            _ => ""
         };
     }
 }

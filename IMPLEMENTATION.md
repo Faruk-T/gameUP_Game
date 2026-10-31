@@ -5,7 +5,7 @@
 > Unity Editor: **6000.3.13f1**.
 > Bu dosya uygulama planıdır. Görev kutuları tamamlanmış iş veya yapılmış test anlamına gelmez.
 
-**Dördüncü kişi uygulaması:** Ayrı entegrasyon sahnesi, gün akışı, belge kuyruğu, faks, sonuçlar ve bağlantı sözleşmeleri uygulanmıştır. Çalıştırma, adapter bağlantıları ve doğrulama komutları için [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md). Üretim kural/etkileşim sistemleri ile nihai görseller ilgili ekip üyelerinin teslimleriyle bağlanacaktır.
+**Güncel entegrasyon:** Faruk'un üretim kuralları, Özgür'ün etkileşimi ve ürün sanatları `feat/lead-day-flow` dalında birleştirilmiştir. Başlangıç **First → Menu → Game**; Antalya COP31 menüsü, ayarlar, iki gün/12 ürün, belge/faks ve sonuçlar kayıtlı sahnelerle bağlanmıştır. Güncel kullanım ve doğrulama için [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md), görsel kaynakları için [ART_DIRECTION.md](Assets/Art/Menu/ART_DIRECTION.md). Aşağıdaki planın başlangıç durumu ve görev kutuları tarihsel planı korur.
 
 ## 1. Kaynak, mevcut durum ve çalışma kararları
 

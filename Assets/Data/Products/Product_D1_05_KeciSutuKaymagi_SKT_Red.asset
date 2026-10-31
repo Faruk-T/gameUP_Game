@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D1-05
   category: 0
   displayName: "Ke\xE7i S\xFCt\xFC Kayma\u011F\u0131"
-  prefab: {fileID: 0}
+  prefab: {fileID: 8320094246016624280, guid: 6e628923219164a42991e256162116b3, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 31

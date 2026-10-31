@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D1-02
   category: 0
   displayName: "Korkuteli Yan\u0131ks\u0131 Dondurmas\u0131"
-  prefab: {fileID: 0}
+  prefab: {fileID: 328846048311426157, guid: 6bc83e797e6e177488793855e399ef56, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 31

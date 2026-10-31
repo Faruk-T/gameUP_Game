@@ -1,0 +1,5 @@
+{
+  "name": "GameUp.Application",
+  "rootNamespace": "GameUp.App",
+  "references": ["Unity.ugui", "Unity.InputSystem"]
+}

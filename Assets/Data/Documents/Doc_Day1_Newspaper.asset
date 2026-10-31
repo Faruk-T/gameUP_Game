@@ -9,19 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
   m_Name: Doc_Day1_Newspaper
-  m_EditorClassIdentifier: GameUp.Rules:GameUP.Contracts:DocumentDefinition
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
   documentId: DOC_DAY1_NEWS
   documentType: 0
   title: "S\u0131cak hava, g\u0131da ta\u015F\u0131mac\u0131l\u0131\u011F\u0131n\u0131
     g\xFCndeme ta\u015F\u0131d\u0131"
-  body: "Antalya'daki s\u0131cakl\u0131klar\u0131n ard\u0131ndan s\xFCt \xFCr\xFCnleri
-    sevkiyatlar\u0131nda denetimler art\u0131r\u0131ld\u0131. Yerel \xFCretimin korunmas\u0131
-    i\xE7in \xFCr\xFCn bilgileri dikkatle kontrol ediliyor."
+  body: "Antalya'da artan s\u0131cakl\u0131klar, g\u0131dan\u0131n \xFCretimden sofraya
+    g\xFCvenle ula\u015Fmas\u0131n\u0131 yeniden g\xFCndeme ta\u015F\u0131d\u0131.
+    Yerel s\xFCt \xFCr\xFCnlerinin so\u011Fuk zinciri ve do\u011Fru etiketlenmesi
+    dikkatle izleniyor.\n\nK\u0131y\u0131daki g\xF6n\xFCll\xFCler ise caretta carettalar\u0131n
+    yuvalama alanlar\u0131nda plastik at\u0131k topluyor. Daha az at\u0131k, hem
+    deniz ya\u015Fam\u0131 hem de sa\u011Fl\u0131kl\u0131 g\u0131da i\xE7in ortak
+    bir ad\u0131m.\n\nCOP31 haz\u0131rl\u0131k g\xFCnleri / Kurmaca yerel haber"
   taskInstructionBox: "Bug\xFCn SKT'yi ve \xFCr\xFCn\xFCn \xF6n y\xFCz\xFCndeki iddiay\u0131
     arka etiketindeki t\xFCr/i\xE7erikle kar\u015F\u0131la\u015Ft\u0131r."
-  illustration: {fileID: 0}
+  illustration: {fileID: 21300000, guid: 889b827d7b7920b4ca7f528f529f112f, type: 3}
   relatedRuleIds:
   - R_EXPIRY
   - R_IDENTITY

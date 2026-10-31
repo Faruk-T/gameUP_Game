@@ -1,118 +1,111 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using GameUp.Contracts;
 using GameUP.Contracts;
 using GameUP.Rules;
 using UnityEngine;
+using ProductSession = GameUp.Contracts.ProductSession;
 
 namespace GameUP.Interaction
 {
-    /// <summary>Spawns the active product and moves it between fixed workstation points.</summary>
-    public sealed class ProductPresentation : MonoBehaviour
+    [Serializable]
+    public sealed class ProductVisual
     {
-        [SerializeField] private InspectionService inspectionService;
-        [SerializeField] private Transform arrivalPoint;
-        [SerializeField] private Transform deskPoint;
-        [SerializeField] private Transform approvedExitPoint;
-        [SerializeField] private Transform foodDisposalPoint;
-        [SerializeField, Min(0f)] private float moveDuration = 0.45f;
+        public ProductDefinition Definition;
+        public GameObject Visual;
+        public ProductWorldLabelBinder Labels;
+    }
 
+    /// <summary>Uses an authored pool. No spawning, component creation or substitute models in play.</summary>
+    public sealed class ProductPresentation : MonoBehaviour, IProductPresentation
+    {
+        [SerializeField] private ProductVisual[] visuals;
+        [SerializeField] private Transform arrivalPoint, deskPoint, approvedExitPoint, foodDisposalPoint;
+        [SerializeField] private GameObject packagingVisual;
+        [SerializeField] private Transform[] wastePoints;
+        [SerializeField, Min(0.01f)] private float moveDuration = 0.45f;
+        private readonly Dictionary<string, ProductVisual> pool = new Dictionary<string, ProductVisual>(StringComparer.Ordinal);
+        private ProductVisual active;
         private Coroutine movement;
-        private ProductSession activeSession;
-        private GameObject activeProduct;
+        public ProductSession CurrentSession { get; private set; }
+        public GameObject ActiveProduct => active?.Visual;
+        public bool IsMoving => movement != null;
 
-        public ProductSession ActiveSession => activeSession;
-        public GameObject ActiveProduct => activeProduct;
-        public bool IsMoving { get; private set; }
-        public event Action<string, string> ArrivalFinished;
-
-        private void OnEnable()
+        private void Awake()
         {
-            if (inspectionService != null) inspectionService.OnProductBegun += HandleProductBegun;
-        }
-
-        private void OnDisable()
-        {
-            if (inspectionService != null) inspectionService.OnProductBegun -= HandleProductBegun;
-            if (movement != null) StopCoroutine(movement);
-            IsMoving = false;
-        }
-
-        private void HandleProductBegun(BeginProductEvent evt)
-        {
-            if (inspectionService == null || arrivalPoint == null || deskPoint == null || evt.Definition == null)
-                return;
-
-            ProductSession session = inspectionService.ActiveProductSession;
-            if (session == null || session.ProductId != evt.ProductId || session.RunId != evt.RunId)
-                return;
-
-            if (activeProduct != null) Destroy(activeProduct);
-            activeSession = session;
-            GameObject prefab = session.Definition.Prefab;
-            activeProduct = prefab != null
-                ? Instantiate(prefab, arrivalPoint.position, arrivalPoint.rotation)
-                : GameObject.CreatePrimitive(PrimitiveType.Cube);
-            activeProduct.name = session.Definition.DisplayName;
-            if (prefab == null)
+            if (visuals == null || visuals.Length == 0 || !arrivalPoint || !deskPoint || !approvedExitPoint ||
+                !foodDisposalPoint || !packagingVisual || wastePoints == null || wastePoints.Length != 4)
+                throw new InvalidOperationException("ProductPresentation requires its authored pool and workstation points.");
+            foreach (var item in visuals)
             {
-                activeProduct.transform.SetPositionAndRotation(arrivalPoint.position, arrivalPoint.rotation);
-                activeProduct.transform.localScale = Vector3.one * 0.45f;
+                if (!item.Definition || !item.Visual || !item.Labels || !pool.TryAdd(item.Definition.DefinitionId, item))
+                    throw new InvalidOperationException("Product pool contains missing or duplicate entries.");
+                item.Visual.SetActive(false);
             }
+            foreach (var target in wastePoints) if (!target) throw new InvalidOperationException("Missing waste point.");
+            packagingVisual.SetActive(false);
+        }
 
-            if (activeProduct.GetComponent<WorkstationTarget>() == null)
-                activeProduct.AddComponent<WorkstationTarget>();
+        public void Present(ProductSession session, Action<ProductKey> arrived)
+        {
+            ResetPresentation();
+            if (!pool.TryGetValue(session.Product.Id, out active)) throw new InvalidOperationException("Product has no authored visual: " + session.Product.Id);
+            CurrentSession = session;
+            active.Labels.Bind(active.Definition);
+            active.Visual.transform.SetPositionAndRotation(arrivalPoint.position, arrivalPoint.rotation);
+            active.Visual.SetActive(true);
+            movement = StartCoroutine(Move(active.Visual.transform, deskPoint, () => arrived(session.Key)));
+        }
 
-            ProductWorldLabelBinder binder = activeProduct.GetComponent<ProductWorldLabelBinder>();
-            if (binder == null) binder = activeProduct.AddComponent<ProductWorldLabelBinder>();
-            binder.Bind(session.Definition);
-            string runId = session.RunId;
-            string productId = session.ProductId;
-            MoveTo(deskPoint, () =>
+        public void Route(ProductSession session, PlayerDecision decision, Action<ProductKey> finished)
+        {
+            RequireSession(session);
+            movement = StartCoroutine(Move(active.Visual.transform, decision == PlayerDecision.Approve ? approvedExitPoint : foodDisposalPoint, () =>
             {
-                if (activeSession != null && activeSession.RunId == runId && activeSession.ProductId == productId)
-                    ArrivalFinished?.Invoke(runId, productId);
-            });
+                active.Visual.SetActive(false);
+                if (decision == PlayerDecision.Reject)
+                {
+                    packagingVisual.transform.SetPositionAndRotation(deskPoint.position, deskPoint.rotation);
+                    packagingVisual.SetActive(true);
+                }
+                finished(session.Key);
+            }));
         }
 
-        public void Route(ProductDecision decision, Action finished)
+        public void Sort(ProductSession session, WasteCategory waste, Action<ProductKey, WasteCategory> finished)
         {
-            Transform destination = decision == ProductDecision.Approve ? approvedExitPoint : foodDisposalPoint;
-            if (destination == null) { finished?.Invoke(); return; }
-            MoveTo(destination, finished);
+            RequireSession(session);
+            movement = StartCoroutine(Move(packagingVisual.transform, wastePoints[(int)waste], () =>
+            { packagingVisual.SetActive(false); finished(session.Key, waste); }));
         }
 
-        public void Sort(Transform target, Action finished)
+        private IEnumerator Move(Transform item, Transform destination, Action finished)
         {
-            if (target == null) { finished?.Invoke(); return; }
-            MoveTo(target, finished);
-        }
-
-        public void MoveTo(Transform destination, Action finished)
-        {
-            if (activeProduct == null || destination == null) { finished?.Invoke(); return; }
-            if (movement != null) StopCoroutine(movement);
-            movement = StartCoroutine(MoveRoutine(destination, finished));
-        }
-
-        private IEnumerator MoveRoutine(Transform destination, Action finished)
-        {
-            IsMoving = true;
-            Vector3 startPosition = activeProduct.transform.position;
-            Quaternion startRotation = activeProduct.transform.rotation;
-            float elapsed = 0f;
-            while (elapsed < moveDuration && activeProduct != null)
+            Vector3 start = item.position; Quaternion rotation = item.rotation;
+            for (float time = 0; time < moveDuration; time += Time.deltaTime)
             {
-                elapsed += Time.deltaTime;
-                float t = moveDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / moveDuration);
-                activeProduct.transform.SetPositionAndRotation(
-                    Vector3.Lerp(startPosition, destination.position, t),
-                    Quaternion.Slerp(startRotation, destination.rotation, t));
+                float t = Mathf.SmoothStep(0, 1, time / moveDuration);
+                item.SetPositionAndRotation(Vector3.Lerp(start, destination.position, t), Quaternion.Slerp(rotation, destination.rotation, t));
                 yield return null;
             }
-            if (activeProduct != null) activeProduct.transform.SetPositionAndRotation(destination.position, destination.rotation);
-            IsMoving = false;
+            item.SetPositionAndRotation(destination.position, destination.rotation);
             movement = null;
-            finished?.Invoke();
+            finished();
         }
+        private void RequireSession(ProductSession session)
+        {
+            if (CurrentSession == null || !CurrentSession.Key.Equals(session.Key) || active == null || IsMoving)
+                throw new InvalidOperationException("Product presentation session is not ready.");
+        }
+        public void ResetPresentation()
+        {
+            if (movement != null) StopCoroutine(movement);
+            movement = null;
+            if (active != null) active.Visual.SetActive(false);
+            if (packagingVisual) packagingVisual.SetActive(false);
+            active = null; CurrentSession = null;
+        }
+        private void OnDisable() => ResetPresentation();
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D1-03
   category: 0
   displayName: "Antalya Y\xF6r\xFCk Peyniri"
-  prefab: {fileID: 0}
+  prefab: {fileID: 9007004440174808810, guid: e701d4fecb64c5a45b5105e8e8f37cb8, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 4

@@ -1,5 +1,0 @@
-{
-  "name": "GameUp.Lead.Prototype",
-  "rootNamespace": "GameUp.Lead.Prototype",
-  "references": ["GameUp.Contracts", "GameUp.Lead.Core", "GameUp.Lead.Runtime", "Unity.InputSystem", "Unity.ugui"]
-}

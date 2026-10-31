@@ -9,18 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
   m_Name: Doc_Day2_Newspaper
-  m_EditorClassIdentifier: GameUp.Rules:GameUP.Contracts:DocumentDefinition
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
   documentId: DOC_DAY2_NEWS
   documentType: 0
   title: "Deniz kirlili\u011Fi ve caretta carettalar i\xE7in uyar\u0131"
-  body: "K\u0131y\u0131da bulunan bir caretta carettan\u0131n ard\u0131ndan plastik
-    kirlili\u011Fi yeniden g\xFCndeme geldi. G\xF6revliler deniz canl\u0131lar\u0131ndan
-    al\u0131nan \xF6rneklerin incelendi\u011Fini bildirdi."
+  body: "Antalya k\u0131y\u0131lar\u0131nda deniz kirlili\u011Fi alarm\u0131: baz\u0131
+    bal\u0131k numunelerinde mikroplastik ve kimyasal kal\u0131nt\u0131 \u015F\xFCphesi
+    ara\u015Ft\u0131r\u0131l\u0131yor. Kirlilik yaln\u0131zca sofray\u0131 de\u011Fil,
+    caretta carettalar\u0131n ya\u015Fam alanlar\u0131n\u0131 da etkiliyor.\n\nBir
+    bal\u0131\u011F\u0131n d\u0131\u015F g\xF6r\xFCn\xFC\u015F\xFC, temiz oldu\u011Funu
+    kan\u0131tlamaz. Laboratuvar raporunu kontrol edin; yeni kaynak yasaklar\u0131
+    i\xE7in Bakanl\u0131k faks\u0131n\u0131 takip edin.\n\nCOP31 haz\u0131rl\u0131k
+    g\xFCnleri / Kurmaca yerel haber"
   taskInstructionBox: "Bal\u0131klar\u0131n kaynak ve habitat etiketlerini incele.
     Kirlilik etiket \xFCzerinden anla\u015F\u0131lamaz; analiz raporunu kontrol et."
-  illustration: {fileID: 0}
+  illustration: {fileID: 21300000, guid: 405376edd9ef06d4fb31f7b5baa4e567, type: 3}
   relatedRuleIds:
   - R_EXPIRY
   - R_POLLUTION

@@ -2,8 +2,11 @@
   "name": "GameUp.Interaction",
   "rootNamespace": "GameUP.Interaction",
   "references": [
+    "GameUp.Lead.Core",
     "GameUp.Rules",
     "GameUp.Contracts",
+    "GameUp.Application",
+    "GameUp.Gameplay",
     "Unity.InputSystem"
   ]
 }

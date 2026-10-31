@@ -5,6 +5,7 @@
     "GameUp.Interaction",
     "GameUp.Rules",
     "GameUp.Contracts",
+    "GameUp.Gameplay",
     "Unity.InputSystem"
   ],
   "includePlatforms": ["Editor"],

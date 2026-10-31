@@ -1,252 +1,148 @@
-using GameUP.Contracts;
-using GameUP.Rules;
+using System;
+using GameUp.App;
+using GameUp.Contracts;
+using GameUp.Gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace GameUP.Interaction
 {
-    /// <summary>MVP fixed-desk camera, inspection and click-to-interact controller.</summary>
+    /// <summary>The sole gameplay input owner. Judgment and progression stay in GameSessionController.</summary>
     public sealed class WorkstationInteractionController : MonoBehaviour
     {
         [SerializeField] private Camera playerCamera;
-        [SerializeField] private Transform cameraYawRoot;
-        [SerializeField] private InspectionService inspectionService;
+        [SerializeField] private Transform cameraYawRoot, inspectionAnchor;
+        [SerializeField] private GameSessionController session;
         [SerializeField] private ProductPresentation presentation;
-        [SerializeField] private Transform inspectionAnchor;
-        [SerializeField] private LayerMask interactableLayers = ~0;
-        [SerializeField, Min(0.1f)] private float rayDistance = 4f;
-        [SerializeField, Min(1f)] private float lookSensitivity = 0.12f;
-        [SerializeField] private float pitchLimit = 65f;
-        [SerializeField, Min(0f)] private float inspectionZoomStep = 0.002f;
-        [SerializeField, Min(0f)] private float maxInspectionZoom = 1.2f;
-
+        [SerializeField] private LayerMask interactableLayers;
+        [SerializeField] private float rayDistance = 5, pitchLimit = 55, maxInspectionZoom = 0.2f;
         private WorkstationTarget hovered;
-        private bool inspecting;
-        private bool awaitingSort;
-        private bool busy;
-        private bool worldInputLocked;
-        private float inspectionZoom;
-        private Vector3 productOriginalPosition;
-        private Quaternion productOriginalRotation;
-        private float yaw;
-        private float pitch;
-        private bool ignoreMouseDeltaOnce = true;
-        private string status = "Hedefe bakıp sol tıklayın. Ürünü incelemek için E.";
+        private UserSettings settings;
+        private bool inspecting, ignoreMouseDelta = true, dragging, pressedWhileInspecting;
+        private float yaw, pitch, zoom;
+        private Vector2 pressPosition;
+        private Vector3 originalPosition;
+        private Quaternion originalRotation;
+        public bool IsInspecting => inspecting;
 
-        public void SetWorldInputLocked(bool locked) => worldInputLocked = locked;
-
-        public void ActivateTestAction(WorkstationTarget target)
+        private void Awake()
         {
-            if (target == null) return;
-            hovered = target;
-            ActivateHoveredTarget();
+            if (!playerCamera || !cameraYawRoot || !inspectionAnchor || !session || !presentation)
+                throw new InvalidOperationException("Workstation input requires all scene references.");
+            settings = ApplicationRoot.Require().Settings;
+            yaw = cameraYawRoot.localEulerAngles.y;
+            pitch = playerCamera.transform.localEulerAngles.x;
+            if (pitch > 180) pitch -= 360;
         }
-
         private void OnEnable()
         {
-            if (cameraYawRoot != null) yaw = cameraYawRoot.localEulerAngles.y;
-            if (playerCamera != null)
-            {
-                pitch = playerCamera.transform.localEulerAngles.x;
-                if (pitch > 180f) pitch -= 360f;
-            }
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            ignoreMouseDeltaOnce = true;
+            session.Refreshed += OnSessionChanged;
+            settings.Changed += ApplySettings;
+            ApplySettings();
         }
-
-        private void OnDisable()
+        private void OnDisable() { session.Refreshed -= OnSessionChanged; settings.Changed -= ApplySettings; }
+        private void ApplySettings() => playerCamera.fieldOfView = settings.FieldOfView;
+        private void OnSessionChanged()
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            ignoreMouseDelta = true;
+            if (inspecting && presentation.CurrentSession == null) inspecting = false;
+            if (!session.WorldInputAllowed) { hovered = null; session.SetTargetHint(""); }
         }
-
         private void Update()
         {
-            if (playerCamera == null || inspectionService == null || presentation == null) return;
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            var keyboard = Keyboard.current;
+            var mouse = Mouse.current;
+            if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) { session.HandleEscape(); return; }
+            if (!session.WorldInputAllowed || mouse == null) return;
+            if (keyboard != null)
             {
-                Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
-                Cursor.visible = Cursor.lockState != CursorLockMode.Locked;
-                ignoreMouseDeltaOnce = true;
+                if (keyboard.bKey.wasPressedThisFrame) { session.OpenHandbook(); return; }
+                if (keyboard.tKey.wasPressedThisFrame) { session.ReopenReport(); return; }
+                if (keyboard.eKey.wasPressedThisFrame && (inspecting || hovered != null && hovered.Action == WorkstationAction.Product)) ToggleInspection();
+                if (keyboard.wKey.wasPressedThisFrame) Decide(PlayerDecision.Approve);
+                if (keyboard.rKey.wasPressedThisFrame) Decide(PlayerDecision.Reject);
+                if (keyboard.fKey.wasPressedThisFrame) { EndInspection(); session.Analyze(); }
             }
-            if (worldInputLocked || (UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))
-                return;
-
-            UpdateLook();
-            UpdateHover();
-            UpdateInspectInput();
-
-            Mouse mouse = Mouse.current;
-            if (mouse != null && mouse.leftButton.wasPressedThisFrame && !busy && !inspecting)
-                ActivateHoveredTarget();
-        }
-
-        private void UpdateLook()
-        {
-            Mouse mouse = Mouse.current;
-            if (mouse == null || (inspecting && mouse.leftButton.isPressed)) return;
-            Vector2 rawDelta = mouse.delta.ReadValue();
-            if (ignoreMouseDeltaOnce)
+            if (!session.WorldInputAllowed) return;
+            Vector2 delta = mouse.delta.ReadValue();
+            if (ignoreMouseDelta) { ignoreMouseDelta = false; delta = Vector2.zero; }
+            if (delta.sqrMagnitude > 900) delta = Vector2.zero;
+            if (!(inspecting && mouse.leftButton.isPressed))
             {
-                ignoreMouseDeltaOnce = false;
-                return;
+                yaw += delta.x * settings.Sensitivity;
+                pitch = Mathf.Clamp(pitch - delta.y * settings.Sensitivity, -pitchLimit, pitchLimit);
+                cameraYawRoot.localRotation = Quaternion.Euler(0, yaw, 0);
+                playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
             }
-            // Ignore absolute pointer warps (for example when the locked cursor first enters Game View).
-            if (rawDelta.sqrMagnitude > 900f) return;
-            Vector2 delta = Vector2.ClampMagnitude(rawDelta, 45f) * lookSensitivity;
-            yaw += delta.x;
-            pitch = Mathf.Clamp(pitch - delta.y, -pitchLimit, pitchLimit);
-            if (cameraYawRoot != null) cameraYawRoot.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
-        }
-
-        private void UpdateHover()
-        {
-            hovered = null;
-            if (CameraRaycast(out RaycastHit hit)) hovered = hit.collider.GetComponentInParent<WorkstationTarget>();
-        }
-
-        private void UpdateInspectInput()
-        {
-            Keyboard keyboard = Keyboard.current;
-            Mouse mouse = Mouse.current;
-            if (keyboard == null || mouse == null || presentation.ActiveProduct == null || busy) return;
-
-            if (inspecting && mouse.leftButton.wasPressedThisFrame && hovered != null && hovered.Action == WorkstationAction.Product)
+            WorkstationTarget target = null;
+            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out var hit, rayDistance, interactableLayers, QueryTriggerInteraction.Ignore))
+                target = hit.collider.GetComponentInParent<WorkstationTarget>();
+            if (hovered != target)
             {
-                ToggleInspection();
-                return;
+                hovered = target;
+                session.SetTargetHint(target ? target.Hint : "");
             }
-
-            if (!inspecting && keyboard.eKey.wasPressedThisFrame && !awaitingSort)
+            if (mouse.leftButton.wasPressedThisFrame)
             {
-                inspecting = true;
-                productOriginalPosition = presentation.ActiveProduct.transform.position;
-                productOriginalRotation = presentation.ActiveProduct.transform.rotation;
-                inspectionZoom = 0f;
-                if (inspectionAnchor != null)
-                    presentation.ActiveProduct.transform.position = inspectionAnchor.position;
-                status = "İnceleme: fareyle döndürün, tekerlekle yaklaştırıp uzaklaştırın. Sol tık veya E: masaya bırak.";
+                pressedWhileInspecting = inspecting;
+                pressPosition = mouse.position.ReadValue(); dragging = false;
+                if (!inspecting && hovered) Interact(hovered);
             }
-            else if (inspecting && keyboard.eKey.wasPressedThisFrame)
+            if (inspecting && pressedWhileInspecting && mouse.leftButton.isPressed)
             {
-                inspecting = false;
-                presentation.ActiveProduct.transform.SetPositionAndRotation(productOriginalPosition, productOriginalRotation);
-                inspectionZoom = 0f;
-                status = "Ürün masaya bırakıldı.";
-            }
-
-            if (inspecting && mouse.leftButton.isPressed)
-            {
-                Vector2 delta = mouse.delta.ReadValue();
-                presentation.ActiveProduct.transform.Rotate(playerCamera.transform.up, -delta.x * 0.35f, Space.World);
-                presentation.ActiveProduct.transform.Rotate(playerCamera.transform.right, delta.y * 0.35f, Space.World);
-            }
-
-            if (inspecting && inspectionAnchor != null)
-            {
-                float scroll = mouse.scroll.ReadValue().y;
-                if (Mathf.Abs(scroll) > 0.01f)
+                dragging |= Vector2.Distance(pressPosition, mouse.position.ReadValue()) > 4;
+                if (dragging)
                 {
-                    inspectionZoom = Mathf.Clamp(inspectionZoom + scroll * inspectionZoomStep, 0f, maxInspectionZoom);
-                    presentation.ActiveProduct.transform.position = inspectionAnchor.position - playerCamera.transform.forward * inspectionZoom;
+                    presentation.ActiveProduct.transform.Rotate(playerCamera.transform.up, -delta.x * 0.35f, Space.World);
+                    presentation.ActiveProduct.transform.Rotate(playerCamera.transform.right, delta.y * 0.35f, Space.World);
                 }
             }
-        }
-
-        private bool CameraRaycast(out RaycastHit hit) =>
-            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, rayDistance, interactableLayers, QueryTriggerInteraction.Ignore);
-
-        private void ActivateHoveredTarget()
-        {
-            if (hovered == null || presentation.IsMoving || presentation.ActiveSession == null) return;
-            switch (hovered.Action)
-            {
-                case WorkstationAction.Product:
-                    if (!awaitingSort) ToggleInspection();
-                    break;
-                case WorkstationAction.Analyzer:
-                    if (!awaitingSort && inspectionService.RequestAnalysis(ActiveRunId, ActiveProductId, out AnalysisReport report))
-                        status = $"ANALİZ RAPORU · {report.ReportId}\n{report.FormattedDocumentText}";
-                    else status = "Bu ürün için analiz alınamadı.";
-                    break;
-                case WorkstationAction.Approve: SubmitDecision(ProductDecision.Approve); break;
-                case WorkstationAction.Reject: SubmitDecision(ProductDecision.Reject); break;
-                default:
-                    if (awaitingSort && hovered.WasteBin != WasteBinType.None) CompleteSorting(hovered.WasteBin, hovered.transform);
-                    break;
-            }
-        }
-
-        private void ToggleInspection()
-        {
-            if (presentation.ActiveProduct == null || busy) return;
-            inspecting = !inspecting;
+            if (inspecting && pressedWhileInspecting && mouse.leftButton.wasReleasedThisFrame && !dragging) EndInspection();
             if (inspecting)
             {
-                productOriginalPosition = presentation.ActiveProduct.transform.position;
-                productOriginalRotation = presentation.ActiveProduct.transform.rotation;
-                inspectionZoom = 0f;
-                if (inspectionAnchor != null) presentation.ActiveProduct.transform.position = inspectionAnchor.position;
-                status = "İnceleme açık. Fareyle döndürün, tekerlekle yaklaştırıp uzaklaştırın; ürüne sol tıklayarak masaya bırakın.";
-            }
-            else
-            {
-                presentation.ActiveProduct.transform.SetPositionAndRotation(productOriginalPosition, productOriginalRotation);
-                inspectionZoom = 0f;
-                status = "Ürün masaya bırakıldı.";
+                zoom = Mathf.Clamp(zoom + mouse.scroll.ReadValue().y * 0.001f, -maxInspectionZoom, maxInspectionZoom);
+                presentation.ActiveProduct.transform.position = inspectionAnchor.position - playerCamera.transform.forward * zoom;
             }
         }
-
-        private void SubmitDecision(ProductDecision decision)
+        public void Interact(WorkstationTarget target)
         {
-            if (inspecting || awaitingSort || !inspectionService.SubmitDecision(ActiveRunId, ActiveProductId, decision, out _))
+            if (!target || !session.WorldInputAllowed) return;
+            switch (target.Action)
             {
-                status = "Karar şu anda verilemiyor.";
-                return;
+                case WorkstationAction.Product: ToggleInspection(); break;
+                case WorkstationAction.Analyzer: EndInspection(); session.Analyze(); break;
+                case WorkstationAction.Approve: Decide(PlayerDecision.Approve); break;
+                case WorkstationAction.Reject: Decide(PlayerDecision.Reject); break;
+                case WorkstationAction.Handbook: session.OpenHandbook(); break;
+                case WorkstationAction.Report: session.ReopenReport(); break;
+                default:
+                    if (target.Action >= WorkstationAction.Paper && target.Action <= WorkstationAction.Contaminated)
+                        session.SelectWaste((WasteCategory)((int)target.Action - (int)WorkstationAction.Paper));
+                    break;
             }
-            busy = true;
-            presentation.Route(decision, () =>
-            {
-                busy = false;
-                if (decision == ProductDecision.Approve)
-                {
-                    inspectionService.NotifyDispositionFinished(ActiveRunId, ActiveProductId, out _);
-                    status = "Ürün onaylandı ve çıkışa gönderildi.";
-                }
-                else
-                {
-                    awaitingSort = true;
-                    status = "Gıda imha edildi. Ambalaj hedefini seçin.";
-                }
-            });
         }
-
-        private void CompleteSorting(WasteBinType bin, Transform target)
+        private void Decide(PlayerDecision decision)
         {
-            if (busy || !awaitingSort) return;
-            busy = true;
-            presentation.Sort(target, () =>
-            {
-                inspectionService.SubmitSortingFinished(ActiveRunId, ActiveProductId, bin, out _);
-                awaitingSort = false;
-                busy = false;
-                status = $"Ambalaj {bin.ToTurkishText()} hedefine gönderildi.";
-            });
+            if (!session.Flow.CanDecide) return;
+            EndInspection();
+            if (decision == PlayerDecision.Approve) session.Approve(); else session.Reject();
         }
-
-        private string ActiveRunId => presentation.ActiveSession.RunId;
-        private string ActiveProductId => presentation.ActiveSession.ProductId;
-
-        private void OnGUI()
+        public void ToggleInspection()
         {
-            if (playerCamera == null) return;
-            GUI.color = Color.white;
-            GUI.Box(new Rect(16, Screen.height - 100, 520, 84), "GAMEUP · MASA BAŞI DENETİM");
-            GUI.Label(new Rect(30, Screen.height - 72, 490, 48),
-                (hovered != null ? $"{hovered.name} · Sol tık" : "Fareyle bakış · Esc: fareyi serbest bırak") + "\n" + status);
-            GUI.Label(new Rect(Screen.width * 0.5f - 5, Screen.height * 0.5f - 12, 20, 24), "+");
+            if (!session.Flow.CanDecide || !presentation.ActiveProduct) return;
+            if (inspecting) { EndInspection(); return; }
+            inspecting = true; zoom = 0; dragging = false; pressedWhileInspecting = false;
+            originalPosition = presentation.ActiveProduct.transform.position;
+            originalRotation = presentation.ActiveProduct.transform.rotation;
+            presentation.ActiveProduct.transform.position = inspectionAnchor.position;
+            session.NotifyProductInspected(session.Flow.Current.Key);
         }
+        public void EndInspection()
+        {
+            if (!inspecting) return;
+            inspecting = false; pressedWhileInspecting = false; zoom = 0;
+            if (presentation.ActiveProduct) presentation.ActiveProduct.transform.SetPositionAndRotation(originalPosition, originalRotation);
+        }
+        private void OnApplicationFocus(bool focus) { if (focus) ignoreMouseDelta = true; }
     }
 }

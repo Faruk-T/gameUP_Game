@@ -15,7 +15,7 @@ MonoBehaviour:
   definitionId: D2-04
   category: 1
   displayName: Antalya Barbunu (B / Dip)
-  prefab: {fileID: 0}
+  prefab: {fileID: 8947628356760474348, guid: 25bac413c846fc5488515bc11d6cfcd4, type: 3}
   productIcon: {fileID: 0}
   expiryDate:
     Day: 5
