@@ -61,6 +61,29 @@ namespace GameUP.Rules
             {
                 backLabelText.text = definition.GetFormattedBackLabel();
             }
+
+            ApplyPackagingTint(definition.PackagingMaterial, definition.Category);
+        }
+
+        /// <summary>
+        /// Hakan'ın ve Özgür'ün kullandığı LeadContracts.ProductSession nesnesiyle doğrudan bağlama desteği.
+        /// </summary>
+        public void BindFromLeadSession(GameUp.Contracts.ProductSession session, ProductionInspectionBackend optionalBackend = null)
+        {
+            if (session == null) return;
+
+            if (optionalBackend != null &&
+                optionalBackend.TryGetProductDefinition(session.Key.ProductId, out ProductDefinition resolved) &&
+                resolved != null)
+            {
+                Bind(resolved);
+                return;
+            }
+
+            if (session.Product != null)
+            {
+                BindFromLeadProductInfo(session.Product);
+            }
         }
 
         /// <summary>
@@ -86,6 +109,29 @@ namespace GameUP.Rules
             {
                 backLabelText.text = info.Label;
             }
+        }
+
+        private void ApplyPackagingTint(WasteBinType packaging, ProductCategory category)
+        {
+            var meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer == null || meshRenderer.sharedMaterial == null)
+                return;
+
+            Color bodyColor = packaging switch
+            {
+                WasteBinType.Paper => new Color(0.82f, 0.68f, 0.48f, 1f),   // Kraft Kağıt / Karton
+                WasteBinType.Glass => new Color(0.62f, 0.86f, 0.88f, 1f),   // Cam Kavanoz
+                WasteBinType.Plastic => category == ProductCategory.Fish
+                    ? new Color(0.55f, 0.72f, 0.88f, 1f)                     // Deniz Ürünleri Kasası / Vakum
+                    : new Color(0.88f, 0.91f, 0.96f, 1f),                    // Beyaz/Mavi Süt Ürünü Kabı
+                _ => new Color(0.85f, 0.85f, 0.85f, 1f)
+            };
+
+            var propBlock = new MaterialPropertyBlock();
+            meshRenderer.GetPropertyBlock(propBlock);
+            propBlock.SetColor("_BaseColor", bodyColor);
+            propBlock.SetColor("_Color", bodyColor);
+            meshRenderer.SetPropertyBlock(propBlock);
         }
 
         private void EnsureWorldSpaceLabels()

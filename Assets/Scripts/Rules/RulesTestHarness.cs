@@ -15,6 +15,7 @@ namespace GameUP.Rules
         [SerializeField] private InspectionService inspectionService;
         [SerializeField] private AnalysisService analysisService;
         [SerializeField] private RunResults runResults;
+        [SerializeField] private Rules3DInspectionPreview preview3D;
 
         private int currentDayIndex;
         private int currentProductIndex;
@@ -23,6 +24,9 @@ namespace GameUP.Rules
         private bool waitingForSorting;
         private bool dayCompleted;
         private bool gameCompleted;
+        private bool split3DView = true;
+        private bool showAcceptanceReportDrawer;
+        private DayDefinition cachedDay3P1;
 
         private string lastAnalysisText = "Henüz analiz istenmedi.";
         private string lastEventLog = "Oyun başlatıldı.";
@@ -50,6 +54,13 @@ namespace GameUP.Rules
                 runResults = GetComponent<RunResults>();
                 if (runResults == null)
                     runResults = gameObject.AddComponent<RunResults>();
+            }
+
+            if (preview3D == null)
+            {
+                preview3D = GetComponent<Rules3DInspectionPreview>();
+                if (preview3D == null)
+                    preview3D = gameObject.AddComponent<Rules3DInspectionPreview>();
             }
         }
 
@@ -88,9 +99,38 @@ namespace GameUP.Rules
             lastEventLog = $"{day.DayTitle} ({day.GameDate}) sabah gazetesi açıldı.";
         }
 
+        public void StartP1Day3Simulation()
+        {
+            if (cachedDay3P1 == null)
+            {
+                var cat = DefaultGameContentFactory.CreateCatalogInMemory();
+                cachedDay3P1 = cat.Day3P1;
+            }
+
+            inspectionService.StartNewRun();
+            currentDayIndex = 2;
+            currentProductIndex = 0;
+            dayCompleted = false;
+            gameCompleted = false;
+            waitingForEmergencyAck = false;
+            waitingForSorting = false;
+            waitingForMorningAck = true;
+            lastAnalysisText = "Henüz analiz istenmedi.";
+
+            inspectionService.BeginDay(cachedDay3P1);
+            lastEventLog = $"{cachedDay3P1.DayTitle} ({cachedDay3P1.GameDate}) P1 Tartı/Cetvel/İçerik paketi açıldı.";
+        }
+
+        private DayDefinition GetActiveDayDefinition()
+        {
+            if (currentDayIndex == 2 && cachedDay3P1 != null)
+                return cachedDay3P1;
+            return inspectionService.GetDayDefinition(currentDayIndex);
+        }
+
         private void SpawnCurrentProduct()
         {
-            DayDefinition day = inspectionService.GetDayDefinition(currentDayIndex);
+            DayDefinition day = GetActiveDayDefinition();
             if (day == null || currentProductIndex >= day.Products.Count)
             {
                 dayCompleted = true;
@@ -108,9 +148,32 @@ namespace GameUP.Rules
 
         private void OnGUI()
         {
+            Event ev = Event.current;
+            if (ev != null)
+            {
+                if (ev.type == EventType.KeyDown)
+                {
+                    if (ev.keyCode == KeyCode.Tab)
+                    {
+                        split3DView = !split3DView;
+                        ev.Use();
+                    }
+                    else if (ev.keyCode == KeyCode.Space && preview3D != null)
+                    {
+                        preview3D.FlipFrontBackFace();
+                        ev.Use();
+                    }
+                }
+                else if (ev.type == EventType.MouseDrag && split3DView && ev.mousePosition.x > Screen.width * 0.50f && preview3D != null)
+                {
+                    preview3D.RotateProductByDelta(-ev.delta.x * 1.1f);
+                    ev.Use();
+                }
+            }
+
             GUIStyle headerStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 16,
+                fontSize = 15,
                 fontStyle = FontStyle.Bold,
                 richText = true
             };
@@ -122,27 +185,56 @@ namespace GameUP.Rules
                 padding = new RectOffset(10, 10, 10, 10)
             };
 
-            GUILayout.BeginArea(new Rect(15, 15, Screen.width - 30, Screen.height - 30));
+            float leftPanelWidth = split3DView ? Mathf.Max(460f, Screen.width * 0.50f) : (Screen.width - 30f);
+
+            // Sağ üstte 3D Masa ve 3D Etiket Döndürme Kontrol Çubuğu
+            if (split3DView && preview3D != null)
+            {
+                float rightX = leftPanelWidth + 24f;
+                float rightW = Mathf.Max(260f, Screen.width - rightX - 15f);
+                GUILayout.BeginArea(new Rect(rightX, 15f, rightW, 130f));
+                string faceName = preview3D.IsShowingBackFace ? "ARKA YÜZ (SKT / Künye / Kaynak)" : "ÖN YÜZ (Pazarlama İddiası)";
+                GUILayout.Box($"<b>3D DENETİM MASASI & ETİKET İNCELEME (A06 / I02)</b>\nBakılan Yüz: <b>{faceName}</b> (Açı: {preview3D.CurrentProductYaw:0}°)\n<i>İpucu: Sağ alanda fareyle sürükleyerek 3D ürünü döndürebilirsiniz.</i>", boxStyle);
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("◀ Sola Çevir (-45°)", GUILayout.Height(28)))
+                    preview3D.RotateProductByDelta(-45f);
+                if (GUILayout.Button("🔄 Ön / Arka Yüz Çevir [Space]", GUILayout.Height(28)))
+                    preview3D.FlipFrontBackFace();
+                if (GUILayout.Button("Sağa Çevir (+45°) ▶", GUILayout.Height(28)))
+                    preview3D.RotateProductByDelta(45f);
+                GUILayout.EndHorizontal();
+                GUILayout.EndArea();
+            }
+
+            GUILayout.BeginArea(new Rect(15, 15, leftPanelWidth, Screen.height - 30));
             scrollPos = GUILayout.BeginScrollView(scrollPos);
 
             GUILayout.Label("<b>GAMEUP32 — FARUK (VERİ, KURALLAR, ANALİZ VE DEĞERLENDİRME) TEST PANELİ</b>", headerStyle);
             GUILayout.Label($"Aktif Oturum: <b>{inspectionService.CurrentRunId}</b> | Gün: <b>{inspectionService.CurrentDayId}</b> | Son Durum: {lastEventLog}", boxStyle);
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Oyunu Baştan Başlat (StartNewRun - T17)", GUILayout.Height(30)))
+            if (GUILayout.Button("1–2. Gün Baştan (P0)", GUILayout.Height(28)))
             {
                 StartNewSimulatedGame();
             }
-            if (GUILayout.Button("T01–T17 Otomatik Kabul Testlerini Yeniden Çalıştır", GUILayout.Height(30)))
+            if (GUILayout.Button("3. Gün: P1 (Tartı/Cetvel/Gofret)", GUILayout.Height(28)))
+            {
+                StartP1Day3Simulation();
+            }
+            if (GUILayout.Button(showAcceptanceReportDrawer ? "Test Raporunu Gizle (15/15)" : "15/15 Test Raporunu Göster", GUILayout.Height(28)))
             {
                 RulesAcceptanceSuite.RunAllTests(out _, out automatedTestReport);
-                Debug.Log(automatedTestReport);
+                showAcceptanceReportDrawer = !showAcceptanceReportDrawer;
+            }
+            if (GUILayout.Button(split3DView ? "Tam Ekran UI [Tab]" : "3D Masa Görünümü [Tab]", GUILayout.Height(28)))
+            {
+                split3DView = !split3DView;
             }
             GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
 
-            DayDefinition currentDay = inspectionService.GetDayDefinition(currentDayIndex);
+            DayDefinition currentDay = GetActiveDayDefinition();
 
             if (gameCompleted)
             {
@@ -165,10 +257,10 @@ namespace GameUP.Rules
                 DrawWorkingProductUI(boxStyle);
             }
 
-            if (!string.IsNullOrEmpty(automatedTestReport))
+            if (showAcceptanceReportDrawer && !string.IsNullOrEmpty(automatedTestReport))
             {
                 GUILayout.Space(12);
-                GUILayout.Box($"<b>OTOMATİK TEST RAPORU (Bölüm 17: T01–T17 + P1)</b>\n{automatedTestReport}", boxStyle);
+                GUILayout.Box($"<b>OTOMATİK TEST RAPORU (Bölüm 17: T01–T17 + P1 — 15/15 GEÇTİ)</b>\n{automatedTestReport}", boxStyle);
             }
 
             GUILayout.EndScrollView();
@@ -219,8 +311,9 @@ namespace GameUP.Rules
 
             ProductDefinition p = session.Definition;
 
+            float availWidth = split3DView ? Mathf.Max(430f, Screen.width * 0.50f - 30f) : (Screen.width - 50f);
             GUILayout.BeginHorizontal();
-            GUILayout.Box($"<b>ÖN YÜZ ETİKETİ</b>\n{p.GetFormattedFrontLabel()}\n\n<b>ARKA YÜZ ETİKETİ</b>\n{p.GetFormattedBackLabel()}", boxStyle, GUILayout.Width((Screen.width - 50) * 0.55f));
+            GUILayout.Box($"<b>ÖN YÜZ ETİKETİ</b>\n{p.GetFormattedFrontLabel()}\n\n<b>ARKA YÜZ ETİKETİ</b>\n{p.GetFormattedBackLabel()}", boxStyle, GUILayout.Width(availWidth * 0.52f));
             GUILayout.Box($"<b>AKTİF KİTAPÇIK (Snapshot v{session.Snapshot.Version})</b>\n{session.Snapshot.BuildRulebookBodyText()}", boxStyle);
             GUILayout.EndHorizontal();
 

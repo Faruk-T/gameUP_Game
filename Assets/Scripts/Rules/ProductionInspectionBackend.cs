@@ -72,6 +72,21 @@ namespace GameUP.Rules
         }
 
         /// <summary>
+        /// Ürün ID'sine ("D1-01", "D2-04" vb.) göre zengin ProductDefinition ScriptableObject verisini döndürür.
+        /// 3D etiket bağlayıcı (ProductWorldLabelBinder) veya tartı/cetvel (P1) bileşenleri tarafından kullanılır.
+        /// </summary>
+        public bool TryGetProductDefinition(string productId, out ProductDefinition definition)
+        {
+            EnsureCatalogIndexed();
+            if (string.IsNullOrWhiteSpace(productId))
+            {
+                definition = null;
+                return false;
+            }
+            return productsById.TryGetValue(productId.Trim(), out definition) && definition != null;
+        }
+
+        /// <summary>
         /// ICampaignSource.CreateCampaign(): ScriptableObject verilerinden (DayDefinition, ProductDefinition, RuleDefinition)
         /// Hakan'ın DayFlowSession akışının beklediği CampaignInfo nesnesini üretir.
         /// </summary>
