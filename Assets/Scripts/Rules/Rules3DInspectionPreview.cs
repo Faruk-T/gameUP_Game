@@ -97,7 +97,14 @@ namespace GameUP.Rules
             Camera mainCam = Camera.main;
             if (mainCam != null)
             {
-                mainCam.rect = splitView ? new Rect(0.45f, 0f, 0.55f, 1f) : new Rect(0f, 0f, 1f, 1f);
+                // ÖNEMLİ: Kamera rect her zaman tam ekran (0..1) kalmalıdır ki sol panelin arka planı her karede temizlensin
+                // ve kaydırma sırasında yazılar üst üste binmesin!
+                mainCam.rect = new Rect(0f, 0f, 1f, 1f);
+            }
+
+            if (stationRoot != null)
+            {
+                stationRoot.localPosition = splitView ? new Vector3(0.58f, 0f, 0f) : new Vector3(-0.35f, 0f, 0f);
             }
         }
 
@@ -197,14 +204,30 @@ namespace GameUP.Rules
         private void HandleAnalysisReady(AnalysisReadyEvent evt)
         {
             if (evt.Report == null) return;
-            bool clean = !evt.Report.IsPolluted;
-            SetRendererColor(analyzerLedRenderer, clean ? new Color(0.18f, 0.85f, 0.35f) : new Color(0.95f, 0.22f, 0.22f));
+            bool polluted = evt.Report.IsPolluted;
+            bool anyViolation = evt.Report.HasAnyViolation;
+
+            Color ledColor = polluted
+                ? new Color(0.95f, 0.18f, 0.18f)
+                : (anyViolation ? new Color(0.95f, 0.55f, 0.15f) : new Color(0.18f, 0.85f, 0.35f));
+            SetRendererColor(analyzerLedRenderer, ledColor);
 
             if (analyzerReadoutText != null)
             {
-                string statusLine = clean
-                    ? "<color=#7CFC90><b>SONUÇ: TEMİZ (CLEAN)</b></color>"
-                    : "<color=#FF6B6B><b>SONUÇ: KİRLİ / ZEHİRLİ!</b></color>";
+                string statusLine;
+                if (polluted)
+                {
+                    statusLine = "<color=#FF5555><b>✖ KİRLİ / ZEHİRLİ! (REDDET)</b></color>";
+                }
+                else if (anyViolation)
+                {
+                    statusLine = "<color=#FFAA33><b>⚠ İHLAL VAR! (REDDET)</b></color>";
+                }
+                else
+                {
+                    statusLine = "<color=#7CFC90><b>✔ TEMİZ & UYGUN (ONAYLA)</b></color>";
+                }
+
                 analyzerReadoutText.text =
                     $"<b>COP31 LAB ANALİZÖR</b>\n" +
                     $"{statusLine}\n" +
@@ -220,15 +243,16 @@ namespace GameUP.Rules
             Camera mainCam = Camera.main;
             if (mainCam != null)
             {
-                mainCam.transform.position = new Vector3(0.45f, 1.52f, -1.98f);
-                mainCam.transform.rotation = Quaternion.Euler(21f, 0f, 0f);
+                mainCam.transform.position = new Vector3(0.15f, 1.55f, -2.15f);
+                mainCam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
                 mainCam.backgroundColor = new Color(0.08f, 0.12f, 0.16f, 1f);
                 mainCam.clearFlags = CameraClearFlags.SolidColor;
-                mainCam.rect = new Rect(0.45f, 0f, 0.55f, 1f);
+                mainCam.rect = new Rect(0f, 0f, 1f, 1f);
             }
 
             stationRoot = new GameObject("COP31_3D_WorkstationPreview").transform;
             stationRoot.SetParent(transform, false);
+            stationRoot.localPosition = new Vector3(0.58f, 0f, 0f);
 
             // 1. Denetim Masası
             CreateBox(stationRoot, "InspectionDesk", new Vector3(0.45f, 0.55f, 0f), new Vector3(2.4f, 0.12f, 1.25f), new Color(0.18f, 0.22f, 0.26f));
@@ -286,10 +310,11 @@ namespace GameUP.Rules
 
         private static void CreateWasteBin(Transform parent, string name, string title, Vector3 localPos, Color color)
         {
-            Transform bin = CreateBox(parent, name, localPos, new Vector3(0.30f, 0.38f, 0.28f), color);
-            Text txt = CreateWorldPanel(bin, "BinLabel", new Vector3(0f, 0.15f, -0.52f), new Vector2(0.28f, 0.12f), new Color(0.08f, 0.08f, 0.10f, 0.90f));
+            Transform bin = CreateBox(parent, name, localPos, new Vector3(0.32f, 0.38f, 0.28f), color);
+            Text txt = CreateWorldPanel(bin, "BinLabel", new Vector3(0f, 0.15f, -0.53f), new Vector2(0.30f, 0.14f), new Color(0.06f, 0.07f, 0.09f, 0.94f));
             if (txt != null)
             {
+                txt.fontSize = 34;
                 txt.text = $"<b>{title}</b>";
             }
         }
@@ -336,7 +361,7 @@ namespace GameUP.Rules
 
             Text uiText = txtGo.AddComponent<Text>();
             uiText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            uiText.fontSize = 20;
+            uiText.fontSize = 24;
             uiText.alignment = TextAnchor.MiddleCenter;
             uiText.color = Color.white;
             uiText.supportRichText = true;

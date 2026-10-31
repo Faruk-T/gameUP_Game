@@ -84,6 +84,8 @@ namespace GameUP.Contracts
         public string ProductDisplayName { get; }
         public string ReportId { get; }
         public bool IsPolluted { get; }
+        public bool HasAnyViolation { get; }
+        public string ViolationSummary { get; }
         public string FindingText { get; }
         public string FormattedDocumentText { get; }
 
@@ -94,7 +96,9 @@ namespace GameUP.Contracts
             string productDisplayName,
             string reportId,
             bool isPolluted,
-            string findingText)
+            string findingText,
+            bool hasAnyViolation = false,
+            string violationSummary = "")
         {
             RunId = runId ?? string.Empty;
             ProductId = productId ?? string.Empty;
@@ -102,18 +106,34 @@ namespace GameUP.Contracts
             ProductDisplayName = productDisplayName ?? string.Empty;
             ReportId = reportId ?? string.Empty;
             IsPolluted = isPolluted;
+            HasAnyViolation = isPolluted || hasAnyViolation;
+            ViolationSummary = violationSummary ?? string.Empty;
             FindingText = findingText ?? string.Empty;
 
-            string statusHeader = isPolluted
-                ? "POZİTİF (TEHLİKELİ KİRLİLİK / TOKSİN TESPİT EDİLDİ)"
-                : "NEGATİF (TEMİZ — GÜVENLİ SINIRLARDA)";
+            string statusHeader;
+            if (isPolluted)
+            {
+                statusHeader = "<color=#FF5555>POZİTİF — TEHLİKELİ KİRLİLİK / TOKSİN TESPİT EDİLDİ (REDDEDİLMELİ!)</color>";
+            }
+            else if (hasAnyViolation)
+            {
+                statusHeader = "<color=#FF9933>UYGUNSUZ ÜRÜN — KİMYASAL TOKSİN YOK ANCAK STANDART/ETİKET İHLALİ VAR (REDDEDİLMELİ!)</color>";
+            }
+            else
+            {
+                statusHeader = "<color=#7CFC90>NEGATİF (TEMİZ & UYGUN — ONAYLANABİLİR)</color>";
+            }
 
             var sb = new StringBuilder();
             sb.AppendLine($"<b>COP31 ANTALYA LABORATUVAR ANALİZ RAPORU</b>");
             sb.AppendLine($"Rapor No: <b>{ReportId}</b>");
             sb.AppendLine($"Ürün Kimliği: <b>{ProductId}</b> ({ProductDisplayName})");
-            sb.AppendLine($"Sonuç Durumu: <b>{statusHeader}</b>");
+            sb.AppendLine($"Genel Durum: <b>{statusHeader}</b>");
             sb.AppendLine($"Laboratuvar Bulgusu: {FindingText}");
+            if (!string.IsNullOrWhiteSpace(ViolationSummary))
+            {
+                sb.AppendLine($"<color=#FF7755><b>Denetim Uyarı Notu:</b> {ViolationSummary}</color>");
+            }
             FormattedDocumentText = sb.ToString().TrimEnd();
         }
     }

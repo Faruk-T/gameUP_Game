@@ -47,6 +47,24 @@ namespace GameUP.Rules
                     ? "POZİTİF — Deniz atığı / ağır metal ve mikroplastik toksisitesi saptandı. İmha edilmelidir."
                     : "NEGATİF — Toksik kalıntı veya mikroplastik saptanmadı. Kirlilik açısından temiz.");
 
+            bool hasOtherViolation = false;
+            string violationSummary = string.Empty;
+            if (activeSession.Snapshot != null)
+            {
+                DecisionEvaluation checkEval = ProductRuleEvaluator.EvaluateDecision(
+                    product: def,
+                    snapshot: activeSession.Snapshot,
+                    playerDecision: ProductDecision.Approve,
+                    runId: activeSession.RunId,
+                    productId: activeSession.ProductId);
+
+                if (checkEval != null && checkEval.ExpectedDecision == ProductDecision.Reject)
+                {
+                    hasOtherViolation = true;
+                    violationSummary = string.Join(" | ", checkEval.FailureReasons);
+                }
+            }
+
             report = new AnalysisReport(
                 runId: activeSession.RunId,
                 productId: activeSession.ProductId,
@@ -54,7 +72,9 @@ namespace GameUP.Rules
                 productDisplayName: def.DisplayName,
                 reportId: reportId,
                 isPolluted: def.IsPolluted,
-                findingText: findingDetail
+                findingText: findingDetail,
+                hasAnyViolation: hasOtherViolation,
+                violationSummary: violationSummary
             );
 
             activeSession.CacheAnalysis(report);

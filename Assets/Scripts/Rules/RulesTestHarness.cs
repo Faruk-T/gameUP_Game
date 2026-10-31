@@ -30,8 +30,10 @@ namespace GameUP.Rules
 
         private string lastAnalysisText = "Henüz analiz istenmedi.";
         private string lastEventLog = "Oyun başlatıldı.";
+        private string lastDecisionFeedback = "";
         private string automatedTestReport = "";
         private Vector2 scrollPos;
+        private Texture2D panelBgTexture;
 
         private void Awake()
         {
@@ -76,6 +78,14 @@ namespace GameUP.Rules
             currentDayIndex = 0;
             gameCompleted = false;
             BeginSimulatedDay(0);
+        }
+
+        public void StartDay2FishSimulation()
+        {
+            inspectionService.StartNewRun();
+            currentDayIndex = 1;
+            gameCompleted = false;
+            BeginSimulatedDay(1);
         }
 
         private void BeginSimulatedDay(int dayIdx)
@@ -193,6 +203,16 @@ namespace GameUP.Rules
                 preview3D.SetSplitViewport(split3DView);
             }
 
+            if (panelBgTexture == null)
+            {
+                panelBgTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+                panelBgTexture.SetPixel(0, 0, new Color(0.06f, 0.09f, 0.12f, 0.97f));
+                panelBgTexture.Apply();
+            }
+
+            // Sol panelin arkasına opak koyu zemin çiz (kaydırma sırasında yazıların üst üste binmesini %100 önler)
+            GUI.DrawTexture(new Rect(0f, 0f, leftPanelWidth + 16f, Screen.height), panelBgTexture);
+
             // Sağ üstte 3D Masa ve 3D Etiket Döndürme Kontrol Çubuğu
             if (split3DView && preview3D != null)
             {
@@ -216,20 +236,29 @@ namespace GameUP.Rules
             scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUIStyle.none, GUI.skin.verticalScrollbar);
 
             GUILayout.Label("<b>GAMEUP32 — FARUK (VERİ, KURALLAR, ANALİZ) PANELİ</b>", headerStyle, GUILayout.Width(innerWidth));
-            GUILayout.Box($"Aktif Oturum: <b>{inspectionService.CurrentRunId}</b> | Gün: <b>{inspectionService.CurrentDayId}</b>\nSon Durum: {lastEventLog}", boxStyle, GUILayout.Width(innerWidth));
+            GUILayout.Box($"Aktif Oturum: <b>{inspectionService.CurrentRunId}</b> | Gün: <b>{inspectionService.CurrentDayId}</b>\nDurum: {lastEventLog}", boxStyle, GUILayout.Width(innerWidth));
+            if (!string.IsNullOrEmpty(lastDecisionFeedback))
+            {
+                GUILayout.Box(lastDecisionFeedback, boxStyle, GUILayout.Width(innerWidth));
+            }
 
-            float halfBtnW = (innerWidth - 6f) * 0.5f;
+            float thirdBtnW = (innerWidth - 10f) / 3f;
             GUILayout.BeginHorizontal(GUILayout.Width(innerWidth));
-            if (GUILayout.Button("1–2. Gün Baştan (P0)", GUILayout.Width(halfBtnW), GUILayout.Height(26)))
+            if (GUILayout.Button("1. Gün: Süt (D1)", GUILayout.Width(thirdBtnW), GUILayout.Height(26)))
             {
                 StartNewSimulatedGame();
             }
-            if (GUILayout.Button("3. Gün: P1 (Tartı/Cetvel/Gofret)", GUILayout.Width(halfBtnW), GUILayout.Height(26)))
+            if (GUILayout.Button("2. Gün: Balık & Kirlilik", GUILayout.Width(thirdBtnW), GUILayout.Height(26)))
+            {
+                StartDay2FishSimulation();
+            }
+            if (GUILayout.Button("3. Gün: P1 (Tartı/Cetvel)", GUILayout.Width(thirdBtnW), GUILayout.Height(26)))
             {
                 StartP1Day3Simulation();
             }
             GUILayout.EndHorizontal();
 
+            float halfBtnW = (innerWidth - 6f) * 0.5f;
             GUILayout.BeginHorizontal(GUILayout.Width(innerWidth));
             if (GUILayout.Button(showAcceptanceReportDrawer ? "Test Raporunu Gizle (15/15)" : "15/15 Test Raporunu Göster", GUILayout.Width(halfBtnW), GUILayout.Height(26)))
             {
@@ -350,14 +379,20 @@ namespace GameUP.Rules
                     if (inspectionService.SubmitDecision(session.RunId, session.ProductId, ProductDecision.Approve, out var eval))
                     {
                         inspectionService.NotifyDispositionFinished(session.RunId, session.ProductId, out var outcome);
-                        lastEventLog = outcome?.SummaryExplanation ?? "Onaylandı.";
+                        if (outcome != null && outcome.DecisionEvaluation != null)
+                        {
+                            bool ok = outcome.DecisionEvaluation.IsCorrect;
+                            string color = ok ? "#7CFC90" : "#FF6B6B";
+                            string icon = ok ? "✔ DOĞRU KARAR" : "✖ HATALI KARAR";
+                            lastDecisionFeedback = $"<color={color}><b>{icon} [{outcome.ProductId}] ({outcome.TotalScoreDelta:+#;-#;0} Puan):</b> {outcome.SummaryExplanation}</color>";
+                        }
                         AdvanceAfterProductCommit();
                     }
                 }
 
                 if (GUILayout.Button("REDDET — İmha (R)", GUILayout.Width(thirdW), GUILayout.Height(34)))
                 {
-                    if (inspectionService.SubmitDecision(session.RunId, session.ProductId, ProductDecision.Reject, out _))
+                    if (inspectionService.SubmitDecision(session.RunId, session.ProductId, ProductDecision.Reject, out var eval))
                     {
                         // Gıda imhası biter ama ayrıştırma bitmeden ürün tamamlanmaz (Bölüm 7 & T11)
                         inspectionService.NotifyDispositionFinished(session.RunId, session.ProductId, out _);
@@ -386,7 +421,14 @@ namespace GameUP.Rules
                 if (inspectionService.SubmitSortingFinished(session.RunId, session.ProductId, binType, out var outcome))
                 {
                     waitingForSorting = false;
-                    lastEventLog = outcome?.SummaryExplanation ?? "Ayrıştırma tamamlandı.";
+                    if (outcome != null && outcome.DecisionEvaluation != null)
+                    {
+                        bool decOk = outcome.DecisionEvaluation.IsCorrect;
+                        bool sortOk = outcome.SortingEvaluation != null && outcome.SortingEvaluation.IsCorrect;
+                        string color = (decOk && sortOk) ? "#7CFC90" : "#FF9944";
+                        string icon = decOk ? "✔ KARAR DOĞRU" : "✖ KARAR HATALI";
+                        lastDecisionFeedback = $"<color={color}><b>{icon} [{outcome.ProductId}] ({outcome.TotalScoreDelta:+#;-#;0} Puan):</b> {outcome.SummaryExplanation}</color>";
+                    }
                     AdvanceAfterProductCommit();
                 }
             }
