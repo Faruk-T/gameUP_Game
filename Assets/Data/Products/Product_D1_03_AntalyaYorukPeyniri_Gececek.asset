@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: Product_D1_03_AntalyaYorukPeyniri_Gececek
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D1-03
+  category: 0
+  displayName: "Antalya Y\xF6r\xFCk Peyniri"
+  prefab: {fileID: 0}
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 4
+    Month: 11
+    Year: 2026
+  declaredProductType: "Tam Ya\u011Fl\u0131 Y\xF6r\xFCk Peyniri"
+  listedProductType: "Tam Ya\u011Fl\u0131 Y\xF6r\xFCk Peyniri"
+  ingredientsSummary: "Past\xF6rize ke\xE7i ve koyun s\xFCt\xFC, peynir mayas\u0131,
+    deniz tuzu."
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 3
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "TEM\u0130Z \u2014 Uygun."
+  packagingMaterial: 3
+  isPackagingContaminated: 0
+  packagingLabelText: "Plastik At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

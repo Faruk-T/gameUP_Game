@@ -1,0 +1,15 @@
+{
+  "name": "GameUp.Rules.Editor",
+  "rootNamespace": "GameUP.Rules.Editor",
+  "references": [
+    "GameUp.Contracts",
+    "GameUp.Rules",
+    "Unity.ugui"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

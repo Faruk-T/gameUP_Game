@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e4577a80f2517408eb20771acd7c5b, type: 3}
+  m_Name: Rule_R_SOURCE_BAN
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.RuleDefinition
+  ruleId: R_SOURCE_BAN
+  ruleType: 3
+  appliesToAllCategories: 0
+  applicableCategories: 01000000
+  ruleTitle: "Bakanl\u0131k Acil Tedbir Yasa\u011F\u0131 (B\xF6lge B Dip Bal\u0131klar\u0131)"
+  playerVisibleDescription: "Saat 12.00 itibar\u0131yla B\xF6lge B'den avlanan D\u0130P
+    BALIKLARI, analiz raporu temiz \xE7\u0131ksa bile tedbir kapsam\u0131nda reddedilecektir.
+    (B\xF6lge B y\xFCzey bal\u0131klar\u0131 bu yasa\u011Fa dahil de\u011Fildir)."
+  shortFailureReason: "B\xF6lge B dip bal\u0131\u011F\u0131 acil tedbir yasa\u011F\u0131"
+  bannedSourceRegion: 2
+  bannedHabitat: 2
+  weightToleranceGrams: 5
+  minAllowedLengthCm: 15
+  maxAllowedLengthCm: 0
+  minRequiredIngredientPercent: 10

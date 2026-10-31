@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e4577a80f2517408eb20771acd7c5b, type: 3}
+  m_Name: Rule_R_WEIGHT
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.RuleDefinition
+  ruleId: R_WEIGHT
+  ruleType: 4
+  appliesToAllCategories: 1
+  applicableCategories: 
+  ruleTitle: "Tart\u0131 ve Net A\u011F\u0131rl\u0131k Kontrol\xFC (P1)"
+  playerVisibleDescription: "Tart\u0131da g\xF6r\xFCnen ger\xE7ek a\u011F\u0131rl\u0131k
+    ile etikette beyan edilen a\u011F\u0131rl\u0131k aras\u0131ndaki fark \xB15 gramdan
+    fazla olamaz."
+  shortFailureReason: "Beyan edilen a\u011F\u0131rl\u0131k ile ger\xE7ek a\u011F\u0131rl\u0131k
+    uyumsuz"
+  bannedSourceRegion: 0
+  bannedHabitat: 0
+  weightToleranceGrams: 5
+  minAllowedLengthCm: 15
+  maxAllowedLengthCm: 0
+  minRequiredIngredientPercent: 10

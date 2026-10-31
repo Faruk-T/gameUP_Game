@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Doc_Day3_P1_Newspaper
+  m_EditorClassIdentifier: GameUp.Rules:GameUP.Contracts:DocumentDefinition
+  documentId: DOC_DAY3_P1_NEWS
+  documentType: 0
+  title: "Hassas tart\u0131, boy ve i\xE7erik denetimleri ba\u015Flad\u0131"
+  body: "COP31 Antalya denetim noktas\u0131nda kapsam geni\u015Fletildi. Meyve, sebze,
+    et ve paketli g\u0131dalarda gramaj, asgari avlanma boyu ve ger\xE7ek meyve y\xFCzdesi
+    kontrolleri devreye al\u0131nd\u0131."
+  taskInstructionBox: "Tart\u0131 a\u011F\u0131rl\u0131\u011F\u0131n\u0131 (\xB15g),
+    bal\u0131k boyunu (en az 15 cm) ve meyve y\xFCzdesini (en az %10) kontrol et."
+  illustration: {fileID: 0}
+  relatedRuleIds:
+  - R_EXPIRY
+  - R_WEIGHT
+  - R_LENGTH
+  - R_INGREDIENT_PCT
+  requiresExplicitAcknowledge: 1
