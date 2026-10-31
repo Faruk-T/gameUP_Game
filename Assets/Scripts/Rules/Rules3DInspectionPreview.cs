@@ -92,6 +92,15 @@ namespace GameUP.Rules
             targetProductYaw = 180f;
         }
 
+        public void SetSplitViewport(bool splitView)
+        {
+            Camera mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                mainCam.rect = splitView ? new Rect(0.45f, 0f, 0.55f, 1f) : new Rect(0f, 0f, 1f, 1f);
+            }
+        }
+
         private void HandleProductCompleted(ProductCompletedEvent evt)
         {
             if (productHolder != null)
@@ -211,56 +220,57 @@ namespace GameUP.Rules
             Camera mainCam = Camera.main;
             if (mainCam != null)
             {
-                mainCam.transform.position = new Vector3(0.45f, 1.58f, -1.72f);
-                mainCam.transform.rotation = Quaternion.Euler(19f, -11f, 0f);
+                mainCam.transform.position = new Vector3(0.45f, 1.52f, -1.98f);
+                mainCam.transform.rotation = Quaternion.Euler(21f, 0f, 0f);
                 mainCam.backgroundColor = new Color(0.08f, 0.12f, 0.16f, 1f);
                 mainCam.clearFlags = CameraClearFlags.SolidColor;
+                mainCam.rect = new Rect(0.45f, 0f, 0.55f, 1f);
             }
 
             stationRoot = new GameObject("COP31_3D_WorkstationPreview").transform;
             stationRoot.SetParent(transform, false);
 
             // 1. Denetim Masası
-            CreateBox(stationRoot, "InspectionDesk", new Vector3(0.4f, 0.55f, 0f), new Vector3(2.8f, 0.12f, 1.3f), new Color(0.18f, 0.22f, 0.26f));
+            CreateBox(stationRoot, "InspectionDesk", new Vector3(0.45f, 0.55f, 0f), new Vector3(2.4f, 0.12f, 1.25f), new Color(0.18f, 0.22f, 0.26f));
             // Konveyör Bandı Şeridi
-            CreateBox(stationRoot, "ConveyorBelt", new Vector3(0.4f, 0.615f, 0.05f), new Vector3(2.4f, 0.02f, 0.42f), new Color(0.11f, 0.13f, 0.15f));
+            CreateBox(stationRoot, "ConveyorBelt", new Vector3(0.45f, 0.615f, 0.05f), new Vector3(2.2f, 0.02f, 0.40f), new Color(0.11f, 0.13f, 0.15f));
 
-            // 2. 3D Ürün + ProductWorldLabelBinder (Sağ tarafta görünür şekilde konumlandırıldı)
+            // 2. 3D Ürün + ProductWorldLabelBinder (Sağ görünümün tam merkezinde)
             GameObject prodGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
             prodGo.name = "InspectedProduct_3D";
             prodGo.transform.SetParent(stationRoot, false);
-            prodGo.transform.localPosition = new Vector3(0.55f, 0.92f, -0.05f);
+            prodGo.transform.localPosition = new Vector3(0.45f, 0.92f, -0.05f);
             prodGo.transform.localScale = new Vector3(0.46f, 0.52f, 0.30f);
             SetRendererColor(prodGo.GetComponent<Renderer>(), new Color(0.88f, 0.91f, 0.96f));
 
             productHolder = prodGo.transform;
             labelBinder = prodGo.AddComponent<ProductWorldLabelBinder>();
 
-            // 3. Dijital Tartı (Scale - P1)
-            Transform scaleBase = CreateBox(stationRoot, "DigitalScale_P1", new Vector3(-0.08f, 0.65f, -0.15f), new Vector3(0.46f, 0.06f, 0.38f), new Color(0.24f, 0.30f, 0.36f));
-            scaleReadoutText = CreateWorldPanel(scaleBase, "ScaleScreen", new Vector3(0f, 2.1f, -0.45f), new Vector2(0.46f, 0.20f), new Color(0.05f, 0.14f, 0.18f, 0.95f));
+            // 3. Dijital Tartı (Scale - P1) — Sol tarafta tam görünür
+            Transform scaleBase = CreateBox(stationRoot, "DigitalScale_P1", new Vector3(-0.18f, 0.65f, -0.10f), new Vector3(0.46f, 0.06f, 0.38f), new Color(0.24f, 0.30f, 0.36f));
+            scaleReadoutText = CreateWorldPanel(scaleBase, "ScaleScreen", new Vector3(0f, 2.3f, -0.45f), new Vector2(0.48f, 0.22f), new Color(0.05f, 0.14f, 0.18f, 0.95f));
 
-            // 4. Cetvel (Ruler - P1)
-            Transform rulerBase = CreateBox(stationRoot, "Ruler_P1", new Vector3(0.55f, 0.63f, -0.36f), new Vector3(0.64f, 0.02f, 0.10f), new Color(0.85f, 0.72f, 0.22f));
-            rulerReadoutText = CreateWorldPanel(rulerBase, "RulerScreen", new Vector3(0f, 4.2f, -0.55f), new Vector2(0.52f, 0.18f), new Color(0.12f, 0.14f, 0.18f, 0.92f));
+            // 4. Cetvel (Ruler - P1) — Ürünün hemen önünde
+            Transform rulerBase = CreateBox(stationRoot, "Ruler_P1", new Vector3(0.45f, 0.63f, -0.36f), new Vector3(0.60f, 0.02f, 0.10f), new Color(0.85f, 0.72f, 0.22f));
+            rulerReadoutText = CreateWorldPanel(rulerBase, "RulerScreen", new Vector3(0f, 4.2f, -0.55f), new Vector2(0.50f, 0.18f), new Color(0.12f, 0.14f, 0.18f, 0.92f));
 
-            // 5. Laboratuvar Analiz Cihazı + LED
-            Transform analyzerBox = CreateBox(stationRoot, "LabAnalyzer", new Vector3(1.28f, 0.86f, 0.10f), new Vector3(0.52f, 0.48f, 0.44f), new Color(0.22f, 0.27f, 0.33f));
-            Transform analyzerLed = CreateBox(stationRoot, "AnalyzerLED", new Vector3(1.28f, 1.13f, -0.10f), new Vector3(0.16f, 0.05f, 0.05f), new Color(0.25f, 0.48f, 0.75f));
+            // 5. Laboratuvar Analiz Cihazı + LED — Sağ tarafta
+            Transform analyzerBox = CreateBox(stationRoot, "LabAnalyzer", new Vector3(1.12f, 0.86f, 0.10f), new Vector3(0.50f, 0.48f, 0.42f), new Color(0.22f, 0.27f, 0.33f));
+            Transform analyzerLed = CreateBox(stationRoot, "AnalyzerLED", new Vector3(1.12f, 1.13f, -0.09f), new Vector3(0.16f, 0.05f, 0.05f), new Color(0.25f, 0.48f, 0.75f));
             analyzerLedRenderer = analyzerLed.GetComponent<Renderer>();
-            analyzerReadoutText = CreateWorldPanel(analyzerBox, "AnalyzerScreen", new Vector3(0f, 0.05f, -0.52f), new Vector2(0.48f, 0.26f), new Color(0.06f, 0.12f, 0.16f, 0.96f));
+            analyzerReadoutText = CreateWorldPanel(analyzerBox, "AnalyzerScreen", new Vector3(0f, 0.05f, -0.52f), new Vector2(0.46f, 0.25f), new Color(0.06f, 0.12f, 0.16f, 0.96f));
 
             // 6. 12.00 Acil Faks Cihazı + Alarm Lambası
-            Transform faxBox = CreateBox(stationRoot, "EmergencyFaxUnit", new Vector3(1.28f, 0.74f, -0.42f), new Vector3(0.44f, 0.22f, 0.32f), new Color(0.30f, 0.28f, 0.26f));
-            Transform faxLed = CreateBox(stationRoot, "FaxAlarmLight", new Vector3(1.28f, 0.88f, -0.42f), new Vector3(0.10f, 0.06f, 0.10f), new Color(0.18f, 0.55f, 0.25f));
+            Transform faxBox = CreateBox(stationRoot, "EmergencyFaxUnit", new Vector3(1.12f, 0.74f, -0.40f), new Vector3(0.42f, 0.22f, 0.30f), new Color(0.30f, 0.28f, 0.26f));
+            Transform faxLed = CreateBox(stationRoot, "FaxAlarmLight", new Vector3(1.12f, 0.88f, -0.40f), new Vector3(0.10f, 0.06f, 0.10f), new Color(0.18f, 0.55f, 0.25f));
             faxLedRenderer = faxLed.GetComponent<Renderer>();
-            faxStatusText = CreateWorldPanel(faxBox, "FaxScreen", new Vector3(0f, 0.12f, -0.53f), new Vector2(0.42f, 0.18f), new Color(0.14f, 0.10f, 0.12f, 0.95f));
+            faxStatusText = CreateWorldPanel(faxBox, "FaxScreen", new Vector3(0f, 0.12f, -0.53f), new Vector2(0.40f, 0.18f), new Color(0.14f, 0.10f, 0.12f, 0.95f));
 
-            // 7. 4 Atık Kutusu (Kağıt, Cam, Plastik, Kontamine İmha)
-            CreateWasteBin(stationRoot, "Bin_Paper", "KAĞIT ATIK", new Vector3(0.05f, 0.28f, -0.82f), new Color(0.22f, 0.48f, 0.78f));
-            CreateWasteBin(stationRoot, "Bin_Glass", "CAM ATIK", new Vector3(0.42f, 0.28f, -0.82f), new Color(0.18f, 0.65f, 0.45f));
-            CreateWasteBin(stationRoot, "Bin_Plastic", "PLASTİK ATIK", new Vector3(0.79f, 0.28f, -0.82f), new Color(0.85f, 0.68f, 0.16f));
-            CreateWasteBin(stationRoot, "Bin_Contaminated", "KONTAMİNE İMHA", new Vector3(1.18f, 0.28f, -0.82f), new Color(0.78f, 0.20f, 0.20f));
+            // 7. 4 Atık Kutusu (Kağıt, Cam, Plastik, Kontamine İmha) — Ön sırada tam görünür
+            CreateWasteBin(stationRoot, "Bin_Paper", "KAĞIT ATIK", new Vector3(-0.15f, 0.35f, -0.78f), new Color(0.22f, 0.48f, 0.78f));
+            CreateWasteBin(stationRoot, "Bin_Glass", "CAM ATIK", new Vector3(0.25f, 0.35f, -0.78f), new Color(0.18f, 0.65f, 0.45f));
+            CreateWasteBin(stationRoot, "Bin_Plastic", "PLASTİK ATIK", new Vector3(0.65f, 0.35f, -0.78f), new Color(0.85f, 0.68f, 0.16f));
+            CreateWasteBin(stationRoot, "Bin_Contaminated", "KONTAMİNE İMHA", new Vector3(1.05f, 0.35f, -0.78f), new Color(0.78f, 0.20f, 0.20f));
         }
 
         private static Transform CreateBox(Transform parent, string name, Vector3 localPos, Vector3 localScale, Color color)
