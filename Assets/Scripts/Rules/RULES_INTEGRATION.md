@@ -46,3 +46,4 @@ Resident Evil tarzı 3D nesne incelemesinde oyuncunun nesneyi döndürerek **Ön
 ## 4. Otomatik Doğrulama (`15/15 PASS`)
 
 Unity üst menüsünden **`GameUP32 -> Faruk (Rules & Data) -> 2. T01–T17 Kabul Testlerini Çalıştır`** komutuyla veya `Assets/Scenes/Tests_Rules.unity` sahnesinde Play tuşuna basarak tüm sınır testlerini (`T01`–`T17`, `P1` ve `LEAD 132 Puan`) doğrulayabilirsiniz.
+

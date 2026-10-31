@@ -33,6 +33,8 @@ namespace GameUP.Rules.Editor
                 if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling || EditorApplication.isUpdating)
                     return;
 
+                CleanStaleIdeProjectFiles();
+
                 bool dataExists = AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_01_Dairy.asset") != null &&
                                   AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_02_Fish.asset") != null &&
                                   AssetDatabase.LoadAssetAtPath<DayDefinition>($"{DaysDir}/Day_03_P1_Extended.asset") != null;
@@ -43,6 +45,51 @@ namespace GameUP.Rules.Editor
                     ExecuteAcceptanceTestsInEditor();
                 }
             };
+        }
+
+        [MenuItem("GameUP32/Faruk (Rules & Data)/5. Eski IDE Proje Dosyalarını Temizle (.csproj)", false, 50)]
+        public static void CleanStaleIdeProjectFiles()
+        {
+            string projectRoot = Directory.GetParent(Application.dataPath)?.FullName;
+            if (string.IsNullOrEmpty(projectRoot))
+                return;
+
+            string[] staleCandidates = { "Assembly-CSharp.csproj", "Assembly-CSharp-Editor.csproj" };
+            bool anyRemoved = false;
+
+            foreach (string fileName in staleCandidates)
+            {
+                string fullPath = Path.Combine(projectRoot, fileName);
+                if (File.Exists(fullPath))
+                {
+                    string text = File.ReadAllText(fullPath);
+                    if (text.Contains(@"Assets\Scripts\Contracts\RuleDefinition.cs") ||
+                        text.Contains(@"Assets\TutorialInfo\Scripts\Readme.cs"))
+                    {
+                        File.Delete(fullPath);
+                        anyRemoved = true;
+                    }
+                }
+            }
+
+            string slnxPath = Path.Combine(projectRoot, "gameUP_Game-main.slnx");
+            if (File.Exists(slnxPath))
+            {
+                string slnx = File.ReadAllText(slnxPath);
+                if (!File.Exists(Path.Combine(projectRoot, "Assembly-CSharp.csproj")) &&
+                    slnx.Contains("Assembly-CSharp.csproj"))
+                {
+                    File.WriteAllText(
+                        slnxPath,
+                        "<Solution>\r\n  <Project Path=\"GameUp.Contracts.csproj\" />\r\n  <Project Path=\"GameUp.Rules.csproj\" />\r\n  <Project Path=\"GameUp.Rules.Editor.csproj\" />\r\n</Solution>\r\n");
+                    anyRemoved = true;
+                }
+            }
+
+            if (anyRemoved)
+            {
+                Debug.Log("[GameUP32 - Faruk] Eski Assembly-CSharp.csproj / .slnx referansları temizlendi.");
+            }
         }
 
         [MenuItem("GameUP32/Faruk (Rules & Data)/1. Tüm Veri Assetlerini Oluştur (Assets/Data)", false, 10)]
