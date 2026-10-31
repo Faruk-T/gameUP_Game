@@ -1,6 +1,6 @@
 # Dördüncü kişi — üretim entegrasyonu
 
-Unity **6000.3.13f1**, Windows x64, dal: `feat/lead-day-flow`. Faruk'un kuralları, Özgür'ün etkileşimi ve ürün sanatları bu dalda birleşir.
+Unity **6000.3.13f1**, Windows x64. Temel entegrasyon `feat/lead-day-flow`; gazete/oda düzenlemesi **`feat/lead-newspaper-room`** dalındadır. Faruk'un kuralları, Özgür'ün etkileşimi ve ürün sanatları birlikte çalışır.
 
 ## Çalıştırma
 
@@ -11,6 +11,8 @@ Unity **6000.3.13f1**, Windows x64, dal: `feat/lead-day-flow`. Faruk'un kurallar
 - **Game:** iki gün, 12 ürün, gazete, inceleme, kitapçık, analiz/faks, ayrıştırma, acil kural, sonuçlar.
 
 Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırmada dünya hedefine bakıp sol tıklanır. Esc belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+
+Geri dönüşüm istasyonu oyuncunun **arkasındadır**. Fareyle dönülerek kutunun renk ve etiketi seçilir. Oda 16 × 16,5 metrelik bir alana yayıldı; karşıdaki caretta panosu kaldırıldı. Camlı ön açıklık, deniz/Toros silueti, üç COP31 afişi ve numune dolapları Editor'de kaydedilir.
 
 ## Kod sınırları
 
@@ -24,6 +26,7 @@ Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakı
 | ProductPresentation | Kayıtlı ürün havuzu, bant/imha/ambalaj hareketi |
 | WorkstationInteractionController | Tek oynanış girdi sahibi, bakış/raycast/inceleme |
 | HUD / DocumentPresenter / ResultsPresenter | Kayıtlı uGUI alanlarının sunumu |
+| NewspaperView | Kâğıt dokusu üzerinde künye, tarih, manşet, fotoğraf, altyazı, iki haber sütunu ve günlük kurallar |
 | PauseMenu / SettingsPanel | Gerçek duraklatma ve ortak ayarlar |
 | FaxPresenter | Kaydedilmiş ses, ışık ve kâğıt animasyonu |
 
@@ -43,11 +46,17 @@ Analiz RunId/ProductId taşır. Restart eski coroutine ve callback'leri geçersi
 
 [Kaynaklar, import ayarları ve tam promptlar](Assets/Art/Menu/ART_DIRECTION.md). COP31 tarihi menüde 9–20 Kasım 2026'dır. Oynanıştaki 1–2 Kasım, kurmaca hazırlık günleridir. Caretta carettalar, deniz kirliliği, sıcaklık ve gıda güvenliği gazetelere işlenmiştir.
 
+Gazete metinleri mevcut DocumentDefinition varlıklarından gelir; haber başka bir alana kopyalanmaz. İki sütun yalnızca paragraf sınırında bölünür. Gazete künyesi verisi sahnede yazılmıştır; tarih oyun gününden, alt şeritteki kurallar güncel snapshot'tan alınır. Gazete de diğer belgelerle aynı token ve açık onay akışını kullanır. [Kâğıt dokusu ve tam prompt](Assets/Art/Documents/ART_DIRECTION.md).
+
+Esmanur'un **31 prefabının tamamı** bağlıdır: 5'i iki günlük oynanışta, kalan 26'sı üç numune/teşhir dolabında kullanılır. FBX'teki 31 mesh'in tamamı prefablar tarafından referanslanır. Liste: [MODEL_INVENTORY.md](Docs/MODEL_INVENTORY.md). Raf nesneleri etkileşime veya karar havuzuna katılmaz; süt, et/yumurta ve meyve grupları ayrı etiketlidir.
+
 Süt ürünleri ekip modellerini kullanır. Balık için açıkça atanmış basit balık/tepsi prefabı Editor'de hazırlanmıştır; yeni model, prefabın model çocuğuyla değiştirilebilir.
 
 ## Editor komutları
 
 `GameUP32/Authoring/Rebuild First, Menu and Game` sahneleri ve ürün prefablarını yeniden yazar. Otomatik import/bootstrap değildir. Elle sahne düzenlediysen yeniden üretmeden önce değişikliklerini koru.
+
+`GameUP32/Authoring/Rebuild Game room and newspaper` yalnız Game sahnesinin oda ve gazete düzenini yeniden yazar. `GameUP32/Validation/Esmanur model inventory` model raporunu AssetDatabase bağımlılıklarından yeniler. Bu geliştirme araçları oyuncu build'ine girmez.
 
 `GameUP32/Build/Windows` üretim çıktısı: `Builds/Windows/AntalyaDenetimMasasi.exe`.
 

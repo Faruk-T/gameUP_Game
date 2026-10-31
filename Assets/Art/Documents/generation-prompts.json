@@ -1,0 +1,5 @@
+{
+  "mode": "built-in image generation",
+  "asset": "Newsprint.png",
+  "prompt": "Use case: texture. Create a flat front-facing scan of a blank contemporary broadsheet newspaper sheet, landscape 3:2 aspect ratio. This will be used as a subtle paper background behind native Turkish newspaper typography in a Unity game, so every area must remain highly readable. Warm light ivory newsprint, very fine recycled paper fibres and restrained inkless grain, one very faint vertical centre fold, faint horizontal handling creases, soft slightly uneven edges. A current 2026 local newspaper, gently handled rather than antique parchment. Even diffuse neutral lighting, no perspective, no curled corners, no objects, no scene, no drop shadow outside the sheet. Absolutely no lettering, no glyphs, no printed columns, no pictures, no logo, no watermark. Low contrast surface variation, almost white centre, dark marks absent. Texture only, fill the whole frame."
+}

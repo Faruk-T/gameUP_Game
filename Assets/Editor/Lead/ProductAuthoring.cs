@@ -38,13 +38,7 @@ namespace GameUp.Editor
                     ?AssetDatabase.LoadAssetAtPath<GameObject>(ProductionProjectSetup.Products+"/FishTray.prefab")
                     :AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Urunler/Mesh/"+models[index]+".prefab");
                 if(!source)throw new InvalidOperationException("Missing explicit product model: "+definition.DefinitionId);
-                var visual=(GameObject)PrefabUtility.InstantiatePrefab(source);visual.transform.SetParent(root.transform,false);
-                visual.transform.localPosition=Vector3.zero;visual.transform.localRotation=Quaternion.identity;
-                var renderers=visual.GetComponentsInChildren<Renderer>();if(renderers.Length==0)throw new InvalidOperationException("Model has no renderer.");
-                var bounds=renderers[0].bounds;foreach(var renderer in renderers.Skip(1))bounds.Encapsulate(renderer.bounds);
-                float scale=.65f/Mathf.Max(bounds.size.x,Mathf.Max(bounds.size.y,bounds.size.z));
-                visual.transform.localScale*=scale;visual.transform.localPosition=-new Vector3(bounds.center.x,bounds.min.y,bounds.center.z)*scale;
-                foreach(var collider in visual.GetComponentsInChildren<Collider>())UnityEngine.Object.DestroyImmediate(collider);
+                PlaceModel(source,root.transform,Vector3.zero,.65f);
                 foreach(var t in root.GetComponentsInChildren<Transform>())t.gameObject.layer=8;
                 var box=root.AddComponent<BoxCollider>();box.center=new Vector3(0,.33f,0);box.size=new Vector3(.8f,.72f,.8f);
                 var target=root.AddComponent<WorkstationTarget>();SetAction(target,WorkstationAction.Product);
@@ -57,6 +51,23 @@ namespace GameUp.Editor
         }
         internal static void SetAction(WorkstationTarget target,WorkstationAction action)
         {var so=new SerializedObject(target);so.FindProperty("action").enumValueIndex=(int)action;so.ApplyModifiedPropertiesWithoutUndo();target.gameObject.layer=8;}
+        internal static GameObject PlaceModel(GameObject source,Transform parent,Vector3 position,float maximumSize,float yaw=0)
+        {
+            if(!source)throw new InvalidOperationException("An explicit artist prefab is required.");
+            // Measure at the origin before parenting, so shelf rotations never change normalization.
+            var container=new GameObject("Model_"+source.name);
+            var visual=(GameObject)PrefabUtility.InstantiatePrefab(source);visual.transform.SetParent(container.transform,false);
+            visual.transform.localPosition=Vector3.zero;visual.transform.localRotation=Quaternion.identity;
+            var renderers=visual.GetComponentsInChildren<Renderer>();
+            if(renderers.Length==0)throw new InvalidOperationException("Model has no renderer: "+source.name);
+            var bounds=renderers[0].bounds;foreach(var renderer in renderers.Skip(1))bounds.Encapsulate(renderer.bounds);
+            float scale=maximumSize/Mathf.Max(bounds.size.x,Mathf.Max(bounds.size.y,bounds.size.z));
+            visual.transform.localScale*=scale;
+            visual.transform.localPosition=-new Vector3(bounds.center.x,bounds.min.y,bounds.center.z)*scale;
+            foreach(var collider in visual.GetComponentsInChildren<Collider>())UnityEngine.Object.DestroyImmediate(collider);
+            container.transform.SetParent(parent,false);container.transform.localPosition=position;container.transform.localRotation=Quaternion.Euler(0,yaw,0);
+            return container;
+        }
         private static Text Face(Transform parent,string name,Vector3 position,Quaternion rotation)
         {
             var go=new GameObject(name,typeof(RectTransform),typeof(Canvas));go.transform.SetParent(parent,false);

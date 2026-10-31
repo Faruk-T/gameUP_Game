@@ -7,6 +7,8 @@
 
 **Güncel entegrasyon:** Faruk'un üretim kuralları, Özgür'ün etkileşimi ve ürün sanatları `feat/lead-day-flow` dalında birleştirilmiştir. Başlangıç **First → Menu → Game**; Antalya COP31 menüsü, ayarlar, iki gün/12 ürün, belge/faks ve sonuçlar kayıtlı sahnelerle bağlanmıştır. Güncel kullanım ve doğrulama için [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md), görsel kaynakları için [ART_DIRECTION.md](Assets/Art/Menu/ART_DIRECTION.md). Aşağıdaki planın başlangıç durumu ve görev kutuları tarihsel planı korur.
 
+**Gazete / oda düzenlemesi:** `feat/lead-newspaper-room` dalı; kâğıt dokulu gazete baskısını, arkaya alınmış geri dönüşüm istasyonunu, geniş odayı ve COP31 afişlerini içerir. Esmanur'un 31 prefabı bağlıdır: 5 oynanış, 26 numune/teşhir. Ayrıntılı [model envanteri](Docs/MODEL_INVENTORY.md) ve [35/35 doğrulama sonucu](VALIDATION.md).
+
 ## 1. Kaynak, mevcut durum ve çalışma kararları
 
 - Ana kaynak: [GameUP32 Google Dokümanı — ekip planı](https://docs.google.com/document/d/1_49KPVdyfkgs8Qj4Isu6FLydY0bF-rlG-tH7xH6udXY/edit?tab=t.ha6zdj2y0k6).

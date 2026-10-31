@@ -66,7 +66,7 @@ namespace GameUP.Interaction
             if (!session.WorldInputAllowed) return;
             Vector2 delta = mouse.delta.ReadValue();
             if (ignoreMouseDelta) { ignoreMouseDelta = false; delta = Vector2.zero; }
-            if (delta.sqrMagnitude > 900) delta = Vector2.zero;
+            delta = Vector2.ClampMagnitude(delta, 100);
             if (!(inspecting && mouse.leftButton.isPressed))
             {
                 yaw += delta.x * settings.Sensitivity;

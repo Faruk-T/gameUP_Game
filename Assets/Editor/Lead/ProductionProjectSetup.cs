@@ -37,6 +37,7 @@ namespace GameUp.Editor
             AssetDatabase.Refresh();
             foreach(var file in new[]{"AntalyaHarbour","CarettaCoast","AntalyaHeat","COP31Horizontal","SharedButtonLight"})
                 ImportSprite("Assets/Art/Menu/"+file+".png",file=="AntalyaHarbour"?2048:file=="COP31Horizontal"?1024:1024);
+            ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
             var days=Days(); if(days.Any(d=>!d)) throw new InvalidOperationException("Both authored campaign days are required.");
             Set(days[0].MorningNewspaper,"illustration",AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/AntalyaHeat.png"));
             Set(days[1].MorningNewspaper,"illustration",AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/CarettaCoast.png"));
@@ -51,7 +52,15 @@ namespace GameUp.Editor
             PlayerSettings.companyName="GameUP"; PlayerSettings.productName="Antalya Denetim Masası";
             PlayerSettings.defaultScreenWidth=1920;PlayerSettings.defaultScreenHeight=1080;
             PlayerSettings.resizableWindow=true; PlayerSettings.runInBackground=false;
-            AssetDatabase.SaveAssets(); EditorSceneManager.OpenScene(FirstPath); Debug.Log("PRODUCTION_AUTHORING_OK First -> Menu -> Game");
+            AssetDatabase.SaveAssets(); ArtistModelAudit.Generate(); EditorSceneManager.OpenScene(FirstPath); Debug.Log("PRODUCTION_AUTHORING_OK First -> Menu -> Game");
+        }
+        [MenuItem("GameUP32/Authoring/Rebuild Game room and newspaper")]
+        public static void AuthorGame()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop play mode before authoring.");
+            ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
+            WorkstationAuthoring.Game();AssetDatabase.SaveAssets();ArtistModelAudit.Generate();
+            EditorSceneManager.OpenScene(FirstPath);Debug.Log("GAME_AUTHORING_OK room, newspaper and artist model references");
         }
         private static void NewsText(UnityEngine.Object owner,string field,string value)
         {var so=new SerializedObject(owner);so.FindProperty(field).stringValue=value;so.ApplyModifiedPropertiesWithoutUndo();}

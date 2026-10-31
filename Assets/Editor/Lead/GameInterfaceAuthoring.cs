@@ -30,16 +30,15 @@ namespace GameUp.Editor
             var presenter=canvas.gameObject.AddComponent<DocumentPresenter>();Set(session,"documentsView",presenter);
             var overlay=Overlay("DocumentOverlay",canvas.transform,new Color(.015f,.055f,.065f,.86f));Set(presenter,"panel",overlay);
             var page=Image("DocumentPage",overlay.transform,0,0,1360,960,Paper);
+            Set(presenter,"documentPage",page.gameObject);
             Set(presenter,"kind",Text("DocumentKind",page.transform,"",0,410,1200,50,24,new Color(.13f,.45f,.4f)));
             Set(presenter,"title",Text("DocumentTitle",page.transform,"",0,320,1200,120,48,Ink,TextAnchor.UpperLeft,true));
             var scroll=Scroll("DocumentScroll",page.transform,0,-15,1220,560,out var content);Set(presenter,"scroll",scroll);
-            var picture=Image("Illustration",content,0,0,1160,280,Color.white);
-            picture.preserveAspect=true;picture.gameObject.AddComponent<LayoutElement>().preferredHeight=280;
-            Set(presenter,"illustrationArea",picture.gameObject);Set(presenter,"illustration",picture);
             var body=Text("DocumentBody",content,"",0,0,1160,100,29,Ink);body.gameObject.AddComponent<LayoutElement>();Set(presenter,"body",body);
             var confirm=Button("Confirm",page.transform,"Devam",0,-390,760,presenter.Confirm);Set(presenter,"confirmButton",confirm);
             Text("ScrollHint",page.transform,"Fare tekerleği ile kaydır",0,-315,1100,38,21,Ink,TextAnchor.MiddleRight);
-            Set(presenter,"confirmationLabel",confirm.GetComponentInChildren<Text>());overlay.SetActive(false);
+            Set(presenter,"confirmationLabel",confirm.GetComponentInChildren<Text>());
+            Set(presenter,"newspaper",NewspaperAuthoring.Create(overlay.transform,presenter));overlay.SetActive(false);
 
             var results=canvas.gameObject.AddComponent<ResultsPresenter>();Set(session,"resultsView",results);
             var resultOverlay=Overlay("ResultsOverlay",canvas.transform,new Color(.02f,.07f,.08f,.96f));Set(results,"panel",resultOverlay);

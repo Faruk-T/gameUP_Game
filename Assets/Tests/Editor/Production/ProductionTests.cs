@@ -62,6 +62,32 @@ namespace GameUp.Production.Tests
                 finally{EditorSceneManager.CloseScene(scene,true);}
             }
         }
+        [Test]
+        public void RearWasteBinsAreReachableAndArtistPrefabsAreConnected()
+        {
+            var scene=EditorSceneManager.OpenScene(ProductionProjectSetup.GamePath,OpenSceneMode.Additive);
+            try
+            {
+                var all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+                var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c);
+                var player=camera.transform.parent;
+                var bins=all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t&&t.Action>=WorkstationAction.Paper&&t.Action<=WorkstationAction.Contaminated).ToArray();
+                Assert.That(bins.Length,Is.EqualTo(4));Physics.SyncTransforms();
+                foreach(var bin in bins)
+                {
+                    Assert.That(Vector3.Dot(player.forward,bin.transform.position-player.position),Is.LessThan(0),"Bin must be behind the player.");
+                    var direction=bin.GetComponent<Collider>().bounds.center-camera.transform.position;
+                    Assert.That(direction.magnitude,Is.LessThan(8));
+                    Assert.That(Physics.Raycast(camera.transform.position,direction.normalized,out var hit,8,1<<8),Is.True);
+                    Assert.That(hit.collider.GetComponent<WorkstationTarget>(),Is.SameAs(bin),"Bin must be targetable from the fixed seat.");
+                }
+                Assert.That(all.Any(t=>t.name=="CoastalWindow"||t.name=="CoastalWindowFrame"),Is.False);
+                var dependencies=new HashSet<string>(AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true));
+                foreach(var guid in AssetDatabase.FindAssets("t:Prefab",new[]{"Assets/Art/Urunler"}))
+                    Assert.That(dependencies,Does.Contain(AssetDatabase.GUIDToAssetPath(guid)),"Artist model must have an authored use.");
+            }
+            finally{EditorSceneManager.CloseScene(scene,true);}
+        }
         [UnityTest]
         public IEnumerator FirstMenuGameCampaignRestartAndReturnUseRealProductionPorts()
         {
@@ -99,9 +125,16 @@ namespace GameUp.Production.Tests
             Assert.That(input,Is.Not.Null);Assert.That(pause,Is.Not.Null);Assert.That(product,Is.Not.Null);Assert.That(document,Is.Not.Null);
             Assert.That(session.Flow,Is.Not.Null);Assert.That(session.Documents.Current,Is.Not.Null);
             Capture("newspaper",session.gameObject.scene);
+            AssertNewspaperReadable();
             Assert.That(session.Documents.Current.RequiresAcknowledgement,Is.True);session.HandleEscape();Assert.That(session.Documents.IsOpen,Is.True);
-            document.Confirm();
+            ConfirmDocument(session);
             yield return Wait(()=>session.Flow.CanDecide);
+            Capture("room-front",session.gameObject.scene);
+            var camera=Object.FindFirstObjectByType<Camera>();
+            var player=camera.transform.parent;var savedYaw=player.localRotation;var savedPitch=camera.transform.localRotation;
+            player.localRotation=Quaternion.Euler(0,180,0);camera.transform.localRotation=Quaternion.Euler(8,0,0);
+            Capture("room-rear",session.gameObject.scene);
+            player.localRotation=savedYaw;camera.transform.localRotation=savedPitch;
             input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);Capture("inspection",session.gameObject.scene);input.EndInspection();
             session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);Capture("handbook",session.gameObject.scene);document.Confirm();
             session.Analyze();Assert.That(session.Flow.Phase,Is.EqualTo(ProductPhase.Analyzing));
@@ -143,7 +176,9 @@ namespace GameUp.Production.Tests
                 {
                     if(session.Documents.Current.Kind==DocumentKind.Emergency)
                     {Assert.That(session.Flow.ProductIndex,Is.EqualTo(3));Capture("emergency",session.gameObject.scene);}
-                    Object.FindFirstObjectByType<DocumentPresenter>().Confirm();
+                    if(session.Documents.Current.Kind==DocumentKind.Newspaper&&session.Flow.DayIndex==1)
+                    {Capture("newspaper-day2",session.gameObject.scene);AssertNewspaperReadable();}
+                    ConfirmDocument(session);
                 }
                 else if(session.Flow.State==FlowState.DaySummary)session.ContinueSummary();
                 else if(session.Flow.CanDecide)
@@ -171,6 +206,18 @@ namespace GameUp.Production.Tests
             var go=GameObject.Find(path);
             if(!go)throw new InvalidOperationException("Missing button " + path + " in " + SceneManager.GetActiveScene().name);
             return go.GetComponent<Button>();
+        }
+        private static void ConfirmDocument(GameSessionController session) => ButtonIn(session.Documents.Current.Kind==DocumentKind.Newspaper
+            ?"GameCanvas/DocumentOverlay/Newspaper/Newsprint/FoldNewspaper":"GameCanvas/DocumentOverlay/DocumentPage/Confirm").onClick.Invoke();
+        private static void AssertNewspaperReadable()
+        {
+            Canvas.ForceUpdateCanvases();
+            var page=GameObject.Find("GameCanvas/DocumentOverlay/Newspaper/Newsprint");
+            foreach(var text in page.GetComponentsInChildren<Text>())
+            {
+                Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),"Clipped newspaper text: "+text.name);
+                Assert.That(text.cachedTextGenerator.characterCountVisible,Is.GreaterThan(0),"Empty newspaper print: "+text.name);
+            }
         }
         private static void Capture(string name,Scene scene)
         {

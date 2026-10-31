@@ -90,8 +90,7 @@ namespace GameUp.Gameplay
             var document = Documents.Current;
             if (document != null && !pause.IsOpen)
             {
-                Sprite picture = document.Kind == DocumentKind.Newspaper ? backend.ConfiguredDays[Flow.DayIndex].MorningNewspaper.Illustration : null;
-                documentsView.Show(document, picture);
+                documentsView.Show(document, backend.ConfiguredDays[Flow.DayIndex], Flow.CurrentRules);
             }
             else documentsView.Hide();
             if (!Documents.IsOpen && !pause.IsOpen && (Flow.State == FlowState.DaySummary || Flow.State == FlowState.GameSummary))
@@ -150,7 +149,7 @@ namespace GameUp.Gameplay
             get
             {
                 if (Flow.State != FlowState.Working) return "";
-                if (Flow.Phase == ProductPhase.AwaitingSort) return "Gıda imha edildi. Ambalajı doğru hedefe gönder.";
+                if (Flow.Phase == ProductPhase.AwaitingSort) return "Gıda imha edildi. Arkana dön; ambalajı renk ve etiketine göre uygun kutuya gönder.";
                 if (Flow.DayIndex == 0 && Flow.ProductIndex < 2)
                 {
                     if (!inspected) return "1 / Ürüne bakıp E ile incele. Fareyle döndür; ön ve arka etiketi oku.";
