@@ -1,75 +1,67 @@
-# Dördüncü kişi — üretim entegrasyonu
+# Dördüncü kişi — güncel entegrasyon
 
-Unity **6000.3.13f1**, Windows x64. Temel entegrasyon `feat/lead-day-flow`; gazete/oda düzenlemesi **`feat/lead-newspaper-room`** dalındadır. Faruk'un kuralları, Özgür'ün etkileşimi ve ürün sanatları birlikte çalışır.
+Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-category-progression`. Ayrıntılı gün/ürün/haber planı: [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md).
 
 ## Çalıştırma
 
-`Assets/Scenes/First.unity` açılır ve Play'e basılır. Editor Play başlangıcı First'e sabittir. Build yalnızca **First → Menu → Game** içerir. Menu/Game, First'teki açık bağımlılıklar olmadan başlatılmaz.
+`Assets/Scenes/First.unity` açılır ve Play'e basılır. Yalnız **First → Menu → Game** build'e alınır. First uygulama, ayar ve EventSystem sahibidir; Menu/Game doğrudan başlatılmaz.
 
-- **First:** tek ApplicationRoot, kalıcı EventSystem, ayarlar, yükleme katmanı.
-- **Menu:** Antalya arka planı, görev, ayarlar, rehber, COP31/ekip, çıkış.
-- **Game:** iki gün, 12 ürün, gazete, inceleme, kitapçık, analiz/faks, ayrıştırma, acil kural, sonuçlar.
+Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
 
-Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırmada dünya hedefine bakıp sol tıklanır. Esc belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+## Kampanya
 
-Geri dönüşüm istasyonu oyuncunun **arkasındadır**. Fareyle dönülerek kutunun renk ve etiketi seçilir. Oda 16 × 16,5 metrelik bir alana yayıldı; karşıdaki caretta panosu kaldırıldı. Camlı ön açıklık, deniz/Toros silueti, üç COP31 afişi ve numune dolapları Editor'de kaydedilir.
+| Gün | Yeni açılan grup | Ürün sayısı | Haber |
+|---|---|---:|---|
+| 1 / 1 Kasım | Et ve süt | 8 | Küresel ısınma ve gıda tedariki |
+| 2 / 2 Kasım | Meyve | 10 | Çevresel kalıntı, atık ve kıyı koruma |
+| 3 / 3 Kasım | Yumurta | 13 | Soğuk zincir ve kaynak geri çağırması |
+
+Esmanur'un **31 mevcut modeli**, 31 denetim ürünü olarak kullanılır. Ürün dolapları/teşhir nesneleri yoktur. Aktif veriler Assets/Data/Campaign altındadır. Haber metinlerinde balık yoktur; ilk gün mevsim dışı Antalya sıcaklığı iddiası yerine yıl boyunca süren küresel iklim riski anlatılır. Caretta carettalar atık/kıyı koruma bağlamında haberlerde kalır.
+
+Üçüncü gün ilk üç ürün, ayrıştırmaları da tamamlanınca faks gelir. Onaydan sonra B bölgesi et/süt/yumurtaları temiz analizle bile reddedilir. Meyveler kapsam dışıdır. Önceki kararlar değişmez.
 
 ## Kod sınırları
 
 | Bileşen | Sorumluluk |
 |---|---|
-| ApplicationRoot | Sahne yükleme, kullanıcı ayarları ve imleç odağı |
-| DayFlowSession | Gün/ürün sırası, işlem sınırları, kural snapshot'ı |
-| DocumentQueue | Tek belge, kuyruk ve eski pencere token'larının reddi |
-| GameSessionController | Akışın kayıtlı sahne portlarına bağlanması |
-| ProductionInspectionBackend | Gün assetleri, Faruk'un ProductRuleEvaluator'ı, puan ve analiz |
-| ProductPresentation | Kayıtlı ürün havuzu, bant/imha/ambalaj hareketi |
-| WorkstationInteractionController | Tek oynanış girdi sahibi, bakış/raycast/inceleme |
-| HUD / DocumentPresenter / ResultsPresenter | Kayıtlı uGUI alanlarının sunumu |
-| NewspaperView | Kâğıt dokusu üzerinde künye, tarih, manşet, fotoğraf, altyazı, iki haber sütunu ve günlük kurallar |
-| PauseMenu / SettingsPanel | Gerçek duraklatma ve ortak ayarlar |
-| FaxPresenter | Kaydedilmiş ses, ışık ve kâğıt animasyonu |
+| ApplicationRoot | Sahne, ayarlar, imleç odağı |
+| CampaignDefinition / DayDefinition | Sıralı günler, kategori açılımları, kayıtlı ürünler ve belgeler |
+| DayFlowSession | Ürün sırası, işlem sınırları, immutable kural snapshot'ı |
+| DocumentQueue | Tek belge, kuyruk, onay token'ları |
+| GameSessionController | Akış ve sahne portları |
+| ProductionInspectionBackend | Asset kataloğu, analiz, Faruk'un ProductRuleEvaluator'ı, puan |
+| ProductPresentation | Kayıtlı 31 ürünlük havuz ve fiziksel hareket callback'leri |
+| WorkstationInteractionController | Tek oynanış girdi sahibi |
+| NewspaperView / DocumentPresenter / ResultsPresenter | Kayıtlı UI sunumu |
+| FoodCondition shader | Aynı kaynak mesh üzerinde bozulma deseni ve şişme |
+| PauseMenu / SettingsPanel / FaxPresenter | Duraklatma, ayarlar, faks sunumu |
 
-Contracts → Lead.Core / Rules → Gameplay; Interaction → Gameplay. Application uygulama katmanıdır. İkinci bir üretim InspectionService/InspectionRulesEngine akışı yoktur.
+Ürün prefabları, sağlam/bozuk malzemeler, UI ve bütün referanslar Editor'de kaydedilir. Oyuncuda Instantiate, Renderer.material, otomatik sahne/asset üretimi veya yedek ürün modeli yoktur. Katalog bir kez indekslenir; eksik yapılandırma açık hata verir.
 
-Ürünler çalışma sırasında Instantiate edilmez. On iki prefab örneği ve bir ambalaj nesnesi sahnede kayıtlıdır. Collider, etiket yüzleri, hedef noktaları, UI olayları ve bağımlılıklar Editor'de atanır. Eksik model için küp, eksik veri için sahte temiz rapor veya test kataloğu üretilmez. Katalog bir kez indekslenir. Editor yazarları, test kataloğu ve otomasyon oyuncu build'ine girmez.
+Her sanatçı modeli için Fresh/Spoiled varyantı hazırlanır: **62 prefab**. Mesh'ler aynıdır; shader orijinal dokuyu kullanarak renk kaybı/küf ve ambalaj şişmesi uygular. Görünür bozulma ile gizli kirlilik ayrı verilerdir. SKT'si geçmiş ürün sağlam görünebilir; temiz görünen ürün pozitif analiz verebilir.
 
-PigeonSimulator5'ten hafif menü/odak yaklaşımı, düğme görseli, Kurale fontu ve Editor görüntü yakalama yaklaşımı kullanıldı. Kayıt/NPC/quest framework'ü taşınmadı.
+Ürün masaya/bant sonuna veya ambalaj kutuya ulaşmadan ilgili işlem tamamlanmaz. Restart eski RunId/callback/raporları geçersiz kılar. Belge kararları kilitler; pause analiz ve hareketi durdurur.
 
-## Kritik akışlar
+## Editor
 
-Onayda bant hareketi; redde hem gıda imhası hem ambalaj ayrıştırma hareketi bitmeden puan kaydedilmez. İkinci gün üçüncü ürün tamamen bittiğinde acil faks açılır. Onaydan sonra B bölgesi **dip** balığı yasağı sonraki ürüne uygulanır; önceki kararlar değişmez. D2-04 temiz analizle bile yasaktır; D2-05 yüzey balığı bu yasağın dışındadır.
+GameUP32 menüsü:
 
-Analiz RunId/ProductId taşır. Restart eski coroutine ve callback'leri geçersiz kılar. Belge kararları kilitler; pause hem kararları hem zamanla ilerleyen ürün/analiz/faks hareketini durdurur. Sıfır ayrıştırma varsa oran “—” görünür.
+- **Render campaign press photographs:** mevcut modellerden üç haber fotoğrafını render eder; grafik aygıtı gerekir.
+- **Rebuild Game room and newspaper:** kampanya, varyantlar, ürün prefabları ve yalnız Game sahnesini yeniler.
+- **Rebuild First, Menu and Game:** üç sahneyi yeniden yazar.
+- **Esmanur model inventory:** kaynak ve aktif ürün raporunu yeniler.
+- **Build / Windows:** Builds/Windows/AntalyaDenetimMasasi.exe üretir.
 
-## Sanat ve içerik
-
-[Kaynaklar, import ayarları ve tam promptlar](Assets/Art/Menu/ART_DIRECTION.md). COP31 tarihi menüde 9–20 Kasım 2026'dır. Oynanıştaki 1–2 Kasım, kurmaca hazırlık günleridir. Caretta carettalar, deniz kirliliği, sıcaklık ve gıda güvenliği gazetelere işlenmiştir.
-
-Gazete metinleri mevcut DocumentDefinition varlıklarından gelir; haber başka bir alana kopyalanmaz. İki sütun yalnızca paragraf sınırında bölünür. Gazete künyesi verisi sahnede yazılmıştır; tarih oyun gününden, alt şeritteki kurallar güncel snapshot'tan alınır. Gazete de diğer belgelerle aynı token ve açık onay akışını kullanır. [Kâğıt dokusu ve tam prompt](Assets/Art/Documents/ART_DIRECTION.md).
-
-Esmanur'un **31 prefabının tamamı** bağlıdır: 5'i iki günlük oynanışta, kalan 26'sı üç numune/teşhir dolabında kullanılır. FBX'teki 31 mesh'in tamamı prefablar tarafından referanslanır. Liste: [MODEL_INVENTORY.md](Docs/MODEL_INVENTORY.md). Raf nesneleri etkileşime veya karar havuzuna katılmaz; süt, et/yumurta ve meyve grupları ayrı etiketlidir.
-
-Süt ürünleri ekip modellerini kullanır. Balık için açıkça atanmış basit balık/tepsi prefabı Editor'de hazırlanmıştır; yeni model, prefabın model çocuğuyla değiştirilebilir.
-
-## Editor komutları
-
-`GameUP32/Authoring/Rebuild First, Menu and Game` sahneleri ve ürün prefablarını yeniden yazar. Otomatik import/bootstrap değildir. Elle sahne düzenlediysen yeniden üretmeden önce değişikliklerini koru.
-
-`GameUP32/Authoring/Rebuild Game room and newspaper` yalnız Game sahnesinin oda ve gazete düzenini yeniden yazar. `GameUP32/Validation/Esmanur model inventory` model raporunu AssetDatabase bağımlılıklarından yeniler. Bu geliştirme araçları oyuncu build'ine girmez.
-
-`GameUP32/Build/Windows` üretim çıktısı: `Builds/Windows/AntalyaDenetimMasasi.exe`.
+Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne düzenlediysen yeniden üretmeden önce değişikliklerini koru. Fotoğraflar repoda kayıtlıdır; normal açılışta render gerekmez.
 
 ```powershell
 .\Tools\Lead\Verify.ps1 -UnityEditor 'D:\Programs\UnityInstalls\6000.3.13f1\Editor\Unity.exe' -Visuals -Build
 ```
 
-`-Author` isteğe bağlıdır. Rapor: `Logs/production-tests.xml`; grafik aygıtıyla çalıştırılan görseller: `Logs/Visuals`.
+## Doğrulama ve kaynaklar
 
-Testler çekirdek akışı, Faruk'un kabul senaryolarını, kayıtlı referansları ve First'ten açılan üç gerçek kampanyayı kapsar: doğru oynayış **12/12 karar, 6/6 ayrıştırma, 132 puan**; tümüne onay/red **%50 doğrulukla başarısız**. Pause, ayarların sahneler arası korunması, eski callback, restart ve menüye dönüş de kontrol edilir. Görüntü yakalama yalnızca Editor/test assembly'sindedir.
+**37/37 test:** 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir.
 
-Son ölçülen sonuçlar ve önizlemeler: [VALIDATION.md](VALIDATION.md).
+[Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 
-## Kapsam sınırı
-
-Tartı/cetvel, yüzde ölçümü, üçüncü gün ve ek gıda grupları P1 veri örnekleridir; iki günlük kampanyaya bağlanmaz. Ayrı cutscene sistemi eklenmedi; kısa giriş sözü COP31/ekip ekranındadır. Ekip dışından ilk oynayış ve ayrı Windows PC'de donanım kontrolü teslim öncesi yapılmalıdır.
+Önceki balıklı veri ve prefablar Assets/Tests/Editor/LegacyContent altında referans arşividir. Aktif sahne bunlara bağlı değildir; eski saf motorun kabul testleri Editor'de korunur. Ayrı PC'de tam manuel oynayış son teslim kontrolüdür.

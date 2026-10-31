@@ -11,9 +11,6 @@ namespace GameUp.Editor
     internal static class RoomAuthoring
     {
         internal const string ArtistRoot="Assets/Art/Urunler/Mesh/";
-        internal static readonly string[] DairyDisplay={"milk1","milk2","milk3","milk4","milk5","milk6","cheese2","cheese4","cheese5","cheese6"};
-        internal static readonly string[] ChilledDisplay={"meat1","meat2","meat3","meat4","meat5","Eggs"};
-        internal static readonly string[] ProduceDisplay={"Cantaloupe","Cantaloupe_01","Papaya","Papaya_01","Pineapple","Pineapple_01","Strawberry","Strawberry_01","Watermelon","Watermelon_01"};
 
         internal static void Create(Transform parent)
         {
@@ -35,10 +32,7 @@ namespace GameUp.Editor
             for(int i=-3;i<=3;i++)
                 Shape("FloorJoint",room,PrimitiveType.Cube,new Vector3(i*2,.003f,.2f),new Vector3(.012f,.004f,16),Material("Grout",new Color(.48f,.46f,.39f)));
             Coast(room);
-            Cabinet(room,"DairySamples",new Vector3(-5.5f,0,4.8f),0,"SÜT ÜRÜNLERİ / SOĞUK NUMUNE",DairyDisplay,5);
-            Cabinet(room,"ChilledSamples",new Vector3(5.5f,0,4.8f),0,"ET VE YUMURTA / SOĞUK NUMUNE",ChilledDisplay,3);
-            Cabinet(room,"ProduceSamples",new Vector3(-6.5f,0,-2.6f),-90,"YEREL ÜRÜN TEŞHİRİ",ProduceDisplay,5);
-            Poster(room,"FoodSecurityPoster",new Vector3(-7.82f,2.9f,1.6f),-90,"SOFRAYI\nKORU","Yerel üretime değer ver.\nGıdayı israf etme.","AntalyaHeat");
+            Poster(room,"FoodSecurityPoster",new Vector3(-7.82f,2.9f,1.6f),-90,"SOFRAYI\nKORU","Yerel üretime değer ver.\nGıdayı israf etme.","Assets/Art/Documents/Day1Products.png");
             Poster(room,"ClimateActionPoster",new Vector3(7.82f,2.9f,1.6f),90,"ORTAK\nGELECEK","İklim için birlikte.\nAntalya'dan dünyaya.",null);
             Poster(room,"WasteSortingPoster",new Vector3(0,2.6f,-7.82f),180,"HER ATIĞIN\nBİR YERİ VAR","Temiz ambalajı ayır.\nKontamine ambalajı ayrı tut.",null);
             foreach(var t in room.GetComponentsInChildren<Transform>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
@@ -61,22 +55,6 @@ namespace GameUp.Editor
             if(existing){EditorUtility.CopySerialized(mesh,existing);UnityEngine.Object.DestroyImmediate(mesh);mesh=existing;}else AssetDatabase.CreateAsset(mesh,path);
             var mountains=new GameObject("TaurusMountains",typeof(MeshFilter),typeof(MeshRenderer));mountains.transform.SetParent(parent,false);mountains.transform.localPosition=new Vector3(0,-.4f,49);
             mountains.GetComponent<MeshFilter>().sharedMesh=mesh;mountains.GetComponent<MeshRenderer>().sharedMaterial=shore;
-        }
-        private static void Cabinet(Transform parent,string name,Vector3 position,float yaw,string title,string[] models,int columns)
-        {
-            var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=position;root.localRotation=Quaternion.Euler(0,yaw,0);
-            var frame=Material("CabinetFrame",new Color(.3f,.4f,.38f),.35f);var shelf=Material("CabinetShelf",new Color(.79f,.83f,.78f));
-            float width=columns*.62f+.3f;
-            Shape("CabinetBack",root,PrimitiveType.Cube,new Vector3(0,1.15f,.4f),new Vector3(width,2.3f,.1f),frame);
-            foreach(float x in new[]{-width*.5f,width*.5f})Shape("CabinetSide",root,PrimitiveType.Cube,new Vector3(x,1.15f,0),new Vector3(.1f,2.3f,.9f),frame);
-            foreach(float y in new[]{.24f,1.05f,1.87f,2.3f})Shape("Shelf",root,PrimitiveType.Cube,new Vector3(0,y,0),new Vector3(width,.08f,.9f),shelf);
-            var label=WorldCanvas("CabinetHeader",root,new Vector3(0,2.1f,-.46f),0,width,.3f);
-            Text("Label",label,title,0,0,820,130,36,Paper,TextAnchor.MiddleCenter);
-            for(int i=0;i<models.Length;i++)
-            {
-                var source=AssetDatabase.LoadAssetAtPath<GameObject>(ArtistRoot+models[i]+".prefab");
-                PlaceModel(source,root,new Vector3((i%columns-(columns-1)*.5f)*.62f,.3f+i/columns*.81f,0),.5f);
-            }
         }
         internal static Transform[] RecyclingStation(Transform parent)
         {
@@ -110,10 +88,10 @@ namespace GameUp.Editor
             var canvas=WorldCanvas("Print",root,new Vector3(0,0,-.05f),0,1.8f,2.64f);
             Image("Paper",canvas,0,0,900,1320,Paper);
             var logo=Image("COP31Official",canvas,0,445,840,472,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/COP31Horizontal.png"));logo.preserveAspect=true;
-            Text("Headline",canvas,headline,0,120,780,300,96,Ink,TextAnchor.MiddleCenter,true);
+            Text("Headline",canvas,headline,0,160,780,280,76,Ink,TextAnchor.MiddleCenter,true);
             if(photograph!=null)
             {
-                var picture=Image("Photo",canvas,0,-160,800,380,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/"+photograph+".png"));picture.preserveAspect=true;
+                var picture=Image("Photo",canvas,0,-160,800,320,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(photograph));picture.preserveAspect=true;
             }
             else
             {

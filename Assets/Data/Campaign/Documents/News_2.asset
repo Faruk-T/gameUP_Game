@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
+  m_Name: News_2
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
+  documentId: DOC_NEWS_2
+  documentType: 0
+  title: "At\u0131\u011F\u0131 azalt; hasad\u0131 ve k\u0131y\u0131y\u0131 birlikte
+    koru"
+  body: "Meyveler bug\xFCn denetim kapsam\u0131na a\xE7\u0131l\u0131yor. K\xFCf ve
+    renk kayb\u0131 g\xF6r\xFClebilir; \xE7evresel kal\u0131nt\u0131lar laboratuvar
+    analiziyle saptan\u0131r. Meyvelere, daha \xF6nce a\xE7\u0131lan et ve s\xFCt
+    \xFCr\xFCnleri de e\u015Flik ediyor.\n\nReddedilen g\u0131dan\u0131n ambalaj\u0131n\u0131
+    do\u011Fru hedefe g\xF6nderin. At\u0131\u011F\u0131n k\u0131y\u0131ya ula\u015Fmas\u0131n\u0131
+    \xF6nlemek, caretta carettalar\u0131n ya\u015Fam alanlar\u0131n\u0131 korur.
+    Temiz g\xF6r\xFCnen bir \xFCr\xFCn\xFCn analizini de kontrol edin."
+  taskInstructionBox: "YEN\u0130 GRUP / MEYVELER"
+  illustration: {fileID: 21300000, guid: cd5fac5a6f0493b489f6df61a6826514, type: 3}
+  relatedRuleIds:
+  - R_EXPIRY
+  - R_IDENTITY
+  - R_SPOILAGE
+  - R_POLLUTION
+  requiresExplicitAcknowledge: 1

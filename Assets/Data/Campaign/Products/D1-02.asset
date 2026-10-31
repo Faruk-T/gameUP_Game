@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c478bb5e3f0e54eb198b4af02f3487, type: 3}
+  m_Name: D1-02
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
+  definitionId: D1-02
+  category: 2
+  displayName: Paketli et / Parti 1
+  prefab: {fileID: 953356105443172190, guid: f584827eeb93ce14fa89f57b60f729d6, type: 3}
+  modelSource: {fileID: 4392825905268705340, guid: abf9e0d497c20a3469527c36cecf9cf2, type: 3}
+  condition: 1
+  productIcon: {fileID: 0}
+  expiryDate:
+    Day: 5
+    Month: 11
+    Year: 2026
+  declaredProductType: Paketli et / Parti 1
+  listedProductType: Paketli et / Parti 1
+  ingredientsSummary: Et numunesi.
+  customFrontLabelNote: 
+  customBackLabelNote: 
+  sourceRegion: 3
+  habitat: 0
+  isPolluted: 0
+  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
+    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
+    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  packagingMaterial: 3
+  isPackagingContaminated: 1
+  packagingLabelText: "Plastik At\u0131k"
+  hasWeightData: 0
+  declaredWeightGrams: 250
+  actualWeightGrams: 250
+  hasLengthData: 0
+  actualLengthCm: 20
+  hasIngredientPercentData: 0
+  trackedIngredientName: 
+  declaredIngredientPercent: 10
+  actualIngredientPercent: 10

@@ -1,45 +1,44 @@
-# Entegrasyon doğrulaması — 31 Ekim 2026
+# Aktif kampanya doğrulaması — 31 Ekim 2026
 
-Ortam: Unity **6000.3.13f1**, Windows x64, NVIDIA RTX 3060 Laptop / D3D11. Üç sahne: First, Menu, Game.
-
-## Sonuçlar
+Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-category-progression`.
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity EditMode / gerçek PlayMode geçişleri | **35 / 35 geçti**, başarısız veya atlanan yok |
-| Çekirdek akış ve belge testleri | 29 test geçti |
-| Faruk'un kabul senaryoları | RulesEditModeTests kapsamındaki süit geçti |
-| Sahne bağlantıları ve hedefler | Eksik script/referans yok; 12 ürün prefabı atanmış |
-| Esmanur modelleri | 31 kaynak prefab / 31 FBX mesh; tamamı bağlı. 5 oynanış, 26 numune/teşhir |
-| Arka geri dönüşüm istasyonu | Dört kutu oyuncunun arkasında; oturulan yerden raycast ile erişilebilir |
-| Gazete baskıları | Her iki günün künye/manşet/sütun/altyazı/kural metni kesilmiyor ve boş basılmıyor; gerçek katlama düğmesi onay veriyor |
-| Doğru kampanya | 12/12 karar, 6/6 ayrıştırma, **132 puan**, başarılı |
-| Tümüne onay / tümüne red | Her ikisi %50 doğrulukla başarısız |
-| Analiz sırasında pause | Zaman, ürün hareketi ve analiz durur; devamda rapor gelir |
-| Restart / eski callback / menüye dönüş | Yeni RunId, temiz sonuç, eski rapor reddi; tek ApplicationRoot ve EventSystem |
-| Ayarlar | Hassasiyet sahne geçişinde korunur; ortak ayarlar paneli çalışır |
-| Görsel kontrol | Menü, ayarlar, rehber, ekip, gazete, inceleme, kitapçık, pause, analiz, acil faks, final |
-| Çözünürlük | Ana menü ve gazete 1920×1080 ve 1280×720 kontrol edildi |
-| Windows üretim build'i | **Başarılı**, BuildOptions.None; rapor boyutu 156.253.288 bayt |
-| Normal Windows oyuncusu | Gizli D3D11 açılışı 10 saniye izlendi; istisna/eksik script kaydı yok |
-| Oyuncu assembly içeriği | Prototip backend, smoke runner, test kataloğu, test harness ve eski InspectionService yok |
+| Unity testleri | **37/37 geçti**, başarısız/atlanan yok |
+| Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
+| Kampanya | **3 gün, 8 + 10 + 13 = 31 ürün** |
+| Kategori açılımı | İlk gün yalnız et/süt, ikinci gün meyve, üçüncü gün yumurta |
+| Model kaynağı | Yalnız Esmanur'un 31 prefabı; bütün kaynaklar oynanışta |
+| Sağlam/bozuk varyant | 62 kayıtlı prefab; aynı kaynak mesh'ler, bozuk görünüm için shader |
+| Shader | Hata yok; Windows build'inde derlendi |
+| Doğru oynayış | **31/31 karar, 15/15 ayrıştırma, 340 puan** |
+| Tümüne onay | 16/31 doğruluk; başarısız |
+| Tümüne red | 15/31 doğruluk; başarısız |
+| Haber / kural / fotoğraf | Günün açılan gruplarıyla eşleşiyor; RelatedRuleIds aynı günün InitialRules listesiyle aynı |
+| Kasım haberi | Antalya sıcaklığı iddiası kaldırıldı; küresel ve yıl boyu süren iklim riski |
+| Aktif balık içeriği | Ürün/haber yok; aktif sahne eski arşive bağlı değil |
+| Acil faks | 3. gün üçüncü ürün ayrıştırması da bitince gelir |
+| Geri çağırma sınırı | B kaynaklı süt faks öncesi geçer; B peynir faks sonrası reddedilir; B meyvesi kapsam dışıdır |
+| Gazeteler | Üç baskının metni görünür ve kesilmiyor; gerçek katlama düğmeleriyle onay |
+| Oda | Teşhir dolapları kaldırıldı; dört arka kutu raycast ile erişilebilir |
+| Sol afiş | Başlık görünür ve kesilmiyor; başlık/fotoğraf yerleşimi ayrıldı, oyun görüntüsü kontrol edildi |
+| Pause / restart | Analiz donar; eski rapor/callback reddedilir, sonuç sıfırlanır |
+| Windows build | **Başarılı**, BuildOptions.None; 157.966.128 bayt rapor boyutu |
+| Windows açılışı | Normal oyuncu 10 saniye izlendi; istisna/eksik script/shader hatası yok |
+| Oyuncu assembly'leri | Editor üreticileri, eski prototip backend'i ve test katalogları yok |
 
-Testler gerçek kayıtlı sahneleri, Faruk'un assetlerini ve üretim portlarını kullanır. Üç tam kampanya Editor içindeki PlayMode'da yürütülür. Normal oyuncuda ayrıca açılış kontrolü yapılmıştır; bu, ayrı bir bilgisayarda tam manuel oynayışın yerine geçmez.
+Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Normal Windows oyuncusunda ayrıca açılış kontrolü yapıldı. Ayrı PC'de tam manuel oynayış, son teslim kontrolüdür.
 
-## Tekrar çalıştırma
+Ham rapor: `Logs/category-tests.xml`. Build: `Logs/category-build.log`. Açılış: `Logs/category-player.log`. Tam ekranlar: `Logs/Visuals`. Yerel çıktılar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
 
-Kullanım ve komutlar [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md) içindedir. Bu dalın ham raporu `Logs/newspaper-room-tests.xml`, derleme kaydı `Logs/newspaper-room-build.log`, açılış kaydı `Logs/newspaper-room-player.log` ve tam görseller `Logs/Visuals` altındadır; üretilen yerel dosyalar Git'e eklenmez. Tekrar çalıştırma script'i aynı kontrolleri `Logs/production-tests.xml` adıyla yazar.
+[Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md)
 
-![Ana menü](Docs/Previews/MainMenu.png)
+![Birinci gün](Docs/Previews/Newspaper.png)
 
-![Sabah gazetesi](Docs/Previews/Newspaper.png)
+![İkinci gün](Docs/Previews/NewspaperDay2.png)
 
-![İkinci gün baskısı](Docs/Previews/NewspaperDay2.png)
+![Üçüncü gün](Docs/Previews/NewspaperDay3.png)
 
-![Geniş denetim odası](Docs/Previews/RoomFront.png)
+![Kodla bozulmuş görünüm](Docs/Previews/SpoiledFruit.png)
 
-![Arka geri dönüşüm istasyonu ve COP31 afişi](Docs/Previews/RoomRear.png)
-
-## Teslim sınırı
-
-İki günlük P0 kampanyası bağlıdır. Tartı/cetvel, yüzde ölçümü ve üçüncü gün P1 içerikleridir. Ekip dışından ilk oynayış ve ayrı Windows PC'de donanım kontrolü ayrıca yapılmalıdır. Teşhir dolapları çevre dekorudur. Balık/tepsi modeli açıkça atanmış basit bir Editor yapımı prefabdır; ürün havuzunda model bulunamadığında üretilen bir yedek nesne değildir.
+![Düzeltilen sol afiş](Docs/Previews/LeftPoster.png)

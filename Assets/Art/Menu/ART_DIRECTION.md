@@ -5,8 +5,8 @@ Ana palet: koyu Akdeniz yeşili, sıcak keten, turkuaz, sınırlı terrakota. Me
 | Dosya | Kullanım | Kaynak |
 |---|---|---|
 | AntalyaHarbour.png | Menü arka planı | Built-in image generation; yeni illüstrasyon |
-| AntalyaHeat.png | Birinci gün gazete haberi | Built-in image generation; yeni illüstrasyon |
-| CarettaCoast.png | İkinci gün gazete fotoğrafı | Built-in image generation; yeni illüstrasyon |
+| AntalyaHeat.png | Önceki haber illüstrasyonu; referans arşivi | Built-in image generation; yeni illüstrasyon |
+| CarettaCoast.png | Önceki haber illüstrasyonu; referans arşivi | Built-in image generation; yeni illüstrasyon |
 | COP31Horizontal.png | Menüde resmî kimlik | COP31 kurumsal kimlik indirmesi; özgün renk ve oran korunur |
 | SharedButtonLight.png | Menü düğmeleri | Kullanıcının Feathered Fortune / PigeonSimulator5 proje arşivi |
 

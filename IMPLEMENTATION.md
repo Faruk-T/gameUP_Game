@@ -1,5 +1,7 @@
 # GameUP32 — Uygulama Planı
 
+> **Aktif kapsam güncellendi:** `feat/lead-category-progression`: yalnız Esmanur'un 31 modeli, üç gün (et/süt → meyve → yumurta), kodla üretilen sağlam/bozuk görünümler, ürünlerle eşleşen üç gazete ve üçüncü gün soğuk zincir faksı. Teşhir dolapları kaldırıldı. Güncel plan [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md), kod/çalıştırma [LEAD_INTEGRATION.md](LEAD_INTEGRATION.md). Aşağıdaki iki günlük balıklı plan tarihsel tasarım kaydıdır; aktif veri Assets/Data/Campaign altındadır.
+
 > Hedef: 24 saat veya daha kısa sürede, Windows PC için baştan sona tamamlanabilen bir jam oyunu.
 > Çekirdek kapsam: tek oda, sabit masa başında birinci şahıs bakış, iki oyun günü, 12 ürün, bir acil faks.
 > Unity Editor: **6000.3.13f1**.

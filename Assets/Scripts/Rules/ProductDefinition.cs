@@ -18,6 +18,8 @@ namespace GameUP.Contracts
         [SerializeField] private ProductCategory category = ProductCategory.Dairy;
         [SerializeField] private string displayName = "Korkuteli Yanıksı Dondurması";
         [SerializeField] private GameObject prefab;
+        [SerializeField] private GameObject modelSource;
+        [SerializeField] private FoodCondition condition;
         [SerializeField] private Sprite productIcon;
 
         [Header("Etiket & Tarih Bilgileri (Oyuncuya Görünür)")]
@@ -71,6 +73,8 @@ namespace GameUP.Contracts
         public ProductCategory Category => category;
         public string DisplayName => displayName;
         public GameObject Prefab => prefab;
+        public GameObject ModelSource => modelSource;
+        public FoodCondition Condition => condition;
         public Sprite ProductIcon => productIcon;
         public GameDate ExpiryDate => expiryDate;
         public string DeclaredProductType => declaredProductType;

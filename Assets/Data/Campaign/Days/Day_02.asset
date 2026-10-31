@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb90b36d054661489c2f247fd1385a5, type: 3}
+  m_Name: Day_02
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DayDefinition
+  dayId: DAY_02
+  dayNumber: 2
+  dayTitle: "YEN\u0130 GRUP / MEYVELER"
+  gameDate:
+    Day: 2
+    Month: 11
+    Year: 2026
+  primaryCategory: 4
+  categoryUnlocks: 04000000
+  morningNewspaper: {fileID: 11400000, guid: 025d6bcb43c7ed248809227faa4048b1, type: 2}
+  initialRules:
+  - {fileID: 11400000, guid: 6471f11ab8f3c7c40a1d77f7c0922c3c, type: 2}
+  - {fileID: 11400000, guid: acf24bef777c9f64489a78c3056e4b1f, type: 2}
+  - {fileID: 11400000, guid: 3a715f36abc9ba84abfce5bc8a566243, type: 2}
+  - {fileID: 11400000, guid: 13b043eecab3c15408a869e80dd004eb, type: 2}
+  products:
+  - {fileID: 11400000, guid: 4af4656708da2ce4a834602b6d8f85a6, type: 2}
+  - {fileID: 11400000, guid: ffb3faa409b76d3408c357fcd0de4748, type: 2}
+  - {fileID: 11400000, guid: 12e3d2b5c6781c34aa08e0a33d0345e5, type: 2}
+  - {fileID: 11400000, guid: 320647a5ff10e3240b74b858aee12d38, type: 2}
+  - {fileID: 11400000, guid: e18af8ae5768ef549ab23348f7a750fc, type: 2}
+  - {fileID: 11400000, guid: 896f48fd6e6e7cd46a4f462812e45296, type: 2}
+  - {fileID: 11400000, guid: 9b601d7d7b9dce947ab862c70c95363c, type: 2}
+  - {fileID: 11400000, guid: 8fa80eaa17f19ba4eb65eb25d244f46f, type: 2}
+  - {fileID: 11400000, guid: e94b4d7ad0df7eb4fabb64043a4f2841, type: 2}
+  - {fileID: 11400000, guid: 1457109f654960c42bddddb0729dccec, type: 2}
+  emergencyEvent:
+    hasEmergency: 0
+    triggerAfterCompletedProducts: 3
+    displayedClockTime: 12.00
+    newRule: {fileID: 0}
+    emergencyDocument: {fileID: 0}

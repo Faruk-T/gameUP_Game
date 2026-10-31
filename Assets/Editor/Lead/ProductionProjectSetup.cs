@@ -21,9 +21,12 @@ namespace GameUp.Editor
     {
         public const string FirstPath="Assets/Scenes/First.unity", MenuPath="Assets/Scenes/Menu.unity", GamePath="Assets/Scenes/Game.unity";
         internal const string Art="Assets/Art/Workstation", Products="Assets/Prefabs/Products";
-        internal static DayDefinition[] Days() => new[] {
-            AssetDatabase.LoadAssetAtPath<DayDefinition>("Assets/Data/Days/Day_01_Dairy.asset"),
-            AssetDatabase.LoadAssetAtPath<DayDefinition>("Assets/Data/Days/Day_02_Fish.asset") };
+        internal static DayDefinition[] Days()
+        {
+            var campaign=AssetDatabase.LoadAssetAtPath<CampaignDefinition>(CampaignAuthoring.CatalogPath);
+            if(!campaign||campaign.Days.Count==0)throw new InvalidOperationException("Assign the saved category campaign.");
+            return campaign.Days.ToArray();
+        }
 
         [InitializeOnLoadMethod]
         private static void ConfigureEditorStart() => EditorApplication.delayCall += () =>
@@ -38,12 +41,7 @@ namespace GameUp.Editor
             foreach(var file in new[]{"AntalyaHarbour","CarettaCoast","AntalyaHeat","COP31Horizontal","SharedButtonLight"})
                 ImportSprite("Assets/Art/Menu/"+file+".png",file=="AntalyaHarbour"?2048:file=="COP31Horizontal"?1024:1024);
             ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
-            var days=Days(); if(days.Any(d=>!d)) throw new InvalidOperationException("Both authored campaign days are required.");
-            Set(days[0].MorningNewspaper,"illustration",AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/AntalyaHeat.png"));
-            Set(days[1].MorningNewspaper,"illustration",AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/CarettaCoast.png"));
-            NewsText(days[0].MorningNewspaper,"body","Antalya'da artan sıcaklıklar, gıdanın üretimden sofraya güvenle ulaşmasını yeniden gündeme taşıdı. Yerel süt ürünlerinin soğuk zinciri ve doğru etiketlenmesi dikkatle izleniyor.\n\nKıyıdaki gönüllüler ise caretta carettaların yuvalama alanlarında plastik atık topluyor. Daha az atık, hem deniz yaşamı hem de sağlıklı gıda için ortak bir adım.\n\nCOP31 hazırlık günleri / Kurmaca yerel haber");
-            NewsText(days[1].MorningNewspaper,"body","Antalya kıyılarında deniz kirliliği alarmı: bazı balık numunelerinde mikroplastik ve kimyasal kalıntı şüphesi araştırılıyor. Kirlilik yalnızca sofrayı değil, caretta carettaların yaşam alanlarını da etkiliyor.\n\nBir balığın dış görünüşü, temiz olduğunu kanıtlamaz. Laboratuvar raporunu kontrol edin; yeni kaynak yasakları için Bakanlık faksını takip edin.\n\nCOP31 hazırlık günleri / Kurmaca yerel haber");
-            CreateNotification(); ProductAuthoring.Create(days);
+            CampaignAuthoring.Create(); CreateNotification(); ProductAuthoring.Create(Days());
             var defaults=AssetDatabase.LoadAssetAtPath<UserSettingsDefaults>("Assets/Data/Application/SettingsDefaults.asset");
             if(!defaults){defaults=ScriptableObject.CreateInstance<UserSettingsDefaults>();AssetDatabase.CreateAsset(defaults,"Assets/Data/Application/SettingsDefaults.asset");}
             AssetDatabase.SaveAssets(); First(); Menu(); WorkstationAuthoring.Game();
@@ -59,11 +57,10 @@ namespace GameUp.Editor
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop play mode before authoring.");
             ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
+            CampaignAuthoring.Create();ProductAuthoring.Create(Days());
             WorkstationAuthoring.Game();AssetDatabase.SaveAssets();ArtistModelAudit.Generate();
             EditorSceneManager.OpenScene(FirstPath);Debug.Log("GAME_AUTHORING_OK room, newspaper and artist model references");
         }
-        private static void NewsText(UnityEngine.Object owner,string field,string value)
-        {var so=new SerializedObject(owner);so.FindProperty(field).stringValue=value;so.ApplyModifiedPropertiesWithoutUndo();}
         private static void ImportSprite(string path,int size)
         {
             var importer=(TextureImporter)AssetImporter.GetAtPath(path);

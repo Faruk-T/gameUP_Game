@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7535a82db7ed409da84da8d769e62f5a, type: 3}
+  m_Name: News_1
+  m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.DocumentDefinition
+  documentId: DOC_NEWS_1
+  documentType: 0
+  title: "K\xFCresel \u0131s\u0131nma, sofralar\u0131n gelece\u011Fini tehdit ediyor"
+  body: "\u0130klim krizi yaln\u0131zca yaz aylar\u0131n\u0131n konusu de\u011Fil.
+    De\u011Fi\u015Fen ya\u011F\u0131\u015Flar, kurakl\u0131k ve a\u015F\u0131r\u0131
+    hava olaylar\u0131 d\xFCnya genelinde g\u0131da \xFCretimini etkiliyor. Kas\u0131m
+    ay\u0131nda COP31'e haz\u0131rlanan Antalya'da sofran\u0131n yar\u0131n\u0131
+    konu\u015Fuluyor.\n\nBug\xFCn masada et ve s\xFCt \xFCr\xFCnleri var. SKT, etiket
+    ve g\xF6r\xFCn\xFCr bozulmay\u0131 inceleyin. At\u0131\u011F\u0131 kayna\u011F\u0131nda
+    ay\u0131rmak, k\u0131y\u0131lar\u0131 ve caretta carettalar\u0131n ya\u015Fam
+    alanlar\u0131n\u0131 korumaya da yard\u0131mc\u0131 olur."
+  taskInstructionBox: "A\xC7ILAN GRUPLAR / ET VE S\xDCT \xDCR\xDCNLER\u0130"
+  illustration: {fileID: 21300000, guid: 97a8e86583fc5294e8b7a7814b8c03d7, type: 3}
+  relatedRuleIds:
+  - R_EXPIRY
+  - R_IDENTITY
+  - R_SPOILAGE
+  requiresExplicitAcknowledge: 1

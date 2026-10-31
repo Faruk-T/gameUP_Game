@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8340481477465197977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2738961904047360590}
+  m_Layer: 0
+  m_Name: Pineapple_Spoiled
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2738961904047360590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340481477465197977}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8121770928291292670}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8886431005770130437
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2738961904047360590}
+    m_Modifications:
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00000014714897
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.000000016763819
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455733758976173095, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f6fa1afb8f5bab40bf628b510035126, type: 2}
+    - target: {fileID: 6492598228655074905, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+      propertyPath: m_Name
+      value: Pineapple
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+--- !u!4 &8121770928291292670 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 856988268021383675, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
+  m_PrefabInstance: {fileID: 8886431005770130437}
+  m_PrefabAsset: {fileID: 0}

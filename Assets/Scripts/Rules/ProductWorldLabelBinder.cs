@@ -18,8 +18,8 @@ namespace GameUP.Rules
         {
             if (!definition || !frontLabelText || !backLabelText) throw new InvalidOperationException("Product labels require a definition and both authored text faces.");
             productDefinition = definition;
-            frontLabelText.text = definition.GetFormattedFrontLabel();
-            backLabelText.text = definition.GetFormattedBackLabel();
+            frontLabelText.text = definition.DisplayName + "\n" + definition.DefinitionId;
+            backLabelText.text = "SKT: " + definition.ExpiryDate + "\n" + definition.SourceRegion.ToTurkishText();
         }
     }
 }

@@ -86,6 +86,14 @@ namespace GameUP.Rules
 
             switch (rule.RuleType)
             {
+                case RuleType.VisibleSpoilage:
+                    if (product.Condition != FoodCondition.Spoiled) return false;
+                    failureReason = $"[{rule.RuleId}] Görünür bozulma: küf, renk değişimi veya şişme";
+                    return true;
+                case RuleType.SourceRegionBan:
+                    if (product.SourceRegion != rule.BannedSourceRegion || rule.BannedSourceRegion == SourceRegion.None) return false;
+                    failureReason = $"[{rule.RuleId}] Geri çağrılan kaynak partisi: {product.SourceRegion.ToTurkishText()}";
+                    return true;
                 case RuleType.ExpiryDate:
                 {
                     // Bölüm 9: ExpiryDate < GameDate geçersizdir.

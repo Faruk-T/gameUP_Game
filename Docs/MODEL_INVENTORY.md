@@ -1,51 +1,47 @@
 # Esmanur model envanteri
 
-Kaynak: Esmanur / esmnrrr, `feature/Objects`, commit `0dc833b` (31 Ekim 2026). Bu rapor Unity AssetDatabase bağımlılıklarıyla üretilir; dosyanın repoda olması ile sahnede kullanılması ayrı sayılır.
+Kaynak: Esmanur / esmnrrr, feature/Objects, commit 0dc833b. Aktif oyun yalnız bu kaynak ürün modellerini kullanır.
 
-- Sanatçı prefabı: **31**
-- İki günlük oynanışta farklı kaynak prefab: **5**
-- Sahnelere bağlı toplam: **31**
-- Sahneye bağlanmamış: **0**
+- Kaynak prefab: **31**
+- Oynanış ürünü: **31**
+- Gün: **3**
+- Kodla hazırlanan görünüm: her model için Fresh + Spoiled (**62 prefab varyantı**)
+- Teşhir dolabı: **0**
 
-Önceki entegrasyonda 5 kaynak prefab oynanışa bağlıydı; 26 prefab sahneye bağlanmamıştı. Bu dalda kalan süt, et/yumurta ve meyve modelleri etiketli numune/teşhir dolaplarına yerleştirilmiştir. Raf ürünleri dekor nesnesidir; iki günlük kampanyanın karar listesine eklenmez.
+| Kaynak model | Gün / ürün | Görünüm |
+|---|---|---|
+| [Cantaloupe](../Assets/Art/Urunler/Mesh/Cantaloupe.prefab) | 2 / D2-01 | Fresh |
+| [Cantaloupe_01](../Assets/Art/Urunler/Mesh/Cantaloupe_01.prefab) | 2 / D2-04 | Fresh |
+| [Eggs](../Assets/Art/Urunler/Mesh/Eggs.prefab) | 3 / D3-02 | Fresh |
+| [Papaya](../Assets/Art/Urunler/Mesh/Papaya.prefab) | 2 / D2-02 | Spoiled |
+| [Papaya_01](../Assets/Art/Urunler/Mesh/Papaya_01.prefab) | 2 / D2-05 | Fresh |
+| [Pineapple](../Assets/Art/Urunler/Mesh/Pineapple.prefab) | 2 / D2-03 | Fresh |
+| [Pineapple_01](../Assets/Art/Urunler/Mesh/Pineapple_01.prefab) | 2 / D2-06 | Spoiled |
+| [Strawberry](../Assets/Art/Urunler/Mesh/Strawberry.prefab) | 3 / D3-05 | Fresh |
+| [Strawberry_01](../Assets/Art/Urunler/Mesh/Strawberry_01.prefab) | 3 / D3-07 | Fresh |
+| [Watermelon](../Assets/Art/Urunler/Mesh/Watermelon.prefab) | 3 / D3-06 | Spoiled |
+| [Watermelon_01](../Assets/Art/Urunler/Mesh/Watermelon_01.prefab) | 3 / D3-10 | Fresh |
+| [Yoghurt_01](../Assets/Art/Urunler/Mesh/Yoghurt_01.prefab) | 1 / D1-04 | Fresh |
+| [Yoghurt_02](../Assets/Art/Urunler/Mesh/Yoghurt_02.prefab) | 2 / D2-09 | Fresh |
+| [Yoghurt_03](../Assets/Art/Urunler/Mesh/Yoghurt_03.prefab) | 3 / D3-12 | Spoiled |
+| [cheese1](../Assets/Art/Urunler/Mesh/cheese1.prefab) | 1 / D1-03 | Fresh |
+| [cheese2](../Assets/Art/Urunler/Mesh/cheese2.prefab) | 1 / D1-07 | Spoiled |
+| [cheese3](../Assets/Art/Urunler/Mesh/cheese3.prefab) | 2 / D2-08 | Fresh |
+| [cheese4](../Assets/Art/Urunler/Mesh/cheese4.prefab) | 3 / D3-04 | Fresh |
+| [cheese5](../Assets/Art/Urunler/Mesh/cheese5.prefab) | 3 / D3-09 | Fresh |
+| [cheese6](../Assets/Art/Urunler/Mesh/cheese6.prefab) | 3 / D3-13 | Fresh |
+| [meat1](../Assets/Art/Urunler/Mesh/meat1.prefab) | 1 / D1-02 | Spoiled |
+| [meat2](../Assets/Art/Urunler/Mesh/meat2.prefab) | 1 / D1-05 | Fresh |
+| [meat3](../Assets/Art/Urunler/Mesh/meat3.prefab) | 1 / D1-08 | Fresh |
+| [meat4](../Assets/Art/Urunler/Mesh/meat4.prefab) | 2 / D2-10 | Fresh |
+| [meat5](../Assets/Art/Urunler/Mesh/meat5.prefab) | 3 / D3-03 | Fresh |
+| [milk1](../Assets/Art/Urunler/Mesh/milk1.prefab) | 1 / D1-01 | Fresh |
+| [milk2](../Assets/Art/Urunler/Mesh/milk2.prefab) | 1 / D1-06 | Fresh |
+| [milk3](../Assets/Art/Urunler/Mesh/milk3.prefab) | 2 / D2-07 | Fresh |
+| [milk4](../Assets/Art/Urunler/Mesh/milk4.prefab) | 3 / D3-01 | Fresh |
+| [milk5](../Assets/Art/Urunler/Mesh/milk5.prefab) | 3 / D3-08 | Fresh |
+| [milk6](../Assets/Art/Urunler/Mesh/milk6.prefab) | 3 / D3-11 | Fresh |
 
-| Kaynak prefab | Bağlantı |
-|---|---|
-| [Cantaloupe](../Assets/Art/Urunler/Mesh/Cantaloupe.prefab) | Numune / teşhir dolabı |
-| [Cantaloupe_01](../Assets/Art/Urunler/Mesh/Cantaloupe_01.prefab) | Numune / teşhir dolabı |
-| [Eggs](../Assets/Art/Urunler/Mesh/Eggs.prefab) | Numune / teşhir dolabı |
-| [Papaya](../Assets/Art/Urunler/Mesh/Papaya.prefab) | Numune / teşhir dolabı |
-| [Papaya_01](../Assets/Art/Urunler/Mesh/Papaya_01.prefab) | Numune / teşhir dolabı |
-| [Pineapple](../Assets/Art/Urunler/Mesh/Pineapple.prefab) | Numune / teşhir dolabı |
-| [Pineapple_01](../Assets/Art/Urunler/Mesh/Pineapple_01.prefab) | Numune / teşhir dolabı |
-| [Strawberry](../Assets/Art/Urunler/Mesh/Strawberry.prefab) | Numune / teşhir dolabı |
-| [Strawberry_01](../Assets/Art/Urunler/Mesh/Strawberry_01.prefab) | Numune / teşhir dolabı |
-| [Watermelon](../Assets/Art/Urunler/Mesh/Watermelon.prefab) | Numune / teşhir dolabı |
-| [Watermelon_01](../Assets/Art/Urunler/Mesh/Watermelon_01.prefab) | Numune / teşhir dolabı |
-| [Yoghurt_01](../Assets/Art/Urunler/Mesh/Yoghurt_01.prefab) | P0 denetim ürünü |
-| [Yoghurt_02](../Assets/Art/Urunler/Mesh/Yoghurt_02.prefab) | P0 denetim ürünü |
-| [Yoghurt_03](../Assets/Art/Urunler/Mesh/Yoghurt_03.prefab) | P0 denetim ürünü |
-| [cheese1](../Assets/Art/Urunler/Mesh/cheese1.prefab) | P0 denetim ürünü |
-| [cheese2](../Assets/Art/Urunler/Mesh/cheese2.prefab) | Numune / teşhir dolabı |
-| [cheese3](../Assets/Art/Urunler/Mesh/cheese3.prefab) | P0 denetim ürünü |
-| [cheese4](../Assets/Art/Urunler/Mesh/cheese4.prefab) | Numune / teşhir dolabı |
-| [cheese5](../Assets/Art/Urunler/Mesh/cheese5.prefab) | Numune / teşhir dolabı |
-| [cheese6](../Assets/Art/Urunler/Mesh/cheese6.prefab) | Numune / teşhir dolabı |
-| [meat1](../Assets/Art/Urunler/Mesh/meat1.prefab) | Numune / teşhir dolabı |
-| [meat2](../Assets/Art/Urunler/Mesh/meat2.prefab) | Numune / teşhir dolabı |
-| [meat3](../Assets/Art/Urunler/Mesh/meat3.prefab) | Numune / teşhir dolabı |
-| [meat4](../Assets/Art/Urunler/Mesh/meat4.prefab) | Numune / teşhir dolabı |
-| [meat5](../Assets/Art/Urunler/Mesh/meat5.prefab) | Numune / teşhir dolabı |
-| [milk1](../Assets/Art/Urunler/Mesh/milk1.prefab) | Numune / teşhir dolabı |
-| [milk2](../Assets/Art/Urunler/Mesh/milk2.prefab) | Numune / teşhir dolabı |
-| [milk3](../Assets/Art/Urunler/Mesh/milk3.prefab) | Numune / teşhir dolabı |
-| [milk4](../Assets/Art/Urunler/Mesh/milk4.prefab) | Numune / teşhir dolabı |
-| [milk5](../Assets/Art/Urunler/Mesh/milk5.prefab) | Numune / teşhir dolabı |
-| [milk6](../Assets/Art/Urunler/Mesh/milk6.prefab) | Numune / teşhir dolabı |
+Varyantlar aynı sanatçı mesh'lerini kullanır; yeni ürün modeli import edilmez. Spoiled görünümünde boyama/küf deseni ve ambalaj şişmesi shader koduyla belirlenir. Malzemeler Editor'de hazırlanır, çalışma sırasında prefab veya materyal oluşturulmaz.
 
-## FBX alt mesh kontrolü
-
-FBX içinde **31** mesh bulunur. Sanatçının prefabları tarafından referanslanmayan alt mesh: **0**. Mesh sayısı ürün sayısı değildir; kapak, gövde ve parçalar ayrı mesh olabilir.
-
-
-Balık/tepsi, Esmanur'un kaynak prefabları arasında bulunmaz. Kampanyadaki balıklar açıkça atanmış Editor yapımı `Assets/Prefabs/Products/FishTray.prefab` modelini kullanır.
+Ürün bazındaki onay/red matrisi: [CAMPAIGN_MATRIX.md](CAMPAIGN_MATRIX.md). Önceki kampanya verileri GUID'leri korunarak Assets/Tests/Editor/LegacyContent altında referans arşivine taşınmıştır; aktif sahne bu arşive bağlı değildir.

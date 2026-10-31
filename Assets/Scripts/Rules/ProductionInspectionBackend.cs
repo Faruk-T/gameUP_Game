@@ -159,16 +159,19 @@ namespace GameUP.Rules
             if (indexed) return;
             if (configuredDays == null || configuredDays.Count == 0) throw new InvalidOperationException("Assign campaign DayDefinition assets before starting the game.");
             products.Clear(); rules.Clear(); ruleEntries.Clear();
+            var unlocked = new HashSet<Data.ProductCategory>();
             foreach (var day in configuredDays)
             {
                 if (!day || string.IsNullOrWhiteSpace(day.DayId) || !day.MorningNewspaper || day.Products.Count == 0)
                     throw new InvalidOperationException("Campaign contains an incomplete day.");
                 foreach (var rule in day.InitialRules) IndexRule(rule);
+                foreach (var category in day.CategoryUnlocks) unlocked.Add(category);
                 if (day.EmergencyEvent.HasEmergency) IndexRule(day.EmergencyEvent.NewRule);
                 foreach (var item in day.Products)
                 {
                     if (!item || string.IsNullOrWhiteSpace(item.DefinitionId) || products.ContainsKey(item.DefinitionId))
                         throw new InvalidOperationException("Campaign products must have unique configured identities.");
+                    if (!unlocked.Contains(item.Category)) throw new InvalidOperationException("Product category is locked for " + day.DayId + ": " + item.Category);
                     products.Add(item.DefinitionId, item);
                 }
             }
@@ -184,7 +187,7 @@ namespace GameUP.Rules
         }
         private void RequireActiveRun(ProductSession session)
         { if (session == null || activeRun == Guid.Empty || session.Key.RunId != activeRun) throw new InvalidOperationException("Stale inspection session."); }
-        private static string LeadDayId(string id) => id == "DAY_01" ? "day-1" : id == "DAY_02" ? "day-2" : id;
+        private static string LeadDayId(string id) => id.StartsWith("DAY_", StringComparison.Ordinal) && int.TryParse(id.Substring(4), out int number) ? "day-" + number : id;
         private static string DocumentText(Data.DocumentDefinition document) => document.Body + "\n\n" + document.TaskInstructionBox;
         private static InspectionSummary EmptySummary() => new InspectionSummary(0, 0, 0, 0, 0, 0, 0);
         private static InspectionSummary Add(InspectionSummary s, ProductOutcome o) => new InspectionSummary(s.Total + 1,

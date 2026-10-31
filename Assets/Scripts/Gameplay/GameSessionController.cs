@@ -96,7 +96,7 @@ namespace GameUp.Gameplay
             if (!Documents.IsOpen && !pause.IsOpen && (Flow.State == FlowState.DaySummary || Flow.State == FlowState.GameSummary))
             {
                 bool final = Flow.State == FlowState.GameSummary;
-                resultsView.Show(final ? Flow.RunSummary : Flow.DaySummary, Flow.DayIndex + 1, final);
+                resultsView.Show(final ? Flow.RunSummary : Flow.DaySummary, Flow.DayIndex + 1, final, Flow.DayIndex + 1 < backend.ConfiguredDays.Count);
             }
             else resultsView.Hide();
             Refreshed?.Invoke();
@@ -154,9 +154,9 @@ namespace GameUp.Gameplay
                 {
                     if (!inspected) return "1 / Ürüne bakıp E ile incele. Fareyle döndür; ön ve arka etiketi oku.";
                     if (!handbookRead) return "2 / B ile el kitapçığını aç ve SKT kuralını kontrol et.";
-                    return "3 / SKT'yi oyun tarihiyle karşılaştır; W ile onay veya R ile red ver.";
+                    return "3 / SKT, etiket ve bozulma izlerini kontrol et; W ile onay veya R ile red ver.";
                 }
-                return Flow.DayIndex == 1 ? "Kaynak ve habitatı incele. F ile analiz al; güncel faks kurallarını uygula." : "Etiket, SKT ve içerik bilgilerini karşılaştır.";
+                return "Küf, renk değişimi ve şişmeyi incele. F ile analiz al; kaynağı güncel faksla karşılaştır.";
             }
         }
         private void OnSceneReady(string scene) { if (scene == ApplicationRoot.GameScene) Render(); }

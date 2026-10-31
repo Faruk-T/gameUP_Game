@@ -55,6 +55,7 @@ namespace GameUP.Contracts
         [SerializeField] private string dayTitle = "1. Gün — Süt Ürünleri Denetimi";
         [SerializeField] private GameDate gameDate = new GameDate(1, 11, 2026);
         [SerializeField] private ProductCategory primaryCategory = ProductCategory.Dairy;
+        [SerializeField] private List<ProductCategory> categoryUnlocks = new List<ProductCategory>();
         [SerializeField] private DocumentDefinition morningNewspaper;
         [SerializeField] private List<RuleDefinition> initialRules = new List<RuleDefinition>();
         [SerializeField] private List<ProductDefinition> products = new List<ProductDefinition>();
@@ -65,6 +66,7 @@ namespace GameUP.Contracts
         public string DayTitle => dayTitle;
         public GameDate GameDate => gameDate;
         public ProductCategory PrimaryCategory => primaryCategory;
+        public IReadOnlyList<ProductCategory> CategoryUnlocks => categoryUnlocks;
         public DocumentDefinition MorningNewspaper => morningNewspaper;
         public IReadOnlyList<RuleDefinition> InitialRules => initialRules;
         public IReadOnlyList<ProductDefinition> Products => products;
@@ -79,13 +81,15 @@ namespace GameUP.Contracts
             DocumentDefinition newspaper,
             List<RuleDefinition> startRules,
             List<ProductDefinition> dayProducts,
-            EmergencyDefinition emergency = null)
+            EmergencyDefinition emergency = null,
+            ProductCategory[] unlocks = null)
         {
             dayId = id;
             dayNumber = number;
             dayTitle = title;
             gameDate = date;
             primaryCategory = category;
+            categoryUnlocks = new List<ProductCategory>(unlocks ?? new[] { category });
             morningNewspaper = newspaper;
             initialRules = startRules ?? new List<RuleDefinition>();
             products = dayProducts ?? new List<ProductDefinition>();
