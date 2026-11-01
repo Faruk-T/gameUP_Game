@@ -123,12 +123,13 @@ namespace GameUp.Editor
                         : Ingredients(spec.Model, category);
                     var product=Asset<ProductDefinition>($"{Root}/Products/{id}.asset");
                     string packagingLabel = PackagingDescriptionFor(spec.Model, packaging);
-                    string finding = BuildAnalysisFinding(name, spec.Model, category, spec.Skt, spec.Region, declaredType, listedType, ingredients, spoiled, polluted, mislabel);
+                    
                     product.InitializeData(id,category,name,spec.Skt,declaredType,
                         listedType,ingredients,spec.Region,FishHabitat.None,polluted,
-                        finding,
+                        string.Empty,
                         packaging,polluted,packagingLabel);
                     Set(product,"modelSource",source);var so=new SerializedObject(product);so.FindProperty("condition").enumValueIndex=spoiled?1:0;so.ApplyModifiedPropertiesWithoutUndo();
+                    ProductLaboratoryAuthoring.Configure(product);
                     EditorUtility.SetDirty(product);
                     products.Add(product);manifest.AppendLine($"| {d+1} / {id} | {name} | {spec.Model} | {spec.Skt} | {(spec.Issues==Issue.None?"ONAY":"RED")} | {spec.Issues} |");
                 }
@@ -258,45 +259,5 @@ namespace GameUp.Editor
             return "%100 yerel hasat taze meyve.";
         }
 
-        private static string BuildAnalysisFinding(
-            string name, string model, ProductCategory category, GameDate skt, SourceRegion region,
-            string declaredType, string listedType, string ingredients, bool spoiled, bool polluted, bool mislabel)
-        {
-            var sb = new StringBuilder();
-            if (polluted)
-            {
-                string contaminant = category == ProductCategory.Fruit
-                    ? "yasaklı organofosfat pestisit (tarım ilacı) ve ağır metal kalıntısı"
-                    : "endüstriyel mikroplastik ve kimyasal dioksin bulaşması";
-                sb.AppendLine("• ÇEVRESEL KALINTI TESTİ: POZİTİF (TEHLİKELİ) — " + name + " numunesinde " + contaminant + " saptandı! Ürün KESİN RED edilmeli ve ambalajı KIRMIZI (Kontamine Atık) kutusuna atılmalıdır.");
-            }
-            else
-            {
-                sb.AppendLine("• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — " + name + " numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.");
-            }
-
-            if (spoiled)
-            {
-                sb.AppendLine("• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).");
-            }
-            else
-            {
-                sb.AppendLine("• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.");
-            }
-
-            if (mislabel)
-            {
-                sb.AppendLine("• İÇERİK & TÜR DOĞRULAMASI: UYUMSUZ (TAKLİT / TAĞŞİŞ) — Ön etiket beyanı ('" + declaredType + "') ile gerçek içerik ('" + listedType + "') uyuşmuyor (RED).");
-            }
-            else
-            {
-                sb.AppendLine("• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (" + ingredients + ") ve yasal tür beyanı ('" + listedType + "') birbiriyle uyumlu.");
-            }
-
-            sb.Append("• KAYNAK & SKT KAYDI: Kaynak Bölgesi: ").Append(region.ToTurkishText())
-              .Append("  |  Etiket SKT: ").Append(skt)
-              .Append(" (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın).");
-            return sb.ToString();
-        }
     }
 }

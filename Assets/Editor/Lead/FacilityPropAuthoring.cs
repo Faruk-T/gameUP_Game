@@ -20,10 +20,12 @@ namespace GameUp.Editor
         internal static GameObject ArtistPart(string asset,string name,Transform parent,Vector3 center,Vector3 size,float yaw=0)
         {
             var source=AssetDatabase.LoadAssetAtPath<GameObject>(asset).GetComponentsInChildren<MeshRenderer>().Single(r=>r.name==name);
-            var part=new GameObject(name,typeof(MeshFilter),typeof(MeshRenderer));
+            var container=new GameObject(name);
+            var part=new GameObject(name,typeof(MeshFilter),typeof(MeshRenderer));part.transform.SetParent(container.transform,false);
+            part.transform.localRotation=source.transform.rotation;part.transform.localScale=source.transform.lossyScale;
             part.GetComponent<MeshFilter>().sharedMesh=source.GetComponent<MeshFilter>().sharedMesh;
             part.GetComponent<MeshRenderer>().sharedMaterials=source.sharedMaterials;
-            var root=FitInstance(part,parent,center,size,Quaternion.Euler(0,yaw,0),null);
+            var root=FitInstance(container,parent,center,size,Quaternion.Euler(0,yaw,0),null);
             return root;
         }
         internal static GameObject Fit(GameObject source,Transform parent,Vector3 center,Vector3 size,Quaternion rotation,Material paint=null)
@@ -31,7 +33,7 @@ namespace GameUp.Editor
             if(!source)throw new InvalidOperationException("A saved prop asset is required.");
             return FitInstance((GameObject)PrefabUtility.InstantiatePrefab(source),parent,center,size,rotation,paint);
         }
-        private static GameObject FitInstance(GameObject instance,Transform parent,Vector3 center,Vector3 size,Quaternion rotation,Material paint)
+        internal static GameObject FitInstance(GameObject instance,Transform parent,Vector3 center,Vector3 size,Quaternion rotation,Material paint)
         {
             instance.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);
             var renderers=instance.GetComponentsInChildren<Renderer>();var bounds=renderers[0].bounds;

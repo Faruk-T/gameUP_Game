@@ -13,7 +13,7 @@ Shader "Hidden/GameUP/ProductUVBake"
             sampler2D _OriginalTex, _FrontPrint, _BackPrint;
             float4 _OriginalST, _OriginalColor, _PrintCenter, _PrintSize;
             float4x4 _ToProduct, _NormalToProduct;
-            float _Milk, _Top;
+            float _Milk, _Yogurt, _Top, _PrintAllowed;
             struct Input { float4 vertex:POSITION; float3 normal:NORMAL; float2 uv:TEXCOORD0; float2 atlas:TEXCOORD1; };
             struct Output { float4 vertex:SV_POSITION; float2 uv:TEXCOORD0; float3 productPosition:TEXCOORD1; float3 normal:TEXCOORD2; };
             Output Vert(Input v)
@@ -28,10 +28,14 @@ Shader "Hidden/GameUP/ProductUVBake"
             fixed4 Frag(Output i):SV_Target
             {
                 float3 normal=normalize(i.normal); float facing=_PrintSize.z>.5?normal.y:-normal.z; float3 d=i.productPosition-_PrintCenter.xyz;
-                float2 uv=float2((facing>0?d.x:-d.x)/_PrintSize.x+.5,(_PrintSize.z>.5?(facing>0?d.z:-d.z):d.y)/_PrintSize.y+.5);
+                float2 uv=float2((facing>0?d.x:-d.x)/_PrintSize.x+.5,(_PrintSize.z>.5?d.z:d.y)/_PrintSize.y+.5);
                 fixed4 color=tex2D(_OriginalTex,i.uv)*_OriginalColor;
+                // The source yogurt lid carries a baked 07 DIC 2021 date. Remove it in source UV
+                // space before projecting current campaign text, including surfaces outside the print card.
+                if(_Yogurt>.5 && i.uv.x>.33 && i.uv.x<.67 && i.uv.y>.515 && i.uv.y<.58)
+                    color=tex2D(_OriginalTex,float2(i.uv.x,.49))*_OriginalColor;
                 if(_Milk>.5&&abs(facing)>.55&&i.productPosition.y>_Top-.11)color.rgb=float3(.95,.93,.84);
-                if(abs(facing)>.28&&all(uv>=0)&&all(uv<=1))color=facing>0?tex2D(_FrontPrint,uv):tex2D(_BackPrint,uv);
+                if(_PrintAllowed>.5&&abs(facing)>.28&&all(uv>=0)&&all(uv<=1))color=facing>0?tex2D(_FrontPrint,uv):tex2D(_BackPrint,uv);
                 return fixed4(color.rgb,1);
             }
             ENDCG

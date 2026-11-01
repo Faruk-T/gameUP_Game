@@ -24,6 +24,7 @@ namespace GameUp.Gameplay
         [SerializeField] private ShorelineTurtle[] turtles;
         [SerializeField] private float quoteEnd = 19, fadeDuration = 1.2f;
         private int captionIndex = -2;
+        private AudioManager audio;
         public bool IsPlaying { get; private set; } = true;
         public double Duration => director.duration;
         public double Elapsed => director.time;
@@ -40,17 +41,26 @@ namespace GameUp.Gameplay
             cinematicCamera.SetActive(true);
             overlay.gameObject.SetActive(true);
             ApplicationRoot.Require().SetWorldInput(false);
+            audio = ApplicationRoot.Require().Audio;
+            audio.BeginOpening();
             Cursor.visible = false;
             director.timeUpdateMode = DirectorUpdateMode.Manual;
             director.Play();
             director.time = 0;
             EvaluatePresentation();
+            audio.SampleOpening(0, true, 0);
+            bool wasAdvancing = true;
             while (director.time < director.duration)
             {
                 yield return null;
-                if (!UnityEngine.Application.isBatchMode && !UnityEngine.Application.isFocused) continue;
+                bool advancing = UnityEngine.Application.isBatchMode || UnityEngine.Application.isFocused;
+                if (!advancing)
+                { audio.SampleOpening(director.time, false, Mathf.InverseLerp(OpeningTiming.CorridorEntry, OpeningTiming.End, (float)director.time)); wasAdvancing = false; continue; }
+                // Discard the focus-return frame's delta so neither the picture nor the voice jumps.
+                if (!wasAdvancing) { audio.SampleOpening(director.time, true, Mathf.InverseLerp(OpeningTiming.CorridorEntry, OpeningTiming.End, (float)director.time)); wasAdvancing = true; continue; }
                 director.time = Math.Min(director.duration, director.time + Time.unscaledDeltaTime);
                 EvaluatePresentation();
+                audio.SampleOpening(director.time, true, Mathf.InverseLerp(OpeningTiming.CorridorEntry, OpeningTiming.End, (float)director.time));
             }
             // Keep the authored final door pose. Manual, paused Timeline performs no further evaluation.
             director.Pause();
@@ -59,8 +69,10 @@ namespace GameUp.Gameplay
             gameplayCamera.SetActive(true);
             gameplayInterface.SetActive(true);
             foreach(var turtle in turtles)turtle.SetDirected(false);
+            audio.EnterWorkstation();
             IsPlaying = false;
         }
+        private void OnDisable() { if (audio) audio.EndOpening(); }
         private void EvaluatePresentation()
         {
             director.Evaluate();

@@ -51,6 +51,7 @@ namespace GameUP.Contracts
     }
 
     public enum FoodCondition { Fresh = 0, Spoiled = 1 }
+    public enum LaboratoryProfile { Unspecified = 0, Milk = 1, Cheese = 2, Yogurt = 3, Meat = 4, Fruit = 5, Eggs = 6 }
 
     /// <summary>
     /// Oyuncu veya sistemin ürün hakkındaki kararı.

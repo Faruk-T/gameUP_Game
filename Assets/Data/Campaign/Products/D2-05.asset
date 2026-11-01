@@ -18,29 +18,22 @@ MonoBehaviour:
   prefab: {fileID: 4798700454994408320, guid: d0dbd7c5a0d4cb74c9400411f816e2ca, type: 3}
   modelSource: {fileID: 3935700974827972925, guid: 3563c20607be79447ba68d72291a6155, type: 3}
   condition: 0
+  laboratoryProfile: 5
+  productionPlace: "Antalya / Gazipa\u015Fa"
   productIcon: {fileID: 0}
   expiryDate:
     Day: 2
     Month: 11
     Year: 2026
-  declaredProductType: "Taze Hasat Meyve (Gazipa\u015Fa Bah\xE7e Papayas\u0131)"
-  listedProductType: "Taze Hasat Meyve (Gazipa\u015Fa Bah\xE7e Papayas\u0131)"
-  ingredientsSummary: '%100 yerel hasat taze meyve.'
-  customFrontLabelNote:
-  customBackLabelNote:
+  declaredProductType: Taze papaya
+  listedProductType: Taze papaya
+  ingredientsSummary: '%100 papaya.'
+  customFrontLabelNote: 
+  customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
-    \u2014 Gazipa\u015Fa Bah\xE7e Papayas\u0131 numunesinde pestisit, a\u011F\u0131r
-    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
-    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
-    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
-    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
-    (%100 yerel hasat taze meyve.) ve yasal t\xFCr beyan\u0131 ('Taze Hasat Meyve
-    (Gazipa\u015Fa Bah\xE7e Papayas\u0131)') birbiriyle uyumlu.\r\n\u2022 KAYNAK
-    & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 02.11.2026 (Vardiya
-    tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  analysisFindingDetail: 
   packagingMaterial: 1
   isPackagingContaminated: 0
   packagingLabelText: "Karton Meyve Kutusu \u2014 K\xE2\u011F\u0131t At\u0131k"
@@ -50,6 +43,6 @@ MonoBehaviour:
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName:
+  trackedIngredientName: 
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

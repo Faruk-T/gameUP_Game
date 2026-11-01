@@ -23,7 +23,8 @@ namespace GameUP.Contracts
             Year = year;
         }
 
-        public bool IsValid => Year >= 2000 && Month >= 1 && Month <= 12 && Day >= 1 && Day <= 31;
+        public bool IsValid => Year >= 2000 && Year <= 9999 && Month >= 1 && Month <= 12 &&
+                               Day >= 1 && Day <= DateTime.DaysInMonth(Year, Month);
 
         public int CompareTo(GameDate other)
         {

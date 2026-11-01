@@ -1,6 +1,6 @@
 Shader "GameUP/Facility/RecyclingBin"
 {
-    Properties { _BaseMap("Artist Surface",2D)="white"{} _ContainerTint("Category Color",Color)=(.2,.4,.6,1) }
+    Properties { [MainTexture] _BaseMap("Artist Surface",2D)="white"{} _ContainerTint("Category Color",Color)=(.2,.4,.6,1) }
     SubShader
     {
         Tags {"RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry"}

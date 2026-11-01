@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4030138558861093789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3023088539674524893}
+  m_Layer: 8
+  m_Name: Model_Strawberry_01_Fresh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3023088539674524893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030138558861093789}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8561020273148549722}
+  m_Father: {fileID: 1033709532267478098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8929395124610480387
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4481254353132000022}
+  - {fileID: 3023088539674524893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1755359105159209191
@@ -66,7 +98,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb914e422ee4d509710c319c1b74d2b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Interaction::GameUP.Interaction.WorkstationTarget
   action: 0
 --- !u!114 &2554218498173903009
@@ -79,58 +111,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f13d6c4e29a4715b02c94a81e73b644, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Rules.ProductWorldLabelBinder
   productDefinition: {fileID: 11400000, guid: 332d7964e30f98748a7e118080b7c32f, type: 2}
   printedSurfaces:
-  - {fileID: 8800501153916078756}
+  - {fileID: 450546658041719511}
   localBounds:
     m_Center: {x: 0, y: 0.15289804, z: 0}
     m_Extent: {x: 0.2695874, y: 0.15289804, z: 0.325}
   inspectionMultiplier: 1.323077
---- !u!1 &8980380352264763779
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4481254353132000022}
-  m_Layer: 8
-  m_Name: Model_Strawberry_01_Fresh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4481254353132000022
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8980380352264763779}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 770074256278714921}
-  m_Father: {fileID: 1033709532267478098}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &7047352042346941836
+  printedLabelSignature: 571d751a952412cbb3c785190f73c29d
+--- !u!1001 &2138147386956131839
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4481254353132000022}
+    m_TransformParent: {fileID: 3023088539674524893}
     m_Modifications:
     - target: {fileID: 2012141962351855400, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: eb577b536b6e83d4abaf441cb6c8d876, type: 2}
     - target: {fileID: 5009190990424300821, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
       propertyPath: m_Layer
@@ -198,20 +199,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9021766464982347210, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
       propertyPath: m_Mesh
-      value:
+      value: 
       objectReference: {fileID: 4300000, guid: a5adb2a8d40afbc498ee5d620a7c0b4b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
---- !u!4 &770074256278714921 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7737996891435890597, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
-  m_PrefabInstance: {fileID: 7047352042346941836}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &8800501153916078756 stripped
+--- !u!23 &450546658041719511 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2012141962351855400, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
-  m_PrefabInstance: {fileID: 7047352042346941836}
+  m_PrefabInstance: {fileID: 2138147386956131839}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8561020273148549722 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7737996891435890597, guid: b8261354b70d1914d8f8a76d50bd3a14, type: 3}
+  m_PrefabInstance: {fileID: 2138147386956131839}
   m_PrefabAsset: {fileID: 0}

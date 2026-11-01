@@ -13,12 +13,14 @@ namespace GameUp.Gameplay
         [SerializeField] private Transform paper, paperStart, paperEnd;
         private Coroutine printing;
         private bool alarming;
+        private AudioManager audio;
         public bool IsAlarming => alarming;
 
         private void Awake()
         {
             if (!indicator || !beacon || !idleBeacon || !alertBeacon || !paper || !paperStart || !paperEnd)
                 throw new InvalidOperationException("Fax requires its saved paper route and alarm references.");
+            audio = ApplicationRoot.Require().Audio;
             ResetPresentation();
         }
 
@@ -26,25 +28,27 @@ namespace GameUp.Gameplay
         {
             if (printing != null) StopCoroutine(printing);
             alarming = alarm;
-            ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Fax);
-            if (alarm) ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Alert);
+            audio.PlayCue(GameAudioCue.Fax);
+            if (alarm) audio.PlayCue(GameAudioCue.Alert);
             printing = StartCoroutine(Animate());
         }
 
         private IEnumerator Animate()
         {
             float elapsed = 0;
+            float duration = audio.FaxDuration;
             bool wasLit=false;
             paper.gameObject.SetActive(true);
             do
             {
                 float previous=elapsed;
                 elapsed += Time.unscaledDeltaTime;
-                if(previous<1.35f)paper.SetPositionAndRotation(Vector3.Lerp(paperStart.position, paperEnd.position, Mathf.Clamp01(elapsed / 1.35f)), paperEnd.rotation);
+                if(previous<duration)paper.SetPositionAndRotation(Vector3.Lerp(paperStart.position, paperEnd.position, Mathf.Clamp01(elapsed / duration)), paperEnd.rotation);
                 bool lit = alarming && Mathf.Repeat(elapsed, .7f) < .38f;
                 if(lit!=wasLit){indicator.enabled = lit; beacon.sharedMaterial = lit ? alertBeacon : idleBeacon;wasLit=lit;}
                 yield return null;
-            } while (elapsed < 1.35f || alarming);
+            } while (elapsed < duration || alarming);
+            audio.StopFax();
             indicator.enabled = false; beacon.sharedMaterial = idleBeacon; printing = null;
         }
 
@@ -52,8 +56,10 @@ namespace GameUp.Gameplay
         public void ResetPresentation()
         {
             if (printing != null) StopCoroutine(printing);
+            if (audio) audio.StopFax();
             printing = null; alarming = false; indicator.enabled = false;
             beacon.sharedMaterial = idleBeacon; paper.gameObject.SetActive(false);
         }
+        private void OnDisable() => ResetPresentation();
     }
 }

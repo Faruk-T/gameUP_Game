@@ -24,6 +24,7 @@ namespace GameUp.Gameplay
         private IProductPresentation presentation;
         private FlowState presentedState = FlowState.Boot;
         private bool resetting, inspected, handbookRead;
+        private ProductKey? printedAnalysis;
         public DayFlowSession Flow { get; private set; }
         public DocumentQueue Documents { get; } = new DocumentQueue();
         public ProductionInspectionBackend Backend => backend;
@@ -52,9 +53,7 @@ namespace GameUp.Gameplay
         }
         private IEnumerator Start()
         {
-            application.Audio.BeginOpening();
             yield return intro.Play();
-            application.Audio.EnterWorkstation();
             Restart();
         }
         public void Restart()
@@ -63,7 +62,7 @@ namespace GameUp.Gameplay
             resetting = true;
             if (pause.IsOpen) pause.Resume();
             Documents.Clear(); presentation.ResetPresentation(); hud.ClearFeedback();fax.ResetPresentation();application.Audio.ResetWorkstation();
-            inspected = handbookRead = false; presentedState = FlowState.Boot;
+            inspected = handbookRead = false; printedAnalysis = null; presentedState = FlowState.Boot;
             Flow.StartNewRun(); resetting = false; OnFlowChanged();
         }
         private void OnFlowChanged()
@@ -149,7 +148,8 @@ namespace GameUp.Gameplay
             presentation.Sort(session, waste, (key, bin) => Flow.NotifySortingFinished(key, bin));
         private void PresentAnalysis(AnalysisReport report)
         {
-            fax.Print(false);
+            if (!printedAnalysis.HasValue || !printedAnalysis.Value.Equals(report.Key))
+            { fax.Print(false); printedAnalysis = report.Key; }
             var definition=backend.GetProductDefinition(report.Key.ProductId);
             Documents.Enqueue(new DocumentRequest(DocumentKind.Analysis, "Analiz raporu / " + definition.DisplayName,
                 "RAPOR NO: " + report.ReportId + "\n\n" + report.Text));
@@ -196,7 +196,7 @@ namespace GameUp.Gameplay
                     if (!handbookRead) return "2 / B ile veya masadaki kitaba tıklayarak el kitapçığını ve günün özetini aç.";
                     return "3 / SKT, etiket ve bozulma izlerini kontrol et; W ile onay veya R ile red ver.";
                 }
-                return "Küf, renk değişimi ve şişmeyi incele. F ile analiz al; kaynağı güncel faksla karşılaştır.";
+                return "SKT, etiket ve görünümü kontrol et. F ile ürüne özgü analiz al; kaynağı güncel faksla karşılaştır.";
             }
         }
         private void OnSceneReady(string scene) { if (scene == ApplicationRoot.GameScene) Render(); }

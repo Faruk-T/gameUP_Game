@@ -38,7 +38,7 @@ Binanın arkasındaki EditorOnly game kit, dört yeni kutuyu da içerir: **31 ü
 
 ## AudioManager
 
-First sahnesindeki tek AudioManager ve tek AudioListener sahneler arasında yaşar. Beş önceden yerleştirilmiş kanal müzik, deniz ambiyansı, bant, analiz ve kısa efektleri yürütür. Menu/Game sahneleri yeni yönetici veya AudioListener oluşturmaz.
+First sahnesindeki tek AudioManager ve tek AudioListener sahneler arasında yaşar. Yedi önceden yerleştirilmiş kanal müzik, deniz ambiyansı, bant, analiz, kısa efektler, yazıcı ve açılış dublajını yürütür. Menu/Game sahneleri yeni yönetici veya AudioListener oluşturmaz. Güncel seviyeler, dublaj ve tek baskı davranışı [AUDIO_MIX.md](AUDIO_MIX.md) içinde açıklanır.
 
 Özgür'ün iki müziği, deniz kaydı, analiz, bant, düğme, ürün alma, kitap alma/bırakma/sayfa, gazete, imha ve faks sesleri kullanılır. Müzikler ve deniz kaydı Streaming; kısa efektler DecompressOnLoad olarak içeri alınır. Menü ve oyun müziği ayrı atanır; iç mekânda deniz sesi azaltılır. Analiz süresi ses klibiyle eşlenir. Ses seviyesi mevcut ayarlardaki Master Volume üzerinden uygulanır; mola/belgeler bant ve analiz sesleriyle eşgüdümlüdür.
 

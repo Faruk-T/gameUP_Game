@@ -109,10 +109,7 @@ namespace GameUP.Rules
                 case RuleType.IdentityMismatch:
                 {
                     // Bölüm 9: Beyan edilen ürün türü ile arka etiketteki tür/içerik uyumsuz (T02, D1-06).
-                    string declared = NormalizeLabelText(product.DeclaredProductType);
-                    string listed = NormalizeLabelText(product.ListedProductType);
-
-                    if (!string.Equals(declared, listed, StringComparison.OrdinalIgnoreCase))
+                    if (HasIdentityMismatch(product))
                     {
                         failureReason = $"[{rule.RuleId}] Beyan/tür uyumsuzluğu (Ön: '{product.DeclaredProductType}' ≠ Arka: '{product.ListedProductType}')";
                         return true;
@@ -295,6 +292,9 @@ namespace GameUP.Rules
 
             return sb.ToString();
         }
+
+        public static bool HasIdentityMismatch(ProductDefinition product) =>
+            !string.Equals(NormalizeLabelText(product.DeclaredProductType), NormalizeLabelText(product.ListedProductType), StringComparison.OrdinalIgnoreCase);
 
         private static string NormalizeLabelText(string input)
         {

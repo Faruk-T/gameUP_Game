@@ -20,6 +20,8 @@ namespace GameUP.Contracts
         [SerializeField] private GameObject prefab;
         [SerializeField] private GameObject modelSource;
         [SerializeField] private FoodCondition condition;
+        [SerializeField] private LaboratoryProfile laboratoryProfile;
+        [SerializeField] private string productionPlace = "";
         [SerializeField] private Sprite productIcon;
 
         [Header("Etiket & Tarih Bilgileri (Oyuncuya Görünür)")]
@@ -43,8 +45,8 @@ namespace GameUP.Contracts
         [Header("Gizli Analiz Verisi (Rapor Çıkana Kadar Gizlidir)")]
         [Tooltip("Cihaz analizinde kirlilik/toksin pozitif çıkacak mı?")]
         [SerializeField] private bool isPolluted = false;
-        [Tooltip("Analiz raporunda fakstan çıkacak bulgu metni")]
-        [TextArea(2, 4)]
+        // Kept only for the isolated legacy acceptance fixtures. Production reports derive from facts and rules.
+        [HideInInspector]
         [SerializeField] private string analysisFindingDetail = "TEMİZ — Ağır metal veya mikroplastik kalıntısına rastlanmadı.";
 
         [Header("Ambalaj ve Atık Ayrıştırma (Bölüm 12)")]
@@ -75,6 +77,8 @@ namespace GameUP.Contracts
         public GameObject Prefab => prefab;
         public GameObject ModelSource => modelSource;
         public FoodCondition Condition => condition;
+        public LaboratoryProfile LaboratoryProfile => laboratoryProfile;
+        public string ProductionPlace => productionPlace;
         public Sprite ProductIcon => productIcon;
         public GameDate ExpiryDate => expiryDate;
         public string DeclaredProductType => declaredProductType;
@@ -113,6 +117,7 @@ namespace GameUP.Contracts
             var sb = new StringBuilder();
             sb.AppendLine($"<b>{displayName}</b>");
             sb.AppendLine($"Tür Beyanı: {declaredProductType}");
+            sb.AppendLine($"SKT: {expiryDate}");
             if (category == ProductCategory.Fish)
             {
                 sb.AppendLine($"Av Bölgesi: {sourceRegion.ToTurkishText()} | Tür: {habitat.ToTurkishText()}");
@@ -135,6 +140,7 @@ namespace GameUP.Contracts
             sb.AppendLine($"SKT: {expiryDate}");
             sb.AppendLine($"Yasal Tür: {listedProductType}");
             sb.AppendLine($"İçindekiler: {ingredientsSummary}");
+            if (!string.IsNullOrEmpty(productionPlace)) sb.AppendLine($"Üretim yeri: {productionPlace}");
 
             if (sourceRegion != SourceRegion.None)
             {
@@ -238,6 +244,14 @@ namespace GameUP.Contracts
             trackedIngredientName = ingredientName;
             declaredIngredientPercent = declaredPct;
             actualIngredientPercent = actualPct;
+        }
+
+        public void InitializeLaboratory(LaboratoryProfile profile, string place)
+        {
+            if (profile == LaboratoryProfile.Unspecified || string.IsNullOrWhiteSpace(place))
+                throw new ArgumentException("Assign the product laboratory profile and production place.");
+            laboratoryProfile = profile;
+            productionPlace = place.Trim();
         }
     }
 }

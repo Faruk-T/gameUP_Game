@@ -18,29 +18,22 @@ MonoBehaviour:
   prefab: {fileID: 5230668780898530230, guid: fa3e9819283b05a4099d7f957f924329, type: 3}
   modelSource: {fileID: 3653460095078347878, guid: 2e00a651fb9a15f41850407783d17583, type: 3}
   condition: 0
+  laboratoryProfile: 5
+  productionPlace: Antalya / Finike
   productIcon: {fileID: 0}
   expiryDate:
     Day: 9
     Month: 11
     Year: 2026
-  declaredProductType: "Taze Hasat Meyve (Finike K\u0131rka\u011Fa\xE7 Kavunu)"
-  listedProductType: "Taze Hasat Meyve (Finike K\u0131rka\u011Fa\xE7 Kavunu)"
-  ingredientsSummary: '%100 yerel hasat taze meyve.'
-  customFrontLabelNote:
-  customBackLabelNote:
+  declaredProductType: Taze kavun
+  listedProductType: Taze kavun
+  ingredientsSummary: '%100 kavun.'
+  customFrontLabelNote: 
+  customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
-    \u2014 Finike K\u0131rka\u011Fa\xE7 Kavunu numunesinde pestisit, a\u011F\u0131r
-    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
-    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
-    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
-    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
-    (%100 yerel hasat taze meyve.) ve yasal t\xFCr beyan\u0131 ('Taze Hasat Meyve
-    (Finike K\u0131rka\u011Fa\xE7 Kavunu)') birbiriyle uyumlu.\r\n\u2022 KAYNAK &
-    SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 09.11.2026 (Vardiya
-    tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  analysisFindingDetail: 
   packagingMaterial: 3
   isPackagingContaminated: 0
   packagingLabelText: "Koruyucu Plastik File & Stre\xE7 \u2014 Plastik At\u0131k"
@@ -50,6 +43,6 @@ MonoBehaviour:
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName:
+  trackedIngredientName: 
   declaredIngredientPercent: 10
   actualIngredientPercent: 10
