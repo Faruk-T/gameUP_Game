@@ -69,7 +69,7 @@ namespace GameUp.Production.Tests
             try
             {
                 var all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
-                var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c);
+                var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c&&c.CompareTag("MainCamera"));
                 var player=camera.transform.parent;
                 var bins=all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t&&t.Action>=WorkstationAction.Paper&&t.Action<=WorkstationAction.Contaminated).ToArray();
                 Assert.That(bins.Length,Is.EqualTo(4));Physics.SyncTransforms();
@@ -172,6 +172,33 @@ namespace GameUp.Production.Tests
             yield return null;
             var session=Object.FindFirstObjectByType<GameSessionController>();
             Assert.That(session,Is.Not.Null,"GameSystems must be active in Game.");
+            Assert.That(session.IsIntroducing,Is.True);
+            Assert.That(session.WorldInputAllowed,Is.False);
+            Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+            session.HandleEscape();session.Restart();session.Approve();session.Reject();
+            Assert.That(session.IsIntroducing,Is.True,"Escape, restart and decisions cannot skip the opening.");
+            Assert.That(session.Documents.IsOpen,Is.False,"The newspaper must wait for the cinematic.");
+            var openingFins=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None).SelectMany(t=>t.GetComponentsInChildren<Transform>()).Where(t=>t.name.StartsWith("frontLeg",StringComparison.Ordinal)).ToArray();
+            var finRotations=openingFins.Select(t=>t.localRotation).ToArray();
+            var finPositions=openingFins.Select(t=>t.localPosition).ToArray();
+            float introDeadline=Time.realtimeSinceStartup+85;
+            while(session.IsIntroducing)
+            {
+                Assert.That(Time.realtimeSinceStartup,Is.LessThan(introDeadline),"Opening must finish naturally.");
+                Assert.That(session.WorldInputAllowed,Is.False);
+                Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+                yield return null;
+            }
+            foreach(var turtle in Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None))
+            {
+                var animator=turtle.GetComponentInChildren<Animator>();
+                Assert.That(animator.GetCurrentAnimatorClipInfoCount(0),Is.EqualTo(1),"Artist animation must actually play.");
+                Assert.That(animator.GetCurrentAnimatorStateInfo(0).loop,Is.True);
+                Assert.That(animator.GetCurrentAnimatorStateInfo(0).normalizedTime,Is.GreaterThan(1));
+                Assert.That(turtle.IsSwimming,Is.True);
+            }
+            Assert.That(openingFins.Where((fin,i)=>Quaternion.Angle(fin.localRotation,finRotations[i])>.5f||Vector3.Distance(fin.localPosition,finPositions[i])>.002f).Any(),Is.True,"Imported animation must move the flipper bones.");
+            Assert.That(Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             Assert.That(ApplicationRoot.Require().Settings.Sensitivity,Is.EqualTo(.17f).Within(.001f));
             Assert.That(Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             var input=Object.FindFirstObjectByType<WorkstationInteractionController>();
@@ -287,7 +314,7 @@ namespace GameUp.Production.Tests
         private static void Capture(string name,Scene scene)
         {
             if(SystemInfo.graphicsDeviceType==UnityEngine.Rendering.GraphicsDeviceType.Null)return;
-            var canvas=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Canvas>(true)).Single(c=>c.isRootCanvas&&c.renderMode!=RenderMode.WorldSpace);
+            var canvas=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Canvas>(true)).Single(c=>c.gameObject.activeInHierarchy&&c.isRootCanvas&&c.renderMode!=RenderMode.WorldSpace);
             ProductionSnapshot.Capture(canvas,scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Camera>()).FirstOrDefault(),"Logs/Visuals/"+name+".png",1920,1080);
             if(name=="menu"||name=="newspaper")ProductionSnapshot.Capture(canvas,null,"Logs/Visuals/"+name+"-720.png",1280,720);
         }

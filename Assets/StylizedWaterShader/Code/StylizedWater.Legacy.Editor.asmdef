@@ -1,0 +1,4 @@
+{
+  "name": "StylizedWater.Legacy.Editor",
+  "includePlatforms": ["Editor"]
+}

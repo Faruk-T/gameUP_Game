@@ -16,11 +16,7 @@ namespace GameUp.Editor
         {
             var room=new GameObject("Room").transform;room.SetParent(parent,false);
             var wall=Material("Plaster",new Color(.83f,.85f,.8f));var trim=Material("RoomTrim",new Color(.2f,.35f,.34f));
-            var floor=Material("Floor",new Color(.62f,.57f,.47f));
-            Shape("RoomFloor",room,PrimitiveType.Cube,new Vector3(0,-.16f,.25f),new Vector3(16,.3f,16.5f),floor);
-            Shape("LeftWall",room,PrimitiveType.Cube,new Vector3(-8,2.6f,.25f),new Vector3(.25f,5.2f,16.5f),wall);
-            Shape("RightWall",room,PrimitiveType.Cube,new Vector3(8,2.6f,.25f),new Vector3(.25f,5.2f,16.5f),wall);
-            Shape("RearWall",room,PrimitiveType.Cube,new Vector3(0,2.6f,-8),new Vector3(16,5.2f,.25f),wall);
+            CoastalEnvironmentAuthoring.Interior(room);
             Shape("FrontSill",room,PrimitiveType.Cube,new Vector3(0,.6f,8.5f),new Vector3(16,1.2f,.25f),wall);
             Shape("WindowHeader",room,PrimitiveType.Cube,new Vector3(0,4.8f,8.5f),new Vector3(16,.8f,.25f),wall);
             foreach(float x in new[]{-7.8f,-4f,0f,4f,7.8f})
@@ -29,17 +25,16 @@ namespace GameUp.Editor
                 Shape("WindowRail",room,PrimitiveType.Cube,new Vector3(0,y,8.35f),new Vector3(16,.12f,.25f),trim);
             foreach(float x in new[]{-7.83f,7.83f})
                 Shape("Skirting",room,PrimitiveType.Cube,new Vector3(x,.12f,.2f),new Vector3(.1f,.22f,16),trim);
-            for(int i=-3;i<=3;i++)
-                Shape("FloorJoint",room,PrimitiveType.Cube,new Vector3(i*2,.003f,.2f),new Vector3(.012f,.004f,16),Material("Grout",new Color(.48f,.46f,.39f)));
             Coast(room);
             Poster(room,"FoodSecurityPoster",new Vector3(-7.82f,2.9f,1.6f),-90,"SOFRAYI\nKORU","Yerel üretime değer ver.\nGıdayı israf etme.","Assets/Art/Documents/Day1Products.png");
             Poster(room,"ClimateActionPoster",new Vector3(7.82f,2.9f,1.6f),90,"ORTAK\nGELECEK","İklim için birlikte.\nAntalya'dan dünyaya.",null);
             Poster(room,"WasteSortingPoster",new Vector3(0,2.6f,-7.82f),180,"HER ATIĞIN\nBİR YERİ VAR","Temiz ambalajı ayır.\nKontamine ambalajı ayrı tut.",null);
-            foreach(var t in room.GetComponentsInChildren<Transform>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
+            foreach(var t in room.GetComponentsInChildren<Transform>())
+                if(!t.GetComponentInParent<GameUp.Gameplay.ShorelineTurtle>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
         }
         private static void Coast(Transform parent)
         {
-            Shape("MediterraneanSea",parent,PrimitiveType.Cube,new Vector3(0,-.4f,30),new Vector3(120,.1f,50),Material("Sea",new Color(.14f,.56f,.61f)));
+            CoastalEnvironmentAuthoring.Outside(parent);
             var shore=Material("DistantCoast",new Color(.36f,.49f,.53f));
             var mesh=new Mesh{name="TaurusSilhouette"};
             float[] peaks={2,7,4,11,6,13,8,5,9,3,7,2};
@@ -55,6 +50,10 @@ namespace GameUp.Editor
             if(existing){EditorUtility.CopySerialized(mesh,existing);UnityEngine.Object.DestroyImmediate(mesh);mesh=existing;}else AssetDatabase.CreateAsset(mesh,path);
             var mountains=new GameObject("TaurusMountains",typeof(MeshFilter),typeof(MeshRenderer));mountains.transform.SetParent(parent,false);mountains.transform.localPosition=new Vector3(0,-.4f,49);
             mountains.GetComponent<MeshFilter>().sharedMesh=mesh;mountains.GetComponent<MeshRenderer>().sharedMaterial=shore;
+            mountains.transform.localPosition=new Vector3(0,-2,145);mountains.transform.localScale=new Vector3(3,2,1);
+            var distant=new GameObject("DistantTaurusRidge",typeof(MeshFilter),typeof(MeshRenderer));distant.transform.SetParent(parent,false);
+            distant.transform.localPosition=new Vector3(35,-3,210);distant.transform.localScale=new Vector3(4,2.8f,1);
+            distant.GetComponent<MeshFilter>().sharedMesh=mesh;distant.GetComponent<MeshRenderer>().sharedMaterial=Material("DistantTaurus",new Color(.48f,.64f,.67f));
         }
         internal static Transform[] RecyclingStation(Transform parent)
         {
@@ -77,11 +76,12 @@ namespace GameUp.Editor
                 var label=WorldCanvas("BinLabel",bin,new Vector3(0,.08f,-.49f),0,.98f,.55f);
                 Text("Category",label,names[i],0,55,820,180,86,Paper,TextAnchor.MiddleCenter);
                 Text("Instruction",label,i==3?"AYRI İMHA":"TEMİZ AMBALAJ",0,-140,820,120,48,Paper,TextAnchor.MiddleCenter);
+                CoastalAssetSetup.Outline(bin.gameObject);
                 var point=new GameObject("WastePoint_"+i).transform;point.SetParent(station,false);point.position=bin.position+Vector3.up*.73f;points[i]=point;
             }
             return points;
         }
-        private static void Poster(Transform parent,string name,Vector3 position,float yaw,string headline,string message,string photograph)
+        internal static void Poster(Transform parent,string name,Vector3 position,float yaw,string headline,string message,string photograph)
         {
             var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=position;root.localRotation=Quaternion.Euler(0,yaw,0);
             Shape("Frame",root,PrimitiveType.Cube,Vector3.zero,new Vector3(1.92f,2.76f,.07f),Material("PosterFrame",new Color(.21f,.27f,.25f)));

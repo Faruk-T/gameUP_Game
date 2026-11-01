@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Text;
 using GameUp.App;
 using GameUp.Contracts;
@@ -18,6 +19,7 @@ namespace GameUp.Gameplay
         [SerializeField] private ResultsPresenter resultsView;
         [SerializeField] private PauseMenu pause;
         [SerializeField] private FaxPresenter fax;
+        [SerializeField] private IntroCinematic intro;
         private ApplicationRoot application;
         private IProductPresentation presentation;
         private FlowState presentedState = FlowState.Boot;
@@ -26,13 +28,14 @@ namespace GameUp.Gameplay
         public DocumentQueue Documents { get; } = new DocumentQueue();
         public ProductionInspectionBackend Backend => backend;
         public bool ProductInspected => inspected;
-        public bool WorldInputAllowed => Flow.State == FlowState.Working && !Documents.IsOpen && !pause.IsOpen && !application.IsLoading;
+        public bool IsIntroducing => intro.IsPlaying;
+        public bool WorldInputAllowed => !IsIntroducing && Flow.State == FlowState.Working && !Documents.IsOpen && !pause.IsOpen && !application.IsLoading;
         public event Action Refreshed;
 
         private void Awake()
         {
             application = ApplicationRoot.Require();
-            if (!backend || !hud || !documentsView || !resultsView || !pause || !fax || !(presentationSource is IProductPresentation port))
+            if (!backend || !hud || !documentsView || !resultsView || !pause || !fax || !intro || !(presentationSource is IProductPresentation port))
                 throw new InvalidOperationException("Game scene composition is incomplete. Run the editor scene validator.");
             presentation = port;
             Flow = new DayFlowSession(backend.CreateCampaign(), backend);
@@ -47,9 +50,14 @@ namespace GameUp.Gameplay
             pause.Changed += OnModalChanged;
             application.SceneReady += OnSceneReady;
         }
-        private void Start() => Restart();
+        private IEnumerator Start()
+        {
+            yield return intro.Play();
+            Restart();
+        }
         public void Restart()
         {
+            if (IsIntroducing) return;
             resetting = true;
             if (pause.IsOpen) pause.Resume();
             Documents.Clear(); presentation.ResetPresentation(); fax.ResetPresentation(); hud.ClearFeedback();
@@ -85,6 +93,7 @@ namespace GameUp.Gameplay
         }
         private void Render()
         {
+            if (IsIntroducing || Flow.State == FlowState.Boot) return;
             application.SetWorldInput(WorldInputAllowed);
             hud.Render(this);
             var document = Documents.Current;
@@ -130,6 +139,7 @@ namespace GameUp.Gameplay
         public void ReopenReport() { if (WorldInputAllowed && Flow.LastReport != null) PresentAnalysis(Flow.LastReport); }
         public void HandleEscape()
         {
+            if (IsIntroducing) return;
             if (pause.IsOpen) pause.Escape();
             else if (Documents.Current != null) Documents.Dismiss(Documents.Current.Token);
             else pause.Open();

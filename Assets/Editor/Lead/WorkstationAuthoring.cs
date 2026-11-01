@@ -17,6 +17,7 @@ namespace GameUp.Editor
     {
         internal static void Game()
         {
+            CoastalAssetSetup.Configure();
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
             var days=ProductionProjectSetup.Days();
             var systems=new GameObject("GameSystems");var backend=systems.AddComponent<ProductionInspectionBackend>();backend.SetConfiguredDays(days);
@@ -52,7 +53,7 @@ namespace GameUp.Editor
             var productRoot=new GameObject("ProductPool").transform;
             for(int i=0;i<definitions.Length;i++)
             {
-                var visual=(GameObject)PrefabUtility.InstantiatePrefab(definitions[i].Prefab);visual.transform.SetParent(productRoot,false);visual.SetActive(false);
+                var visual=(GameObject)PrefabUtility.InstantiatePrefab(definitions[i].Prefab);visual.transform.SetParent(productRoot,false);CoastalAssetSetup.Outline(visual);visual.SetActive(false);
                 var entry=pool.GetArrayElementAtIndex(i);entry.FindPropertyRelative("Definition").objectReferenceValue=definitions[i];
                 entry.FindPropertyRelative("Visual").objectReferenceValue=visual;entry.FindPropertyRelative("Labels").objectReferenceValue=visual.GetComponent<ProductWorldLabelBinder>();
             }
@@ -66,12 +67,23 @@ namespace GameUp.Editor
             var inputSo=new SerializedObject(input);inputSo.FindProperty("interactableLayers").intValue=1<<8;inputSo.FindProperty("rayDistance").floatValue=8;inputSo.ApplyModifiedPropertiesWithoutUndo();
             var sun=new GameObject("MediterraneanSun",typeof(Light)).GetComponent<Light>();sun.type=LightType.Directional;sun.intensity=1.05f;sun.color=new Color(1,.94f,.83f);sun.transform.rotation=Quaternion.Euler(48,-25,0);sun.shadows=LightShadows.Soft;
             RenderSettings.ambientLight=new Color(.61f,.68f,.68f);RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Flat;
-            GameInterfaceAuthoring.Create(session);EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),ProductionProjectSetup.GamePath);
+            RenderSettings.fog=true;RenderSettings.fogMode=FogMode.Exponential;RenderSettings.fogDensity=.0015f;RenderSettings.fogColor=new Color(.62f,.79f,.82f);
+            var gameCanvas=GameInterfaceAuthoring.Create(session);
+            CinematicAuthoring.Create(session,camera,gameCanvas);
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),ProductionProjectSetup.GamePath);
         }
         private static Transform Point(string name,Vector3 position){var t=new GameObject(name).transform;t.position=position;return t;}
         private static GameObject Target(string name,Transform parent,Vector3 position,Vector3 scale,Material material,WorkstationAction action,string label)
         {
             var go=Shape(name,parent,PrimitiveType.Cube,position,scale,material,true);SetAction(go.AddComponent<WorkstationTarget>(),action);
+            string artistPrefab=action==WorkstationAction.Analyzer?"xray":action==WorkstationAction.Handbook?"closedBook":action==WorkstationAction.Report?"fax":null;
+            if(artistPrefab!=null)
+            {
+                go.GetComponent<Renderer>().enabled=false;
+                var model=PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/"+artistPrefab+".prefab"),parent,position-Vector3.up*scale.y*.5f,Mathf.Max(scale.x,scale.z));
+                CoastalAssetSetup.Outline(model);
+            }
+            else CoastalAssetSetup.Outline(go);
             WorldText(name+"Label",parent,label,position+new Vector3(0,.15f,-scale.z*.5f-.02f),Mathf.Max(scale.x,.8f),.3f,Paper);return go;
         }
         private static void WorldText(string name,Transform parent,string value,Vector3 position,float width,float height,Color color)

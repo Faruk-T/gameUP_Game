@@ -1,6 +1,6 @@
 # Aktif üç günlük kampanya
 
-Bu dosya önceki iki günlük balıklı prototipin yerine geçen oynanış kapsamını açıklar. Çalışma dalı `feat/lead-category-progression`. Başlangıç First → Menu → Game, Unity 6000.3.13f1.
+Bu dosya önceki iki günlük balıklı prototipin yerine geçen oynanış kapsamını açıklar. Çalışma dalı `feat/lead-coastal-cinematic`. Başlangıç First → Menu → Game, Unity 6000.3.13f1. Yeni görevde gazete öncesi [kıyı ve tesis açılışı](COASTAL_CINEMATIC.md) oynar.
 
 | Gün / tarih | Açılan grup | O gün gelen ürünler | Gazetenin konusu | Oyuncunun uyguladığı kontrol |
 |---|---|---|---|---|

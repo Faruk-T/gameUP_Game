@@ -7,7 +7,7 @@ namespace GameUp.Editor
 {
     internal static class GameInterfaceAuthoring
     {
-        internal static void Create(GameSessionController session)
+        internal static Canvas Create(GameSessionController session)
         {
             var canvas=Canvas("GameCanvas");
             var hud=canvas.gameObject.AddComponent<GameHUD>();Set(session,"hud",hud);
@@ -58,6 +58,7 @@ namespace GameUp.Editor
             Button("Menu",home,"Ana menü",0,-130,550,pause.ReturnToMenu);
             Text("PauseHint",home,"Analiz ve ürün hareketi, devam ettiğinde sürer.",0,-290,1000,80,28,Paper,TextAnchor.MiddleCenter);
             Set(pause,"settings",Settings(pauseOverlay.transform));pauseOverlay.SetActive(false);
+            return canvas;
         }
     }
 }

@@ -1,10 +1,12 @@
 # Dördüncü kişi — güncel entegrasyon
 
-Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-category-progression`. Ayrıntılı gün/ürün/haber planı: [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md).
+Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-coastal-cinematic`. Ayrıntılı gün/ürün/haber planı: [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md). [Kıyı, tesis ve açılış sinematiği](Docs/COASTAL_CINEMATIC.md).
 
 ## Çalıştırma
 
 `Assets/Scenes/First.unity` açılır ve Play'e basılır. Yalnız **First → Menu → Game** build'e alınır. First uygulama, ayar ve EventSystem sahibidir; Menu/Game doğrudan başlatılmaz.
+
+Yeni görevin başında 72 saniyelik atlanamayan açılış vardır: siyah fonda söz → animasyonlu carettalar ve Antalya kıyısı → tesis girişi → gıda güvenliği afişlerinin olduğu koridor → çalışma masası. Giriş boyunca kamera ve oynanış kilitlidir; gazete bitişten sonra açılır. Yeniden başlatma açılışı tekrarlamaz.
 
 Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
 
@@ -48,6 +50,7 @@ GameUP32 menüsü:
 
 - **Render campaign press photographs:** mevcut modellerden üç haber fotoğrafını render eder; grafik aygıtı gerekir.
 - **Rebuild Game room and newspaper:** kampanya, varyantlar, ürün prefabları ve yalnız Game sahnesini yeniler.
+- **Rebuild coastal facility and opening:** yeni assetlerin URP ayarlarıyla kıyı, tesis ve Timeline açılışını Game sahnesine kaydeder.
 - **Rebuild First, Menu and Game:** üç sahneyi yeniden yazar.
 - **Esmanur model inventory:** kaynak ve aktif ürün raporunu yeniler.
 - **Build / Windows:** Builds/Windows/AntalyaDenetimMasasi.exe üretir.
@@ -60,7 +63,7 @@ Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne dü
 
 ## Doğrulama ve kaynaklar
 
-**37/37 test:** 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir.
+**41/41 test:** 72 saniyelik giriş kilidi, duvar kesmeyen kamera rotası, animasyonlu beş caretta, URP asset ve outline bağlantıları; ardından 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir.
 
 [Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 
