@@ -22,6 +22,8 @@ Her gazetenin RelatedRuleIds listesi, günün InitialRules listesiyle eşleşir.
 
 ## Modeller ve bozulma
 
+Güncel vardiya sınırı: hatalı karar ve hatalı ayrıştırma ayrı yanlış işlemlerdir. Aynı gün üçüncü yanlışta oyun kaybedilir; sayaç her sabah sıfırlanır. Hatalı işlem Bakanlık faksıyla bildirilir. Gün sonunda faksın vardiya raporu açılır. [Güncel çalışma alanı ve ses entegrasyonu](WORKSTATION_UPGRADE.md).
+
 Esmanur'un 31 kaynak prefabı kullanılır; hepsi sırayla masaya gelir. Teşhir dolapları kaldırılmıştır. Her kaynak için Fresh ve Spoiled olmak üzere 62 kaydedilmiş görünüm varyantı vardır. Yeni ürün mesh'i import edilmez veya kopyalanmaz.
 
 Spoiled malzemeleri Editor kodu üretir. FoodCondition shader'ı orijinal doku üzerinde renk kaybı/küf deseni ve ambalaj şişmesi uygular. Oyun sırasında prefab, materyal veya UI oluşturulmaz. Etiket damgaları ürün boyutuna göre küçük tutulur; tam etiket inceleme kartında okunur.

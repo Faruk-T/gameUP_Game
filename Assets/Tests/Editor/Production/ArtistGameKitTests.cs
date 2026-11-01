@@ -29,6 +29,8 @@ namespace GameUp.Production.Tests
                         Assert.That(meshes.Contains(source.sharedMesh),Is.True,"Missing product source: "+source.name);
                 foreach(var part in AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Environment/Mesh/Environment.fbx").GetComponentsInChildren<MeshFilter>())
                     Assert.That(meshes.Contains(part.sharedMesh),Is.True,"Missing environment part: "+part.name);
+                foreach(var part in AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Environment/Mesh/Trashbin.fbx").GetComponentsInChildren<MeshFilter>())
+                    Assert.That(meshes.Contains(part.sharedMesh),Is.True,"Missing updated bin: "+part.name);
                 var turtle=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Outside/caretta caretta.prefab").GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
                 Assert.That(meshes.Contains(turtle),Is.True);
                 foreach(var camera in scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Camera>(true)))

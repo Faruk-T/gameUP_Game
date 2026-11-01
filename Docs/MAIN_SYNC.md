@@ -1,5 +1,7 @@
 # Main entegrasyonu — 1 Kasım 2026
 
+Bu dosya önceki `3db0fa7` aktarımının kaydıdır. Faruk'un sonraki ürün verileri, yeni faks/yanlış işlem akışı ve güncel kutular için [WORKSTATION_UPGRADE.md](WORKSTATION_UPGRADE.md) geçerlidir.
+
 Kaynak: `origin/main`, **3db0fa785110f3a28bbf9f6794e84f6b9388a47b**. Çalışma dalı: `feat/lead-coastal-cinematic`. Main dalına merge veya push yapılmaz; gerekli değişiklikler mevcut projeye seçilerek uygulanır.
 
 ## Alınanlar

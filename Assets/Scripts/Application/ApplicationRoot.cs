@@ -12,6 +12,8 @@ namespace GameUp.App
         public static ApplicationRoot Current { get; private set; }
         [SerializeField] private UserSettingsDefaults defaults;
         [SerializeField] private CanvasGroup loadingScreen;
+        [SerializeField] private AudioManager audioManager;
+        public AudioManager Audio => audioManager;
         public UserSettings Settings { get; private set; }
         public bool IsLoading { get; private set; }
         public event Action<string> SceneReady;
@@ -20,7 +22,7 @@ namespace GameUp.App
         private void Awake()
         {
             if (Current) throw new InvalidOperationException("Only First.unity may own ApplicationRoot.");
-            if (!defaults || !loadingScreen) throw new InvalidOperationException("ApplicationRoot has incomplete authored references.");
+            if (!defaults || !loadingScreen || !audioManager) throw new InvalidOperationException("ApplicationRoot has incomplete authored references.");
             Current = this;
             Settings = new UserSettings(defaults);
             DontDestroyOnLoad(gameObject);
@@ -44,6 +46,7 @@ namespace GameUp.App
             yield return operation;
             IsLoading = false;
             loadingScreen.alpha = 0; loadingScreen.blocksRaycasts = false;
+            if (scene == MenuScene) audioManager.EnterMenu();
             SceneReady?.Invoke(scene);
         }
         public void SetWorldInput(bool enabled)

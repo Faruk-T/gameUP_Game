@@ -48,16 +48,7 @@ namespace GameUp.Editor
             Set(hud,"tutorial",Text("Tutorial",canvas.transform,"",0,-418,1760,60,27,Paper,TextAnchor.MiddleLeft));
             Text("Controls",canvas.transform,"E / İncele     B / Kitapçık     F / Analiz     W / Onay     R / Red     Sol tık / Etkileşim",0,-494,1760,55,24,new Color(.65f,.81f,.77f),TextAnchor.MiddleLeft);
             var feedback=Text("Feedback",canvas.transform,"",0,0,820,88,24,Paper);ConfigureFeedback(feedback);Set(hud,"feedback",feedback);
-            var card=Image("ProductCard",canvas.transform,670,60,500,730,new Color(.97f,.95f,.88f,.98f));
-            Set(hud,"productCard",card.gameObject);
-            Set(hud,"productTitle",Text("ProductTitle",card.transform,"",0,285,430,120,32,Ink,TextAnchor.UpperLeft,true));
-            var productScroll=Scroll("ProductLabelScroll",card.transform,0,-50,450,530,out var productContent);
-            var label=Text("ProductLabel",productContent,"",0,0,430,530,25,Ink);
-            label.gameObject.AddComponent<LayoutElement>();Set(hud,"productLabel",label);card.gameObject.SetActive(false);
-
             var presenter=canvas.gameObject.AddComponent<DocumentPresenter>();Set(session,"documentsView",presenter);
-            var notification=canvas.gameObject.AddComponent<AudioSource>();notification.playOnAwake=false;notification.spatialBlend=0;
-            Set(presenter,"notificationSpeaker",notification);Set(presenter,"emergencyNotification",UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/FaxSignal.wav"));
             var overlay=Overlay("DocumentOverlay",canvas.transform,new Color(.015f,.055f,.065f,.86f));Set(presenter,"panel",overlay);
             var page=Image("DocumentPage",overlay.transform,0,0,1360,960,Paper);
             Set(presenter,"documentPage",page.gameObject);
@@ -69,6 +60,7 @@ namespace GameUp.Editor
             Text("ScrollHint",page.transform,ScrollHint,0,-315,1100,38,21,Ink,TextAnchor.MiddleRight);
             Set(presenter,"confirmationLabel",confirm.GetComponentInChildren<Text>());
             Set(presenter,"newspaper",NewspaperAuthoring.Create(overlay.transform,presenter));overlay.SetActive(false);
+            UnityEditor.Events.UnityEventTools.AddPersistentListener(scroll.onValueChanged,presenter.ScrollChanged);
 
             var results=canvas.gameObject.AddComponent<ResultsPresenter>();Set(session,"resultsView",results);
             var resultOverlay=Overlay("ResultsOverlay",canvas.transform,new Color(.02f,.07f,.08f,.96f));Set(results,"panel",resultOverlay);
@@ -88,6 +80,7 @@ namespace GameUp.Editor
             Button("Menu",home,"Ana menü",0,-130,550,pause.ReturnToMenu);
             Text("PauseHint",home,"Analiz ve ürün hareketi, devam ettiğinde sürer.",0,-290,1000,80,28,Paper,TextAnchor.MiddleCenter);
             Set(pause,"settings",Settings(pauseOverlay.transform));pauseOverlay.SetActive(false);
+            WorkstationUIAuthoring.Apply(canvas.gameObject);
             return canvas;
         }
     }

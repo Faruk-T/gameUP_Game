@@ -4,10 +4,16 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **52/52 geçti**, başarısız/atlanan yok |
-| Main entegrasyonu | `3db0fa7`: kapsamlı kitapçık, gazete özeti, etkin acil kural ve yaşam döngüsü/GUID düzeltmeleri; T rapor istasyonu hariç |
+| Unity testleri | **59/59 geçti**, başarısız/atlanan yok; tam koşu 143 saniye |
+| Güncel kaynak entegrasyonu | Faruk `04a87a2/a9fee0f`, Esmanur `4b6292a`, Özgür `10bb33f`; mevcut sahne ve sinematik korunur |
 | Kitapçık doğrulaması | Üç günün haber/kuralları, duyuru onayından sonra etkinleşen kural, restart temizliği; kaydırma, başlık ve içerik yerleşimi geçti |
-| T cihazı temizliği | T kısayolu, tekrar rapor akışı, hedef/etiket, faks modeli ve FaxPresenter kaldırıldı; normal F analizi korunur |
+| Bakanlık faksı | Gerçek faks/siren, hata bildirimi, analiz ve vardiya baskısı; T / eski raporu açma eylemi yok; normal F analizi korunur |
+| Günlük yanlış sınırı | Yanlış karar ve yanlış ayrıştırma ayrı sayılır; üçüncü yanlışın bildirimi sonrası kayıp; her sabah/restart sıfır; eski callback ikinci kez sayılmaz |
+| Sağ bant | 32 metre, odanın dışından giriş/çıkış, duvar açıklıkları, masa ile boşluk; hareket süresi mesafeyle orantılı |
+| İnceleme | Fare girdisinde kamera/oyuncu sabit; yalnız ürün döner; inceleme bitince ürün banttaki pozuna döner |
+| Ürün baskıları | 31 üründe 62 kalıcı ön/arka texture; tam tür/SKT/içerik/kaynak/ambalaj; planar etiketler, BC7, mipmap, runtime Canvas/texture üretimi yok |
+| Ses | First'te tek AudioManager/AudioListener, beş kanal, tüm Özgür sesleri ve iki müzik; uzun kayıtlar Streaming; duraklatma/belge eşgüdümü |
+| Gazete referansı | Yıpranmış kâğıt, caretta halftone fotoğrafı, büyük başlık ve görev kutusu; üç günün metinleri kesilmez; faks/rapor aynı kâğıt dokusunda |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
 | Söz ekranı | Tam metin ve atıf siyah fonda; 1080p ve 720p görüntüsü kontrol edildi |
@@ -19,14 +25,14 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Dinamik geçiş geometrisi | Kapalı yapraklar geçidi kapatır; açılan yapraklar kamera küre taramasına engel olmaz; statik batch kapalı |
 | Arka oda | Oranı korunan iki gerçek portre; iki arka köşede Türkiye/BM makam bayrakları, ağırlıklı taban ve dökümlü 3B kumaş |
 | Tek sinematik saati | Kamera / logo / parçacık Timeline'ı ile aktör pozları ve altyazılar aynı zamandan örneklenir |
-| Çevre modelleri | 16/16 kaynak projede; 14 aktif, T faksı ve sinyali istek gereği kullanım dışı; xray parçaları korunur |
+| Çevre modelleri | 20/20 kaynak projede; 16 aktif; eski dört kutu yeni Trashbin.fbx meshleriyle değiştirildi; xray parçaları korunur |
 | Gerçek paket propları | Dokuz Director/Out of Order tabela, temiz yazı alanı ve sahil direği; Polygon Office afiş/tavan/ağaç/kaya/kutu/düğmeleri |
 | Dağlar | 360° kayıtlı hacimli arazi; geçerli köşeler, zirve/vadiler, eğim/yükseklik rengi; runtime üretim yok |
 | Kullanıcı yerleşimleri | Mevcut sahneye hedefli değişiklik; gizlenen dekor ve son elle yapılan yerleşimler korunur |
 | Fiziksel belgeler | Kitapçık açıkken gerçek açık kitap; kapatınca kapalı kitap; gazete okunurken katlı kopya gizli |
 | Portre kadrajı | Yazı yok; görüntü oranı korunur, çerçeve tamamen dolar, taşan kenarlar maskelenir |
 | Ahşap çerçeve | Mevcut 4 afiş + 2 portrede SM_Prop_Blackboard_01; orijinal rim/bevel ve atlas; baskı/yerleşim korunur |
-| Sanatçı Game Kit | Binanın arkasında 31 ürün + 16 çevre parçası + caretta; gerçek mesh referansları eksiksiz |
+| Sanatçı Game Kit | Binanın arkasında 31 ürün + 16 önceki çevre parçası + 4 yeni kutu + caretta = 52 kaynak gösterimi |
 | Sergi ayrımı | EditorOnly kök/çocuklar, katman 30; oyun kameraları çizmez; collider, Animator ve etkileşim hedefi yok |
 | Kamera / ses devri | Açılıştan sonra tek etkin kamera ve AudioListener; gazete yalnız bitişten sonra açılır |
 | URP assetleri | Polygon Office materyalleri, gerçek Stylized Water mesh/dokuları, EPO Render Graph feature; derleme ve shader hatası yok |
@@ -52,7 +58,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/main-sync-tests.xml` (52/52). Hedefli kitapçık düzeni yenilemesi: `Logs/main-sync-author.log`; Game sahnesinde yalnız 6 satır UI ayarı değişti. Önceki mesh envanteri ve shader kontrolü: `Logs/art-frames-kit-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış, kitapçığın üst/alt sayfaları ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar. [Main aktarım kapsamı](Docs/MAIN_SYNC.md).
+Ham rapor: `Logs/WorkstationUpgrade/tests.xml` (59/59). Kaynak/authoring/görsel kontroller: aynı klasördeki `author.log`, `surfaces.log`, `newspaper.log`. Güncel görüntüler `Docs/Previews/Workstation`; önceki kıyı/sinematik görüntüleri `Docs/Previews/Coastal`. Gerçek oynanış, kitapçık, faks bildirimi, kayıp ve vardiya sonuçları `Logs/Visuals` içindedir. Yerel loglar Git'e eklenmez. [Entegrasyon kapsamı](Docs/WORKSTATION_UPGRADE.md).
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 
@@ -70,11 +76,11 @@ Ham rapor: `Logs/main-sync-tests.xml` (52/52). Hedefli kitapçık düzeni yenile
 
 ![Tesis koridoru](Docs/Previews/Coastal/CorridorColdChain.png)
 
-![Birinci gün](Docs/Previews/Newspaper.png)
+![Birinci gün](Docs/Previews/Workstation/NewspaperDay1.png)
 
-![İkinci gün](Docs/Previews/NewspaperDay2.png)
+![İkinci gün](Docs/Previews/Workstation/NewspaperDay2.png)
 
-![Üçüncü gün](Docs/Previews/NewspaperDay3.png)
+![Üçüncü gün](Docs/Previews/Workstation/NewspaperDay3.png)
 
 ![Kodla bozulmuş görünüm](Docs/Previews/SpoiledFruit.png)
 

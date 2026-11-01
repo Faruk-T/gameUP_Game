@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace GameUp.Contracts
 {
-    public enum FlowState { Boot, MorningBriefing, Working, EmergencyBriefing, DaySummary, GameSummary }
+    public enum FlowState { Boot, MorningBriefing, Working, EmergencyBriefing, DaySummary, GameSummary, MistakeBriefing, GameOver }
     public enum ProductPhase { None, Arriving, Ready, Analyzing, Routing, AwaitingSort, Sorting, Complete }
     public enum PlayerDecision { Approve, Reject }
     public enum WasteCategory { Paper, Glass, Plastic, Contaminated }
-    public enum DocumentKind { Newspaper, Handbook, Analysis, Emergency }
+    public enum DocumentKind { Newspaper, Handbook, Analysis, Emergency, Infraction }
 
     public readonly struct ProductKey : IEquatable<ProductKey>
     {

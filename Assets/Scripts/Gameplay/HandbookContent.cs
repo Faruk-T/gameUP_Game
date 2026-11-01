@@ -42,13 +42,15 @@ namespace GameUp.Gameplay
             text.AppendLine("• <b><color=#295EB3>MAVİ / KÂĞIT:</color></b> Temiz kâğıt ve karton ambalajlar.");
             text.AppendLine("• <b><color=#248059>YEŞİL / CAM:</color></b> Temiz cam şişe ve kavanozlar.");
             text.AppendLine("• <b><color=#987000>SARI / PLASTİK:</color></b> Temiz plastik kap ve paketler.");
-            text.AppendLine("• <b><color=#A62E29>KIRMIZI / KONTAMİNE:</color></b> Görünür bozulma bulunan veya analizde POZİTİF çıkan ürünlerin ambalajları, malzemesi ne olursa olsun ayrı imhaya gider. Analiz raporunun ambalaj satırı da hedefi belirtir.");
-            text.AppendLine("SKT, etiket uyumsuzluğu veya geri çağırma tek başına ambalajı kontamine yapmaz; bozulma ve analiz sonucunu ayrıca kontrol edin.");
+            text.AppendLine("• <b><color=#A62E29>KIRMIZI / KONTAMİNE:</color></b> Analizde POZİTİF çıkan ürünlerin ambalajları, malzemesi ne olursa olsun ayrı imhaya gider. Analiz raporunun ambalaj satırı hedefi belirtir.");
+            text.AppendLine("SKT, görünür bozulma, etiket uyumsuzluğu veya geri çağırma tek başına ambalajı kontamine yapmaz. Toksik kirlilik yoksa ambalajı etiketinde yazan malzemeye göre ayırın.");
 
             Heading(text, "4. KONTROLLER VE PUANLAMA");
             text.AppendLine("• <b>E veya ürüne sol tık:</b> Yakından incele / masaya bırak.");
             text.AppendLine("• <b>İncelemede sol tık + sürükle:</b> Döndür. <b>Fare tekerleği:</b> Yaklaş / uzaklaş.");
             text.AppendLine("• <b>F veya analiz cihazı:</b> Gizli kirlilik analizi al; tamamlanan rapor otomatik açılır.");
+            text.AppendLine("• <b>Bakanlık faksı:</b> Hatalı karar ve hatalı ayrıştırma ayrı yanlış işlemlerdir. Aynı gün üçüncü yanlış işlemde vardiya kaybedilir. Sayaç her sabah sıfırlanır; hata bildirimini onaylamadan yeni ürün gelmez.");
+            text.AppendLine("• <b>İnceleme:</b> Kamera sabit kalır; sadece ürün döner ve yakınlaşır. Tüm bilgiler ürünün ön/arka etiketindedir.");
             text.AppendLine("• <b>B veya masadaki kitap:</b> El kitapçığını, gazete özetini ve güncel kuralları aç.");
             text.AppendLine("• <b>W / ONAY:</b> Ürünü piyasaya gönder. <b>R / RED:</b> Reddet, ardından ambalajı ayrıştır.");
             text.AppendLine("• <b>ESC:</b> Belgeyi kapat / oyunu duraklat. Zorunlu gazete ve acil duyuruyu onay düğmesiyle tamamlayın.");

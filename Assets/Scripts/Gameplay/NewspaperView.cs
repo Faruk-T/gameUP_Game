@@ -22,7 +22,6 @@ namespace GameUp.Gameplay
         [SerializeField] private GameObject page;
         [SerializeField] private NewspaperEdition[] editions;
         [SerializeField] private Text dateline, section, headline, byline, leftColumn, rightColumn, caption, rules;
-        [SerializeField] private Image photograph;
         [SerializeField] private Button confirmButton;
         private readonly Dictionary<DocumentDefinition, NewspaperEdition> index = new Dictionary<DocumentDefinition, NewspaperEdition>();
         private static readonly CultureInfo Turkish = CultureInfo.GetCultureInfo("tr-TR");
@@ -45,7 +44,6 @@ namespace GameUp.Gameplay
             section.text = edition.Section;
             headline.text = source.Title;
             byline.text = edition.Byline;
-            photograph.sprite = source.Illustration;
             caption.text = edition.PhotoCaption;
             SplitColumns(source.Body, out string first, out string second);
             leftColumn.text = first; rightColumn.text = second;

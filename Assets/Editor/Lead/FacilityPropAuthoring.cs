@@ -16,8 +16,10 @@ namespace GameUp.Editor
         internal static GameObject Pack(string name,Transform parent,Vector3 center,Vector3 size,float yaw=0,Material paint=null)
             =>Fit(Package(name),parent,center,size,Quaternion.Euler(0,yaw,0),paint);
         internal static GameObject Esma(string name,Transform parent,Vector3 center,Vector3 size,float yaw=0)
+            =>ArtistPart(Artist,name,parent,center,size,yaw);
+        internal static GameObject ArtistPart(string asset,string name,Transform parent,Vector3 center,Vector3 size,float yaw=0)
         {
-            var source=AssetDatabase.LoadAssetAtPath<GameObject>(Artist).GetComponentsInChildren<MeshRenderer>().Single(r=>r.name==name);
+            var source=AssetDatabase.LoadAssetAtPath<GameObject>(asset).GetComponentsInChildren<MeshRenderer>().Single(r=>r.name==name);
             var part=new GameObject(name,typeof(MeshFilter),typeof(MeshRenderer));
             part.GetComponent<MeshFilter>().sharedMesh=source.GetComponent<MeshFilter>().sharedMesh;
             part.GetComponent<MeshRenderer>().sharedMaterials=source.sharedMaterials;
@@ -121,17 +123,24 @@ namespace GameUp.Editor
                 .Concat(roots.SelectMany(r=>r.GetComponentsInChildren<SkinnedMeshRenderer>(true)).Select(r=>r.sharedMesh)).Where(m=>m).ToArray();
             var used=new System.Collections.Generic.HashSet<Mesh>(meshes);
             var parts=AssetDatabase.LoadAssetAtPath<GameObject>(Artist).GetComponentsInChildren<MeshFilter>();
-            var lines=new System.Collections.Generic.List<string>{"# Sanatçı çevre objeleri — kaynak ve sahne denetimi","","Kaynak: feature/Objects / 0106ab2. 16 çevre parçası, 31 ürün ve caretta kaynağı projededir. Mesh referansı üzerinden, gizli belge durumları da dahil kontrol edilir.","","T / Son rapor cihazı kaldırıldığı için fax ve fax signal kaynakları projede tutulur, aktif sahnede kullanılmaz. Normal F analiz cihazı, xray parçaları ve Bakanlık acil duyurusu korunur.","","| Obje | Projede | Game sahnesi |","|---|---|---|"};
+            var lines=new System.Collections.Generic.List<string>{"# Sanatçı çevre objeleri — kaynak ve sahne denetimi","","Kaynak: feature/Objects / 0106ab2. 16 çevre parçası, 31 ürün ve caretta kaynağı projededir. Mesh referansı üzerinden, gizli belge durumları da dahil kontrol edilir.","","Faks ve siren, Bakanlık bildirimleri ve vardiya raporu için masadadır. T / son raporu yeniden açma kısayolu bulunmaz. Normal F analiz cihazı korunur.","","| Obje | Projede | Game sahnesi |","|---|---|---|"};
             int active=0;
             foreach(var part in parts)
             {
-                bool present=used.Contains(part.sharedMesh),retired=part.name=="fax"||part.name=="fax signal";
-                lines.Add("| "+part.name+" | Var | "+(present?"Var":retired?"İstek gereği kaldırıldı":"EKSİK")+" |");
+                bool present=used.Contains(part.sharedMesh);
+                bool replaced=part.name.StartsWith("trashbin-",StringComparison.Ordinal);
+                lines.Add("| "+part.name+" | Var | "+(present?"Var":replaced?"Yeni Trashbin.fbx modeliyle değiştirildi":"EKSİK")+" |");
                 if(present)active++;
-                if(!present&&!retired)throw new InvalidOperationException("Artist object missing: "+part.name);
+                if(!present&&!replaced)throw new InvalidOperationException("Artist object missing: "+part.name);
+            }
+            foreach(var part in AssetDatabase.LoadAssetAtPath<GameObject>(RecyclingBinAuthoring.Source).GetComponentsInChildren<MeshFilter>())
+            {
+                bool present=used.Contains(part.sharedMesh);lines.Add("| Yeni / "+part.name+" | Var | "+(present?"Var":"EKSİK")+" |");
+                if(present)active++;
+                if(!present)throw new InvalidOperationException("Updated bin missing: "+part.name);
             }
             lines.Add("");lines.Add("31 ürün modeli kampanya havuzunda; caretta modeli beş animasyonlu aktörde kullanılır. Tüm sayımlar otomatik testlerle doğrulanır.");
-            File.WriteAllLines("Docs/ENVIRONMENT_INVENTORY.md",lines);Debug.Log("ARTIST_ENVIRONMENT_OK imported="+parts.Length+"/"+parts.Length+" active="+active+" retired=2");
+            File.WriteAllLines("Docs/ENVIRONMENT_INVENTORY.md",lines);Debug.Log("ARTIST_ENVIRONMENT_OK imported=20/20 active="+active+" replaced=4");
         }
     }
 }

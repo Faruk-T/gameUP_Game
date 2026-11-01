@@ -15,7 +15,7 @@ namespace GameUP.Interaction
         [SerializeField] private GameSessionController session;
         [SerializeField] private ProductPresentation presentation;
         [SerializeField] private LayerMask interactableLayers;
-        [SerializeField] private float rayDistance = 5, pitchLimit = 55, maxInspectionZoom = 0.2f;
+        [SerializeField] private float rayDistance = 5, pitchLimit = 55, maxInspectionZoom = 0.25f;
         private WorkstationTarget hovered;
         private UserSettings settings;
         private bool inspecting, ignoreMouseDelta = true, dragging, pressedWhileInspecting;
@@ -59,7 +59,7 @@ namespace GameUP.Interaction
             if (!session.WorldInputAllowed || mouse == null) return;
             if (keyboard != null)
             {
-                if (keyboard.bKey.wasPressedThisFrame) { session.OpenHandbook(); return; }
+                if (keyboard.bKey.wasPressedThisFrame) { EndInspection(); session.OpenHandbook(); return; }
                 if (keyboard.eKey.wasPressedThisFrame && (inspecting || hovered != null && hovered.Action == WorkstationAction.Product)) ToggleInspection();
                 if (keyboard.wKey.wasPressedThisFrame) Decide(PlayerDecision.Approve);
                 if (keyboard.rKey.wasPressedThisFrame) Decide(PlayerDecision.Reject);
@@ -69,7 +69,7 @@ namespace GameUP.Interaction
             Vector2 delta = mouse.delta.ReadValue();
             if (ignoreMouseDelta) { ignoreMouseDelta = false; delta = Vector2.zero; }
             delta = Vector2.ClampMagnitude(delta, 100);
-            if (!(inspecting && mouse.leftButton.isPressed))
+            if (!inspecting)
             {
                 yaw += delta.x * settings.Sensitivity;
                 pitch = Mathf.Clamp(pitch - delta.y * settings.Sensitivity, -pitchLimit, pitchLimit);
@@ -77,12 +77,12 @@ namespace GameUP.Interaction
                 playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
             }
             WorkstationTarget target = null;
-            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out var hit, rayDistance, interactableLayers, QueryTriggerInteraction.Ignore))
+            if (!inspecting && Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out var hit, rayDistance, interactableLayers, QueryTriggerInteraction.Ignore))
                 target = hit.collider.GetComponentInParent<WorkstationTarget>();
             if (hovered != target)
             {
                 hovered = target;
-                session.SetTargetHint(target ? target.Hint : "");
+                session.SetTargetHint(inspecting ? InspectionHint : target ? target.Hint : "");
             }
             if (mouse.leftButton.wasPressedThisFrame)
             {
@@ -95,13 +95,19 @@ namespace GameUP.Interaction
                 dragging |= Vector2.Distance(pressPosition, mouse.position.ReadValue()) > 4;
                 if (dragging)
                 {
-                    presentation.ActiveProduct.transform.Rotate(playerCamera.transform.up, -delta.x * 0.35f, Space.World);
-                    presentation.ActiveProduct.transform.Rotate(playerCamera.transform.right, delta.y * 0.35f, Space.World);
+                    RotateInspection(delta*.35f);
                 }
             }
             if (inspecting && pressedWhileInspecting && mouse.leftButton.wasReleasedThisFrame && !dragging) EndInspection();
             if (inspecting)
             {
+                if(mouse.rightButton.wasPressedThisFrame){EndInspection();return;}
+                if(keyboard!=null)
+                {
+                    float keyYaw=(keyboard.rightArrowKey.isPressed?1:0)-(keyboard.leftArrowKey.isPressed?1:0);
+                    float keyPitch=(keyboard.upArrowKey.isPressed?1:0)-(keyboard.downArrowKey.isPressed?1:0);
+                    RotateInspection(new Vector2(keyYaw,keyPitch)*(120*Time.deltaTime));
+                }
                 zoom = Mathf.Clamp(zoom + mouse.scroll.ReadValue().y * 0.001f, -maxInspectionZoom, maxInspectionZoom);
                 presentation.ActiveProduct.transform.position = inspectionAnchor.position - playerCamera.transform.forward * zoom;
             }
@@ -115,7 +121,7 @@ namespace GameUP.Interaction
                 case WorkstationAction.Analyzer: EndInspection(); session.Analyze(); break;
                 case WorkstationAction.Approve: Decide(PlayerDecision.Approve); break;
                 case WorkstationAction.Reject: Decide(PlayerDecision.Reject); break;
-                case WorkstationAction.Handbook: session.OpenHandbook(); break;
+                case WorkstationAction.Handbook: EndInspection(); session.OpenHandbook(); break;
                 default:
                     if (target.Action >= WorkstationAction.Paper && target.Action <= WorkstationAction.Contaminated)
                         session.SelectWaste((WasteCategory)((int)target.Action - (int)WorkstationAction.Paper));
@@ -136,14 +142,25 @@ namespace GameUP.Interaction
             originalPosition = presentation.ActiveProduct.transform.position;
             originalRotation = presentation.ActiveProduct.transform.rotation;
             presentation.ActiveProduct.transform.position = inspectionAnchor.position;
+            ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.ProductPickup);
             session.NotifyProductInspected(session.Flow.Current.Key);
+            session.SetTargetHint(InspectionHint);
+        }
+        public void RotateInspection(Vector2 degrees)
+        {
+            if(!inspecting)return;
+            var held=presentation.ActiveProduct.transform;
+            held.Rotate(playerCamera.transform.up,-degrees.x,Space.World);
+            held.Rotate(playerCamera.transform.right,degrees.y,Space.World);
         }
         public void EndInspection()
         {
             if (!inspecting) return;
-            inspecting = false; pressedWhileInspecting = false; zoom = 0;
+            inspecting = false; pressedWhileInspecting = false; zoom = 0; ignoreMouseDelta = true;
             if (presentation.ActiveProduct) presentation.ActiveProduct.transform.SetPositionAndRotation(originalPosition, originalRotation);
+            session.SetTargetHint("");
         }
+        private const string InspectionHint="Sürükle / yön tuşları: Döndür  •  Tekerlek: Yakınlaş  •  E / Sağ tık: Bırak";
         private void OnApplicationFocus(bool focus) { if (focus) ignoreMouseDelta = true; }
     }
 }

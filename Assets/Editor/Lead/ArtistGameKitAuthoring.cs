@@ -40,7 +40,7 @@ namespace GameUp.Editor
         private static void CreateKit()
         {
             var root=new GameObject(RootName).transform;root.position=new Vector3(0,0,-27);
-            FacilityPropAuthoring.Pack("SM_Bld_Floor_Concrete_01",root,new Vector3(0,-.04f,0),new Vector3(40,.12f,27));
+            FacilityPropAuthoring.Pack("SM_Bld_Floor_Concrete_01",root,new Vector3(0,-.04f,-1.5f),new Vector3(40,.12f,31));
             var products=new GameObject("Products_31").transform;products.SetParent(root,false);
             var sources=AssetDatabase.FindAssets("t:Prefab",new[]{RoomAuthoring.ArtistRoot}).Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<GameObject>).OrderBy(g=>g.name,StringComparer.Ordinal).ToArray();
@@ -78,6 +78,13 @@ namespace GameUp.Editor
                 FacilityPropAuthoring.Esma(name,environment,position+Vector3.up*(Tabletop+fitted.y*.5f),fitted);
                 Label(environment,name,position+new Vector3(0,.5f,1.18f),3.2f,.24f,34);
             }
+            var bins=new GameObject("UpdatedBins_4").transform;bins.SetParent(root,false);
+            for(int i=0;i<4;i++)
+            {
+                var position=new Vector3(1+i*4.2f,0,-14);DisplayTable(bins,RecyclingBinAuthoring.Names[i],position,new Vector2(3.4f,2.3f));
+                RecyclingBinAuthoring.Place(i,bins,position+Vector3.up*(Tabletop+.65f),new Vector3(.68f,1.3f,.65f));
+                Label(bins,RecyclingBinAuthoring.Names[i],position+new Vector3(0,.5f,1.18f),3.2f,.24f,32);
+            }
             var carettaGroup=new GameObject("Caretta_1").transform;carettaGroup.SetParent(root,false);var carettaPosition=new Vector3(9.4f,0,-9.4f);
             DisplayTable(carettaGroup,"Caretta caretta",carettaPosition,new Vector2(3.4f,2.3f));
             var caretta=ProductAuthoring.PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Outside/caretta caretta.prefab"),carettaGroup,carettaPosition+Vector3.up*Tabletop,1.65f);
@@ -87,7 +94,7 @@ namespace GameUp.Editor
             var bones=caretta.GetComponentsInChildren<Transform>();var forward=Vector3.ProjectOnPlane(bones.Single(t=>t.name=="head").position-bones.Single(t=>t.name=="tail1").position,Vector3.up).normalized;
             caretta.transform.localRotation=Quaternion.Euler(0,Vector3.SignedAngle(forward,Vector3.forward,Vector3.up),0);
             Label(carettaGroup,"caretta caretta / örnek poz",carettaPosition+new Vector3(0,.5f,1.18f),3.2f,.24f,32);
-            Label(root,"ESMANUR  /  GAME KIT\n31 ürün  •  16 çevre parçası  •  caretta",new Vector3(-3.5f,2.3f,13),13,1.6f,28);
+            Label(root,"ESMANUR  /  GAME KIT\n31 ürün  •  16 çevre parçası  •  4 yeni kutu  •  caretta",new Vector3(-3.5f,2.3f,13),13,1.6f,28);
             foreach(var t in root.GetComponentsInChildren<Transform>(true))
             {
                 t.gameObject.tag="EditorOnly";t.gameObject.layer=30;

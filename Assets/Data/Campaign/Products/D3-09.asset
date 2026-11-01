@@ -14,35 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-09
   category: 0
-  displayName: Peynir / Parti 5
+  displayName: "Elmal\u0131 Geleneksel Lor Peyniri"
   prefab: {fileID: 8303161955004159888, guid: 8ba1cdcc612331147a86d57a5d843088, type: 3}
   modelSource: {fileID: 8903907083105305555, guid: 339c76ecf5ccb3f459dd998feb989c60, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 18
     Month: 11
     Year: 2026
-  declaredProductType: Peynir / Parti 5
-  listedProductType: Peynir / Parti 5
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "Geleneksel Tam Ya\u011Fl\u0131 Peynir"
+  listedProductType: "Geleneksel Tam Ya\u011Fl\u0131 Peynir"
+  ingredientsSummary: "Past\xF6rize s\xFCt, peynir mayas\u0131, kaya tuzu."
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Elmal\u0131 Geleneksel Lor Peyniri numunesinde pestisit, a\u011F\u0131r
+    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
+    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
+    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
+    (Past\xF6rize s\xFCt, peynir mayas\u0131, kaya tuzu.) ve yasal t\xFCr beyan\u0131
+    ('Geleneksel Tam Ya\u011Fl\u0131 Peynir') birbiriyle uyumlu.\r\n\u2022 KAYNAK
+    & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 18.11.2026 (Vardiya
+    tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Vakumlu Plastik Peynir Kab\u0131 \u2014 Plastik At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

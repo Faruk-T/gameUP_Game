@@ -14,35 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-01
   category: 4
-  displayName: Kavun / A
+  displayName: "Finike K\u0131rka\u011Fa\xE7 Kavunu"
   prefab: {fileID: 5230668780898530230, guid: fa3e9819283b05a4099d7f957f924329, type: 3}
   modelSource: {fileID: 3653460095078347878, guid: 2e00a651fb9a15f41850407783d17583, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 6
+    Day: 9
     Month: 11
     Year: 2026
-  declaredProductType: Kavun / A
-  listedProductType: Kavun / A
-  ingredientsSummary: Meyve numunesi.
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "Taze Hasat Meyve (Finike K\u0131rka\u011Fa\xE7 Kavunu)"
+  listedProductType: "Taze Hasat Meyve (Finike K\u0131rka\u011Fa\xE7 Kavunu)"
+  ingredientsSummary: '%100 yerel hasat taze meyve.'
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Finike K\u0131rka\u011Fa\xE7 Kavunu numunesinde pestisit, a\u011F\u0131r
+    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
+    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
+    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
+    (%100 yerel hasat taze meyve.) ve yasal t\xFCr beyan\u0131 ('Taze Hasat Meyve
+    (Finike K\u0131rka\u011Fa\xE7 Kavunu)') birbiriyle uyumlu.\r\n\u2022 KAYNAK &
+    SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 09.11.2026 (Vardiya
+    tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Koruyucu Plastik File & Stre\xE7 \u2014 Plastik At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

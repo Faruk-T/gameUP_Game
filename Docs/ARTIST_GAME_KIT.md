@@ -1,6 +1,6 @@
 # Esmanur Game Kit
 
-Game sahnesinde, binanın arkasında **Esmanur_GameKit** kökü vardır. Merkezi `(0, 0, -27)`; 40 × 27 metrelik inceleme platformu arka duvardan ayrı durur.
+Game sahnesinde, binanın arkasında **Esmanur_GameKit** kökü vardır. Merkezi `(0, 0, -27)`; 40 × 31 metrelik inceleme platformu arka duvardan ayrı durur.
 
 ## Görüntüleme
 
@@ -13,8 +13,9 @@ Hierarchy grupları:
 - `Products_31`: süt, peynir, yoğurt/yumurta, et ve meyve sıraları. Her ürün orijinal kaynak prefabıyla, oranı korunarak sergilenir.
 - `Environment_16`: Environment.fbx içindeki 16 mesh parçasının her biri ayrı masada ve kendi adıyla görünür; kitaplar, gazete, masa, bant parçaları, dört kutu, analiz cihazı, kâğıtlar ve sinyaller dahil.
 - `Caretta_1`: kaynak caretta, animasyondan alınmış sabit bir örnek pozda. Sergi aktörü hareket sistemi veya Animator çalıştırmaz.
+- `UpdatedBins_4`: `4b6292a` revizyonundaki dört yeni Trashbin.fbx mesh'i, ayrı masalarda.
 
-Toplam **48 kaynak model/parça** vardır. T cihazıyla kaldırılan `fax` ve `fax signal` yalnız bu inceleme sergisinde bulunur; oyun etkileşimleri geri eklenmez. Kaynak malzemeler ve mesh'ler paylaşılır; oyun koşulu varyantları sergiye kopyalanmaz.
+Toplam **52 kaynak model/parça** vardır. Faks ve sinyal modeli aktif oyunda Bakanlık bildirimleri için de kullanılır; T ile eski raporu açma eylemi bulunmaz. Eski dört kutu bu sergide karşılaştırma için kalır, aktif odada yeni modeller kullanılır. Kaynak malzemeler ve mesh'ler paylaşılır; oyun koşulu varyantları sergiye kopyalanmaz.
 
 ## Ayrım ve düzenleme
 
@@ -28,4 +29,4 @@ Sekiz paket modeli gerçek URP görüntülerinde karşılaştırıldı. **SM_Pro
 
 [Çerçeve karşılaştırması](Previews/Coastal/FrameCandidates.png) · [Sergi genel görünümü](Previews/Coastal/GameKitOverview.png) · [Ürünler](Previews/Coastal/GameKitProducts.png) · [Çevre parçaları](Previews/Coastal/GameKitEnvironment.png)
 
-Doğrulama: **48/48 test geçti**. Kaynaklar: `Logs/art-frames-kit-author.log`, `Logs/art-frames-kit-tests.xml`. Yeni test, 31 ürün kaynağının, 16 çevre parçasının ve carettanın gerçek mesh referanslarını; EditorOnly etiketlerini; kamera katmanını ve oynanış bileşeni bulunmamasını denetler.
+Doğrulama; 31 ürün, 16 önceki çevre parçası, dört yeni kutu ve carettanın gerçek mesh referanslarını; EditorOnly etiketlerini, kamera katmanını ve oynanış bileşeni bulunmamasını denetler. Güncel sonuçlar kökteki `VALIDATION.md`, ham test raporu `Logs/WorkstationUpgrade/tests.xml` içindedir.

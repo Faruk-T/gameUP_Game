@@ -80,7 +80,7 @@ namespace GameUp.Editor
             Overlay("Background",loading.transform,Ink);
             Text("Title",loading.transform,"Antalya\nDenetim Masası",0,65,1000,250,80,Paper,TextAnchor.MiddleCenter,true);
             Text("LoadingLabel",loading.transform,"COP31  •  Görev hazırlanıyor…",0,-150,1000,90,30,Paper,TextAnchor.MiddleCenter);
-            Set(app,"defaults",defaults);Set(app,"loadingScreen",group); EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),FirstPath);
+            Set(app,"defaults",defaults);Set(app,"loadingScreen",group);AudioAuthoring.Configure(root.transform); EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),FirstPath);
         }
         private static void Menu()
         {

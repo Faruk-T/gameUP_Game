@@ -120,10 +120,12 @@ namespace GameUp.Production.Tests
             Assert.That(artist.Length,Is.EqualTo(16));
             foreach(var part in artist)
             {
-                bool retired=part.name=="fax"||part.name=="fax signal";
-                if(retired)Assert.That(meshes.Contains(part.sharedMesh),Is.False,"T report device must be removed.");
+                bool retired=part.name.StartsWith("trashbin-",StringComparison.Ordinal);
+                if(retired)Assert.That(meshes.Contains(part.sharedMesh),Is.False,"Old bins are replaced by Trashbin.fbx.");
                 else Assert.That(meshes,Does.Contain(part.sharedMesh),"Artist object absent: "+part.name);
             }
+            foreach(var part in AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Environment/Mesh/Trashbin.fbx").GetComponentsInChildren<MeshFilter>())
+                Assert.That(meshes,Does.Contain(part.sharedMesh),"Updated artist bin absent: "+part.name);
             foreach(var sign in all.Where(t=>t.Find("Lettering")&&t.Find("Lettering").GetComponent<Canvas>()))
             {
                 string concept=sign.name=="HabitatSign"?"SM_Prop_Sign_OutofOrder_01":"SM_Prop_Sign_Director_01";

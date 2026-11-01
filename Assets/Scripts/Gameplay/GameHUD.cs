@@ -6,21 +6,14 @@ namespace GameUp.Gameplay
 {
     public sealed class GameHUD : MonoBehaviour
     {
-        [SerializeField] private Text status, productTitle, productLabel, tutorial, targetHint, feedback;
-        [SerializeField] private GameObject productCard;
+        [SerializeField] private Text status, tutorial, targetHint, feedback;
         public void Render(GameSessionController session)
         {
             var flow = session.Flow;
             string progress = flow.State == FlowState.Working
                 ? $"ÜRÜN {Mathf.Min(flow.ProductIndex + 1, flow.Day.Products.Count)}/{flow.Day.Products.Count}"
                 : $"{flow.ProductIndex}/{flow.Day.Products.Count} TAMAMLANDI";
-            status.text = $"GÜN {flow.DayIndex + 1}  •  {flow.Day.Date:dd.MM.yyyy}  •  {flow.ClockText}  •  {progress}";
-            productCard.SetActive(session.ProductInspected && flow.State == FlowState.Working);
-            if (flow.Current != null)
-            {
-                productTitle.text = flow.Current.Product.Name;
-                productLabel.text = "KİMLİK: " + flow.Current.Key.ProductId + "\n\n" + flow.Current.Product.Label;
-            }
+            status.text = $"GÜN {flow.DayIndex + 1}  •  {flow.Day.Date:dd.MM.yyyy}  •  {flow.ClockText}  •  {progress}  •  HATA {flow.DailyMistakes}/3";
             tutorial.text = flow.Phase == ProductPhase.Analyzing ? "Analiz sürüyor… Rapor fakstan gelecek." : session.TutorialText;
         }
         public void SetTarget(string value) => targetHint.text = value;

@@ -63,7 +63,7 @@ namespace GameUp.Editor
             ps.ApplyModifiedPropertiesWithoutUndo();
             var packaging=FacilityPropAuthoring.Pack("SM_Prop_CardboardBox_01",productRoot,Vector3.zero,new Vector3(.45f,.16f,.45f));packaging.name="EmptyPackaging";packaging.SetActive(false);Set(presentation,"packagingVisual",packaging);
             var player=new GameObject("PlayerView").transform;player.position=new Vector3(0,2.35f,-3.2f);
-            var camera=new GameObject("PlayerCamera",typeof(Camera),typeof(AudioListener)).GetComponent<Camera>();camera.transform.SetParent(player,false);camera.transform.localRotation=Quaternion.Euler(18,0,0);
+            var camera=new GameObject("PlayerCamera",typeof(Camera)).GetComponent<Camera>();camera.transform.SetParent(player,false);camera.transform.localRotation=Quaternion.Euler(18,0,0);
             camera.tag="MainCamera";camera.nearClipPlane=.05f;camera.farClipPlane=80;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.67f,.8f,.82f);
             var anchor=new GameObject("InspectionAnchor").transform;anchor.SetParent(camera.transform,false);anchor.localPosition=new Vector3(-.22f,-.23f,1.15f);
             var input=player.gameObject.AddComponent<WorkstationInteractionController>();Set(input,"session",session);Set(input,"presentation",presentation);Set(input,"playerCamera",camera);Set(input,"cameraYawRoot",player);Set(input,"inspectionAnchor",anchor);
@@ -74,6 +74,9 @@ namespace GameUp.Editor
             var gameCanvas=GameInterfaceAuthoring.Create(session);
             CinematicAuthoring.Create(session,camera,gameCanvas);
             SceneArtCorrections.Apply();
+            ConveyorAuthoring.Apply(architecture,presentation);FaxAuthoring.Apply(architecture,session);
+            RecyclingBinAuthoring.Apply(architecture);
+            Number(backend,"analysisSeconds",AudioAuthoring.Clip("analyzer_full.mp3").length);
             FacilityPropAuthoring.Inventory();
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),ProductionProjectSetup.GamePath);
         }

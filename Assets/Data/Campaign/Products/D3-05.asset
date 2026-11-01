@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-05
   category: 4
-  displayName: "\xC7ilek / A"
+  displayName: "Serik Kokulu Tarla \xC7ile\u011Fi"
   prefab: {fileID: 7446042348620611019, guid: 72136accb817531429b6b21a9a85a9d4, type: 3}
   modelSource: {fileID: 5338894034377604642, guid: 7b0f60faeb0623b488dee92129732ea3, type: 3}
   condition: 0
@@ -23,26 +23,33 @@ MonoBehaviour:
     Day: 7
     Month: 11
     Year: 2026
-  declaredProductType: "\xC7ilek / A"
-  listedProductType: "\xC7ilek / A"
-  ingredientsSummary: Meyve numunesi.
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "Taze Hasat Meyve (Serik Kokulu Tarla \xC7ile\u011Fi)"
+  listedProductType: "Taze Hasat Meyve (Serik Kokulu Tarla \xC7ile\u011Fi)"
+  ingredientsSummary: '%100 yerel hasat taze meyve.'
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 2
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Serik Kokulu Tarla \xC7ile\u011Fi numunesinde pestisit, a\u011F\u0131r
+    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
+    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
+    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
+    (%100 yerel hasat taze meyve.) ve yasal t\xFCr beyan\u0131 ('Taze Hasat Meyve
+    (Serik Kokulu Tarla \xC7ile\u011Fi)') birbiriyle uyumlu.\r\n\u2022 KAYNAK & SKT
+    KAYDI: Kaynak B\xF6lgesi: B\xF6lge B  |  Etiket SKT: 07.11.2026 (Vardiya tarihi
+    ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "\u015Eeffaf Plastik \xC7ilek Kab\u0131 \u2014 Plastik At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

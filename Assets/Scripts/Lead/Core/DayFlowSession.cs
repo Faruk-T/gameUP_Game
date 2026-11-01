@@ -15,12 +15,14 @@ namespace GameUp.Lead
         private bool emergencyAcknowledged;
         private RuleSnapshot activeRules;
         private WasteCategory? pendingWaste;
+        public const int MistakeLimit = 3;
 
         public Guid RunId { get; private set; }
         public FlowState State { get; private set; } = FlowState.Boot;
         public ProductPhase Phase { get; private set; }
         public int DayIndex { get; private set; }
         public int ProductIndex { get; private set; }
+        public int DailyMistakes { get; private set; }
         public DayInfo Day => campaign.Days[DayIndex];
         public ProductSession Current { get; private set; }
         public AnalysisReport LastReport { get; private set; }
@@ -54,6 +56,7 @@ namespace GameUp.Lead
 
         private void BeginDay()
         {
+            DailyMistakes = 0;
             ProductIndex = 0; Current = null; LastReport = null; LastOutcome = null;
             emergencyAcknowledged = false;
             activeRules = new RuleSnapshot(1, Day.Date, Day.Rules);
@@ -159,11 +162,37 @@ namespace GameUp.Lead
             var completedRun = RunId;
             ProductCompleted?.Invoke(result);
             if (RunId != completedRun) return;
+            int errors = (result.Decision.Correct ? 0 : 1) + (result.SortingCorrect == false ? 1 : 0);
+            if (errors > 0)
+            {
+                DailyMistakes = Math.Min(MistakeLimit, DailyMistakes + errors);
+                State = FlowState.MistakeBriefing;
+                Changed?.Invoke();
+                return;
+            }
+            AdvanceAfterProduct();
+        }
+
+        private void AdvanceAfterProduct()
+        {
             if (ProductIndex >= Day.Products.Count) State = FlowState.DaySummary;
             else if (!emergencyAcknowledged && Day.Emergency != null && ProductIndex == Day.Emergency.AfterCompletedProducts)
                 State = FlowState.EmergencyBriefing;
             else { SpawnNext(); return; }
             Changed?.Invoke();
+        }
+
+        public bool AcknowledgeMistake()
+        {
+            if (State != FlowState.MistakeBriefing) return false;
+            if (DailyMistakes >= MistakeLimit)
+            {
+                State = FlowState.GameOver;
+                Phase = ProductPhase.Complete;
+                Changed?.Invoke();
+            }
+            else { State = FlowState.Working; AdvanceAfterProduct(); }
+            return true;
         }
 
         public bool AcknowledgeEmergency()

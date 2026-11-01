@@ -13,12 +13,13 @@ namespace GameUp.Production.Tests
     {
         private GameObject host;
         private DayFlowSession flow;
+        private ProductionInspectionBackend backend;
 
         [SetUp]
         public void SetUp()
         {
             host = new GameObject("HandbookTestBackend");
-            var backend = host.AddComponent<ProductionInspectionBackend>();
+            backend = host.AddComponent<ProductionInspectionBackend>();
             backend.SetConfiguredDays(AssetDatabase.LoadAssetAtPath<GameUP.Contracts.CampaignDefinition>(CampaignAuthoring.CatalogPath).Days);
             flow = new DayFlowSession(backend.CreateCampaign(), backend);
             flow.StartNewRun();
@@ -46,7 +47,7 @@ namespace GameUp.Production.Tests
             foreach (var rule in flow.CurrentRules) Assert.That(text, Does.Contain(rule.Text));
             Assert.That(text, Does.Not.Contain("AKTİF BAKANLIK ACİL FAKSI"));
             Assert.That(text, Does.Contain("Doğru ayrıştırma +2").And.Contain("Hatalı red -10").And.Contain("Yanlış kutu -2"));
-            Assert.That(text, Does.Contain("Görünür bozulma bulunan veya analizde POZİTİF"));
+            Assert.That(text, Does.Contain("Analizde POZİTİF çıkan ürünlerin ambalajları"));
             Assert.That(text, Does.Contain("F veya analiz cihazı").And.Not.Contain("T /"));
         }
 
@@ -75,8 +76,15 @@ namespace GameUp.Production.Tests
         {
             var key = flow.Current.Key;
             Assert.That(flow.NotifyArrival(key), Is.True);
-            Assert.That(flow.SubmitDecision(key, PlayerDecision.Approve), Is.True);
+            var decision=backend.Evaluate(flow.Current,PlayerDecision.Approve).Expected;
+            Assert.That(flow.SubmitDecision(key, decision), Is.True);
             Assert.That(flow.NotifyDispositionFinished(key), Is.True);
+            if(decision==PlayerDecision.Reject)
+            {
+                var bin=ProductRuleEvaluator.GetExpectedWasteBin(backend.GetProductDefinition(key.ProductId));
+                var waste=(WasteCategory)((int)bin-1);
+                Assert.That(flow.BeginSorting(key,waste),Is.True);Assert.That(flow.NotifySortingFinished(key,waste),Is.True);
+            }
         }
     }
 }

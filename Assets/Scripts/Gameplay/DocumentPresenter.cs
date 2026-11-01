@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameUp.App;
 using GameUp.Contracts;
 using GameUp.Lead;
 using GameUP.Contracts;
@@ -15,9 +16,10 @@ namespace GameUp.Gameplay
         [SerializeField] private Text kind, title, body, confirmationLabel;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Button confirmButton;
-        [SerializeField] private AudioSource notificationSpeaker;
-        [SerializeField] private AudioClip emergencyNotification;
         private long token;
+        private DocumentKind visibleKind;
+        private bool updating;
+        private float lastScrollSound;
         public event Action<long> Confirmed;
         public bool IsVisible => panel.activeSelf;
         public void Show(DocumentRequest document, DayDefinition day, IReadOnlyList<RuleInfo> rules)
@@ -27,8 +29,9 @@ namespace GameUp.Gameplay
             panel.SetActive(true);
             if (changed)
             {
-                notificationSpeaker.Stop();
-                if(document.Kind==DocumentKind.Emergency)notificationSpeaker.PlayOneShot(emergencyNotification);
+                updating=true;visibleKind=document.Kind;
+                if(document.Kind==DocumentKind.Handbook)ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.BookOpen);
+                if(document.Kind==DocumentKind.Newspaper)ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Newspaper);
                 token = document.Token;
                 bool isNews = document.Kind == DocumentKind.Newspaper;
                 documentPage.SetActive(!isNews);
@@ -40,6 +43,7 @@ namespace GameUp.Gameplay
                     {
                         DocumentKind.Handbook => "DENETİM EL KİTAPÇIĞI",
                         DocumentKind.Analysis => "LABORATUVAR / ANALİZ RAPORU",
+                        DocumentKind.Infraction => "BAKANLIK / İŞLEM DENETİM BİLDİRİMİ",
                         _ => "BAKANLIK / ACİL DUYURU"
                     };
                     title.text = document.Title; body.text = document.Body;
@@ -47,6 +51,7 @@ namespace GameUp.Gameplay
                     Canvas.ForceUpdateCanvases();
                     scroll.verticalNormalizedPosition = 1;
                 }
+                updating=false;
             }
             if (changed || opened)
             {
@@ -54,7 +59,16 @@ namespace GameUp.Gameplay
                 else confirmButton.Select();
             }
         }
-        public void Hide() => panel.SetActive(false);
+        public void Hide()
+        {
+            if(panel.activeSelf&&visibleKind==DocumentKind.Handbook)ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.BookClose);
+            panel.SetActive(false);
+        }
+        public void ScrollChanged(Vector2 position)
+        {
+            if(updating||visibleKind!=DocumentKind.Handbook||!panel.activeSelf||Time.unscaledTime-lastScrollSound<.25f)return;
+            lastScrollSound=Time.unscaledTime;ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.BookPage);
+        }
         public void Confirm() => Confirmed?.Invoke(token);
     }
 }

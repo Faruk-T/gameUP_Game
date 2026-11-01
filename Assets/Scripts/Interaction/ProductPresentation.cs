@@ -5,6 +5,7 @@ using GameUp.Contracts;
 using GameUP.Contracts;
 using GameUP.Rules;
 using UnityEngine;
+using UnityEngine.Serialization;
 using ProductSession = GameUp.Contracts.ProductSession;
 
 namespace GameUP.Interaction
@@ -24,7 +25,7 @@ namespace GameUP.Interaction
         [SerializeField] private Transform arrivalPoint, deskPoint, approvedExitPoint, foodDisposalPoint;
         [SerializeField] private GameObject packagingVisual;
         [SerializeField] private Transform[] wastePoints;
-        [SerializeField, Min(0.01f)] private float moveDuration = 0.45f;
+        [FormerlySerializedAs("moveDuration"), SerializeField, Min(0.001f)] private float secondsPerMetre = 0.22f;
         private readonly Dictionary<string, ProductVisual> pool = new Dictionary<string, ProductVisual>(StringComparer.Ordinal);
         private ProductVisual active;
         private Coroutine movement;
@@ -52,7 +53,6 @@ namespace GameUP.Interaction
             ResetPresentation();
             if (!pool.TryGetValue(session.Product.Id, out active)) throw new InvalidOperationException("Product has no authored visual: " + session.Product.Id);
             CurrentSession = session;
-            active.Labels.Bind(active.Definition);
             active.Visual.transform.SetPositionAndRotation(arrivalPoint.position, arrivalPoint.rotation);
             active.Visual.SetActive(true);
             movement = StartCoroutine(Move(active.Visual.transform, deskPoint, () => arrived(session.Key)));
@@ -83,9 +83,10 @@ namespace GameUP.Interaction
         private IEnumerator Move(Transform item, Transform destination, Action finished)
         {
             Vector3 start = item.position; Quaternion rotation = item.rotation;
-            for (float time = 0; time < moveDuration; time += Time.deltaTime)
+            float duration=Mathf.Max(.05f,Vector3.Distance(start,destination.position)*secondsPerMetre);
+            for (float time = 0; time < duration; time += Time.deltaTime)
             {
-                float t = Mathf.SmoothStep(0, 1, time / moveDuration);
+                float t = time / duration;
                 item.SetPositionAndRotation(Vector3.Lerp(start, destination.position, t), Quaternion.Slerp(rotation, destination.rotation, t));
                 yield return null;
             }

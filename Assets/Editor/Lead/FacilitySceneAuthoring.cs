@@ -28,13 +28,10 @@ namespace GameUp.Editor
             {
                 var old=office.Find(name);if(old)UnityEngine.Object.DestroyImmediate(old.gameObject);
             }
-            if(!office.Find("Prop_paper"))FacilityPropAuthoring.Esma("paper",office,new Vector3(-2.85f,1.05f,-.8f),new Vector3(.6f,.006f,.42f));
+            if(!office.Find("MinistryFax")&&!office.Find("Prop_paper"))FacilityPropAuthoring.Esma("paper",office,new Vector3(-2.85f,1.05f,-.8f),new Vector3(.6f,.006f,.42f));
             var signs=office.GetComponentsInChildren<Transform>(true).Where(t=>t.Find("Lettering")&&t.Find("Lettering").GetComponent<Canvas>()).ToArray();
             foreach(var sign in signs)FacilityPropAuthoring.RefreshSign(sign);
             var presenter=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<DocumentPresenter>(true)).Single();
-            var sound=presenter.GetComponent<AudioSource>();if(!sound)sound=presenter.gameObject.AddComponent<AudioSource>();
-            sound.playOnAwake=false;sound.spatialBlend=0;
-            Set(presenter,"notificationSpeaker",sound);Set(presenter,"emergencyNotification",AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/FaxSignal.wav"));
             foreach(var text in scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Text>(true)))
                 if(text.name=="Controls")text.text=text.text.Replace("     T / Rapor","");
             FacilityPropAuthoring.Inventory();EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);

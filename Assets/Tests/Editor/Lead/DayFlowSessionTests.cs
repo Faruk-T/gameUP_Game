@@ -65,7 +65,7 @@ namespace GameUp.Lead.Tests
         [Test] public void RestartRejectsOldCallbackEvenWhenProductIdRepeats()
         { Ready(); var oldKey = flow.Current.Key; flow.RequestAnalysis(oldKey); var oldCallback = backend.Pending; flow.StartNewRun(); Ready(); flow.RequestAnalysis(flow.Current.Key); oldCallback(new AnalysisReport(oldKey, "stale", "bad")); Assert.That(flow.LastReport, Is.Null); Assert.That(flow.Phase, Is.EqualTo(ProductPhase.Analyzing)); }
         [Test] public void EmergencyWaitsForThirdProductSorting()
-        { SecondDay(); Finish(); Finish(); Ready(); var key = flow.Current.Key; flow.SubmitDecision(key, PlayerDecision.Reject); flow.NotifyDispositionFinished(key); Assert.That(flow.State, Is.EqualTo(FlowState.Working)); flow.BeginSorting(key, WasteCategory.Plastic); flow.NotifySortingFinished(key, WasteCategory.Plastic); Assert.That(flow.State, Is.EqualTo(FlowState.EmergencyBriefing)); Assert.That(flow.ProductIndex, Is.EqualTo(3)); }
+        { SecondDay(); Finish(); Finish(); Ready(); backend.Expected=PlayerDecision.Reject; var key = flow.Current.Key; flow.SubmitDecision(key, PlayerDecision.Reject); flow.NotifyDispositionFinished(key); Assert.That(flow.State, Is.EqualTo(FlowState.Working)); flow.BeginSorting(key, WasteCategory.Plastic); flow.NotifySortingFinished(key, WasteCategory.Plastic); Assert.That(flow.State, Is.EqualTo(FlowState.EmergencyBriefing)); Assert.That(flow.ProductIndex, Is.EqualTo(3)); }
         [Test] public void EmergencyCreatesNewSnapshotWithoutChangingOldOne()
         { SecondDay(); var old = flow.Current.Rules; Finish(); Finish(); Finish(); flow.AcknowledgeEmergency(); Assert.That(old.Version, Is.EqualTo(1)); Assert.That(old.Rules.Count, Is.EqualTo(1)); Assert.That(flow.Current.Rules.Version, Is.EqualTo(2)); Assert.That(flow.Current.Rules.Rules.Count, Is.EqualTo(2)); }
         [Test] public void EmergencyCanOnlyBeAcknowledgedOnce()
@@ -83,17 +83,54 @@ namespace GameUp.Lead.Tests
         [Test] public void RestartDuringCompletionNotificationDoesNotSpawnBeforeNewspaper()
         { flow.ProductCompleted += _ => flow.StartNewRun(); Finish(); Assert.That(flow.State, Is.EqualTo(FlowState.MorningBriefing)); Assert.That(flow.Current, Is.Null); Assert.That(flow.RunSummary.Total, Is.Zero); }
 
+        [Test] public void IncorrectTransactionWaitsForMinistryAcknowledgementBeforeAnotherProduct()
+        {
+            Finish(PlayerDecision.Reject);
+            Assert.That(flow.State,Is.EqualTo(FlowState.MistakeBriefing));Assert.That(flow.DailyMistakes,Is.EqualTo(1));
+            var old=flow.Current.Key;Assert.That(flow.CanDecide,Is.False);Assert.That(flow.NotifyDispositionFinished(old),Is.False);
+            Assert.That(flow.AcknowledgeMistake(),Is.True);Assert.That(flow.State,Is.EqualTo(FlowState.Working));
+            Assert.That(flow.Current.Key,Is.Not.EqualTo(old));Assert.That(flow.AcknowledgeMistake(),Is.False);
+        }
+        [Test] public void ThirdMistakeInOneDayEndsRunAndRejectsFurtherInput()
+        {
+            SecondDay();backend.Expected=PlayerDecision.Reject;
+            for(int i=1;i<=3;i++)
+            {
+                Finish();Assert.That(flow.DailyMistakes,Is.EqualTo(i));Assert.That(flow.State,Is.EqualTo(FlowState.MistakeBriefing));
+                Assert.That(flow.AcknowledgeMistake(),Is.True);
+            }
+            Assert.That(flow.State,Is.EqualTo(FlowState.GameOver));Assert.That(flow.CanDecide,Is.False);
+            Assert.That(flow.RequestAnalysis(flow.Current.Key),Is.False);Assert.That(flow.ContinueAfterSummary(),Is.False);
+        }
+        [Test] public void WrongDecisionAndWrongSortingCountAsSeparateOperations()
+        {
+            backend.SortCorrect=false;Finish(PlayerDecision.Reject);
+            Assert.That(flow.DailyMistakes,Is.EqualTo(2));Assert.That(flow.AcknowledgeMistake(),Is.True);
+            backend.Expected=PlayerDecision.Reject;Finish();flow.AcknowledgeMistake();
+            Assert.That(flow.DailyMistakes,Is.EqualTo(3));Assert.That(flow.State,Is.EqualTo(FlowState.GameOver));
+        }
+        [Test] public void MistakesResetEveryMorningAndOnRestart()
+        {
+            Finish(PlayerDecision.Reject);flow.AcknowledgeMistake();Finish();
+            Assert.That(flow.State,Is.EqualTo(FlowState.DaySummary));Assert.That(flow.DailyMistakes,Is.EqualTo(1));
+            flow.ContinueAfterSummary();Assert.That(flow.DailyMistakes,Is.Zero);
+            Finish(PlayerDecision.Reject);Assert.That(flow.DailyMistakes,Is.EqualTo(1));flow.StartNewRun();
+            Assert.That(flow.DailyMistakes,Is.Zero);Assert.That(flow.AcknowledgeMistake(),Is.False);
+        }
+
         private sealed class Backend : IInspectionBackend
         {
             public int Evaluations, Commits, Analyses;
+            public PlayerDecision Expected=PlayerDecision.Approve;
+            public bool SortCorrect=true;
             public Action<AnalysisReport> Pending;
             private readonly List<(string day, ProductOutcome result)> results = new List<(string, ProductOutcome)>();
             public void BeginRun(Guid runId) { results.Clear(); Evaluations = Commits = Analyses = 0; }
             public void RequestAnalysis(ProductSession session, Action<AnalysisReport> completed) { Analyses++; Pending = completed; }
             public DecisionEvaluation Evaluate(ProductSession session, PlayerDecision decision)
-            { Evaluations++; return new DecisionEvaluation(session.Key, decision, PlayerDecision.Approve, "fixture", session.Rules.Version); }
+            { Evaluations++; return new DecisionEvaluation(session.Key, decision, Expected, "fixture", session.Rules.Version); }
             public ProductOutcome CommitOutcome(ProductSession session, DecisionEvaluation decision, WasteCategory? waste)
-            { Commits++; var result = new ProductOutcome(decision, waste.HasValue ? true : (bool?)null, 10); results.Add((session.DayId, result)); return result; }
+            { Commits++; var result = new ProductOutcome(decision, waste.HasValue ? SortCorrect : (bool?)null, 10); results.Add((session.DayId, result)); return result; }
             public InspectionSummary GetDaySummary(string dayId) => Summary(results.Where(r => r.day == dayId).Select(r => r.result));
             public InspectionSummary GetRunSummary() => Summary(results.Select(r => r.result));
             private static InspectionSummary Summary(IEnumerable<ProductOutcome> source)

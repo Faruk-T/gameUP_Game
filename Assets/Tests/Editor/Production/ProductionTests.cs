@@ -13,6 +13,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -82,7 +84,7 @@ namespace GameUp.Production.Tests
                     Assert.That(hit.collider.GetComponent<WorkstationTarget>(),Is.SameAs(bin),"Bin must be targetable from the fixed seat.");
                 }
                 Assert.That(all.Any(t=>t.name=="CoastalWindow"||t.name=="CoastalWindowFrame"||t.name=="DairySamples"||t.name=="ChilledSamples"||t.name=="ProduceSamples"),Is.False);
-                Assert.That(all.Any(t=>t.name=="Fax"||t.name=="FaxLabel"||t.name=="Model_fax"||t.name=="FaxIndicator"),Is.False,"The T report machine and its physical presentation are retired.");
+                Assert.That(all.Count(t=>t.GetComponent<FaxPresenter>()),Is.EqualTo(1),"The ministry fax is authored once; there is no T report interaction.");
                 Assert.That(all.Select(t=>t.GetComponent<WorkstationTarget>()).Count(t=>t&&t.Action==WorkstationAction.Analyzer),Is.EqualTo(1),"The normal F analyzer stays available.");
                 foreach(var target in all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t))Assert.That(Enum.IsDefined(typeof(WorkstationAction),target.Action),Is.True,"No retired interaction IDs may remain in the scene.");
                 var dependencies=new HashSet<string>(AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true));
@@ -264,7 +266,7 @@ namespace GameUp.Production.Tests
             Assert.That(posterTitle.preferredHeight,Is.LessThanOrEqualTo(posterTitle.rectTransform.rect.height+1));
             Assert.That(posterTitle.cachedTextGenerator.characterCountVisible,Is.GreaterThan(0));
             player.localRotation=savedYaw;camera.transform.localRotation=savedPitch;
-            input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);Capture("inspection",session.gameObject.scene);input.EndInspection();
+            yield return ExerciseInspection(input,session,product,camera);
             session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);
             Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Null);
             Canvas.ForceUpdateCanvases();
@@ -287,7 +289,7 @@ namespace GameUp.Production.Tests
             Capture("pause",session.gameObject.scene);pause.Resume();
             yield return Wait(()=>session.Documents.IsOpen);Assert.That(session.Documents.Current.Kind,Is.EqualTo(DocumentKind.Analysis));Capture("analysis",session.gameObject.scene);document.Confirm();
             session.Backend.AnalysisSeconds=.04f;
-            var speed=new SerializedObject(product);speed.FindProperty("moveDuration").floatValue=.055f;speed.ApplyModifiedPropertiesWithoutUndo();
+            var speed=new SerializedObject(product);speed.FindProperty("secondsPerMetre").floatValue=.025f;speed.ApplyModifiedPropertiesWithoutUndo();
             yield return Campaign(session,input,"correct");
             Assert.That(session.Flow.RunSummary.Total,Is.EqualTo(31));Assert.That(session.Flow.RunSummary.Correct,Is.EqualTo(31));
             Assert.That(session.Flow.RunSummary.CorrectSorts,Is.EqualTo(15));Assert.That(session.Flow.RunSummary.Score,Is.EqualTo(340));Assert.That(session.Flow.RunSummary.Passed,Is.True);
@@ -298,7 +300,9 @@ namespace GameUp.Production.Tests
                 session.Restart();Assert.That(session.Flow.RunId,Is.Not.EqualTo(stale.RunId));Assert.That(session.Flow.RunSummary.Total,Is.Zero);
                 Assert.That(session.Flow.NotifyArrival(stale),Is.False);Assert.That(input.IsInspecting,Is.False);
                 yield return Campaign(session,input,scenario==0?"approve":"reject");
-                Assert.That(session.Flow.RunSummary.Accuracy,Is.EqualTo(scenario==0?16f/31:15f/31).Within(.001));Assert.That(session.Flow.RunSummary.Passed,Is.False);
+                Assert.That(session.Flow.State,Is.EqualTo(FlowState.GameOver));Assert.That(session.Flow.DailyMistakes,Is.EqualTo(3));
+                Assert.That(session.Flow.RunSummary.Total,Is.LessThan(31));Assert.That(session.WorldInputAllowed,Is.False);
+                Capture(scenario==0?"lost-approve":"lost-reject",session.gameObject.scene);
             }
             session.Restart();document.Confirm();yield return Wait(()=>session.Flow.CanDecide);
             session.Analyze();session.Restart();yield return new WaitForSecondsRealtime(.15f);
@@ -308,12 +312,33 @@ namespace GameUp.Production.Tests
             Assert.That(Object.FindObjectsByType<ApplicationRoot>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             Assert.That(Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length,Is.EqualTo(1));Assert.That(Time.timeScale,Is.EqualTo(1));
         }
+        private static IEnumerator ExerciseInspection(WorkstationInteractionController input,GameSessionController session,ProductPresentation product,Camera camera)
+        {
+            var previousBehavior=InputSystem.settings.backgroundBehavior;
+            InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+            var mouse=InputSystem.AddDevice<Mouse>("InspectionTestMouse");
+            InputSystem.EnableDevice(mouse);mouse.MakeCurrent();
+            try
+            {
+                var position=camera.transform.position;var rotation=camera.transform.rotation;
+                input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);
+                Assert.That(session.WorldInputAllowed,Is.True);Assert.That(input.enabled&&input.gameObject.activeInHierarchy,Is.True);
+                InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
+                InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
+                Assert.That(camera.transform.position,Is.EqualTo(position));Assert.That(Quaternion.Angle(camera.transform.rotation,rotation),Is.LessThan(.001));
+                var held=product.ActiveProduct.transform.rotation;
+                input.RotateInspection(new Vector2(25,-12));yield return null;
+                Assert.That(Quaternion.Angle(product.ActiveProduct.transform.rotation,held),Is.GreaterThan(.5f));
+                Assert.That(Quaternion.Angle(camera.transform.rotation,rotation),Is.LessThan(.001));Capture("inspection",session.gameObject.scene);
+            }
+            finally {input.EndInspection();InputSystem.RemoveDevice(mouse);InputSystem.settings.backgroundBehavior=previousBehavior;}
+        }
         private static IEnumerator Campaign(GameSessionController session,WorkstationInteractionController input,string scenario)
         {
             var invalid=new HashSet<string>{"D1-02","D1-03","D1-06","D1-07","D2-02","D2-04","D2-06","D2-08","D2-10","D3-03","D3-04","D3-06","D3-08","D3-10","D3-12"};
             var targets=Object.FindObjectsByType<WorkstationTarget>(FindObjectsSortMode.None).Where(t=>t.Action!=WorkstationAction.Product).ToDictionary(t=>t.Action);
             float deadline=Time.realtimeSinceStartup+90;
-            while(session.Flow.State!=FlowState.GameSummary)
+            while(session.Flow.State!=FlowState.GameSummary&&session.Flow.State!=FlowState.GameOver)
             {
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline),"Campaign stalled: "+session.Flow.State+"/"+session.Flow.Phase);
                 if(session.Documents.IsOpen)
@@ -322,9 +347,20 @@ namespace GameUp.Production.Tests
                     {Assert.That(session.Flow.DayIndex,Is.EqualTo(2));Assert.That(session.Flow.ProductIndex,Is.EqualTo(3));if(scenario=="correct")Capture("emergency",session.gameObject.scene);}
                     if(session.Documents.Current.Kind==DocumentKind.Newspaper)
                     {if(scenario=="correct")Capture("newspaper-day"+(session.Flow.DayIndex+1),session.gameObject.scene);AssertNewspaperReadable();}
+                    if(session.Documents.Current.Kind==DocumentKind.Infraction)
+                    {
+                        Assert.That(scenario,Is.Not.EqualTo("correct"));Assert.That(session.Flow.State,Is.EqualTo(FlowState.MistakeBriefing));
+                        Assert.That(Object.FindFirstObjectByType<FaxPresenter>().IsAlarming,Is.True);
+                        long token=session.Documents.Current.Token;session.HandleEscape();Assert.That(session.Documents.Current.Token,Is.EqualTo(token));
+                        Assert.That(ApplicationRoot.Require().Audio.IsBeltRunning,Is.False);Capture("ministry-warning",session.gameObject.scene);
+                    }
                     ConfirmDocument(session);
                 }
-                else if(session.Flow.State==FlowState.DaySummary)session.ContinueSummary();
+                else if(session.Flow.State==FlowState.DaySummary)
+                {
+                    Assert.That(GameObject.Find("GameCanvas/ResultsOverlay/ShiftPaper"),Is.Not.Null);
+                    Capture("shift-report-day"+(session.Flow.DayIndex+1),session.gameObject.scene);session.ContinueSummary();
+                }
                 else if(session.Flow.CanDecide)
                 {
                     string id=session.Flow.Current.Key.ProductId;
