@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameUp.Editor.UIAuthoring;
 using static GameUp.Editor.ProductAuthoring;
@@ -40,6 +41,12 @@ namespace GameUp.Editor
         private static void Coast(Transform parent)
         {
             Shape("MediterraneanSea",parent,PrimitiveType.Cube,new Vector3(0,-.4f,30),new Vector3(120,.1f,50),Material("Sea",new Color(.14f,.56f,.61f)));
+            var carettaPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Outside/caretta caretta.prefab");
+            if (carettaPrefab)
+            {
+                PlaceModel(carettaPrefab, parent, new Vector3(-3.2f, -.22f, 27.5f), 3.6f, 35f);
+                PlaceModel(carettaPrefab, parent, new Vector3(3.8f, -.24f, 32.0f), 3.0f, -25f);
+            }
             var shore=Material("DistantCoast",new Color(.36f,.49f,.53f));
             var mesh=new Mesh{name="TaurusSilhouette"};
             float[] peaks={2,7,4,11,6,13,8,5,9,3,7,2};
@@ -60,26 +67,78 @@ namespace GameUp.Editor
         {
             var station=new GameObject("RecyclingStation").transform;station.SetParent(parent,false);
             string[] names={"KÂĞIT","CAM","PLASTİK","KONTAMİNE"};
+            string[] binMeshNames={"trashbin-paper","trashbin-glass","trashbin-plastic","trashbin-general"};
+            var binPrefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/trashbin-general.prefab");
             var colors=new[]{new Color(.16f,.37f,.7f),new Color(.14f,.5f,.35f),new Color(.8f,.63f,.12f),new Color(.65f,.18f,.16f)};
             var points=new Transform[4];var metal=Material("BinRim",new Color(.19f,.23f,.22f),.4f);
             for(int i=0;i<4;i++)
             {
                 var bin=new GameObject("Waste_"+i).transform;bin.SetParent(station,false);bin.localPosition=new Vector3(-2.4f+i*1.6f,.64f,-7);bin.localRotation=Quaternion.Euler(0,180,0);
                 var color=Material("Waste_"+i,colors[i]);
-                Shape("Front",bin,PrimitiveType.Cube,new Vector3(0,0,-.44f),new Vector3(1.12f,1.2f,.08f),color);
-                Shape("Back",bin,PrimitiveType.Cube,new Vector3(0,0,.44f),new Vector3(1.12f,1.2f,.08f),color);
-                foreach(float x in new[]{-.52f,.52f})Shape("Side",bin,PrimitiveType.Cube,new Vector3(x,0,0),new Vector3(.08f,1.2f,.86f),color);
-                Shape("Base",bin,PrimitiveType.Cube,new Vector3(0,-.56f,0),new Vector3(1.04f,.08f,.86f),metal);
-                foreach(float x in new[]{-.56f,.56f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(x,.6f,0),new Vector3(.08f,.08f,1),metal);
-                foreach(float z in new[]{-.48f,.48f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(0,.6f,z),new Vector3(1.2f,.08f,.08f),metal);
+                if (binPrefab)
+                {
+                    PlaceSingleBinMesh(binPrefab, binMeshNames[i], bin, new Vector3(0, -.6f, 0), new Vector3(1.06f, 1.22f, .84f), color, metal);
+                    Shape("Base",bin,PrimitiveType.Cube,new Vector3(0,-.6f,0),new Vector3(1.14f,.06f,.92f),metal);
+                }
+                else
+                {
+                    Shape("Front",bin,PrimitiveType.Cube,new Vector3(0,0,-.44f),new Vector3(1.12f,1.2f,.08f),color);
+                    Shape("Back",bin,PrimitiveType.Cube,new Vector3(0,0,.44f),new Vector3(1.12f,1.2f,.08f),color);
+                    foreach(float x in new[]{-.52f,.52f})Shape("Side",bin,PrimitiveType.Cube,new Vector3(x,0,0),new Vector3(.08f,1.2f,.86f),color);
+                    Shape("Base",bin,PrimitiveType.Cube,new Vector3(0,-.56f,0),new Vector3(1.04f,.08f,.86f),metal);
+                    foreach(float x in new[]{-.56f,.56f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(x,.6f,0),new Vector3(.08f,.08f,1),metal);
+                    foreach(float z in new[]{-.48f,.48f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(0,.6f,z),new Vector3(1.2f,.08f,.08f),metal);
+                }
                 var collider=bin.gameObject.AddComponent<BoxCollider>();collider.size=new Vector3(1.2f,1.3f,1);
                 SetAction(bin.gameObject.AddComponent<GameUP.Interaction.WorkstationTarget>(),(GameUP.Interaction.WorkstationAction)((int)GameUP.Interaction.WorkstationAction.Paper+i));
-                var label=WorldCanvas("BinLabel",bin,new Vector3(0,.08f,-.49f),0,.98f,.55f);
-                Text("Category",label,names[i],0,55,820,180,86,Paper,TextAnchor.MiddleCenter);
-                Text("Instruction",label,i==3?"AYRI İMHA":"TEMİZ AMBALAJ",0,-140,820,120,48,Paper,TextAnchor.MiddleCenter);
+                var label=WorldCanvas("BinLabel",bin,new Vector3(0,.04f,-.52f),0,.96f,.48f);
+                Image("LabelBadge",label,0,0,860,390,new Color(.03f,.11f,.13f,.92f));
+                Text("Category",label,names[i],0,50,820,170,82,Paper,TextAnchor.MiddleCenter);
+                Text("Instruction",label,i==3?"AYRI İMHA":"TEMİZ AMBALAJ",0,-110,820,110,44,Paper,TextAnchor.MiddleCenter);
                 var point=new GameObject("WastePoint_"+i).transform;point.SetParent(station,false);point.position=bin.position+Vector3.up*.73f;points[i]=point;
             }
             return points;
+        }
+        private static void PlaceSingleBinMesh(GameObject binPrefab, string targetMeshName, Transform parent, Vector3 localBottomPos, Vector3 targetSize, Material bodyColor, Material rimMetal)
+        {
+            var container = new GameObject("Model_" + targetMeshName);
+            var visual = (GameObject)PrefabUtility.InstantiatePrefab(binPrefab);
+            visual.transform.SetParent(container.transform, false);
+            visual.transform.localPosition = Vector3.zero;
+            visual.transform.localRotation = Quaternion.identity;
+            Renderer activeRenderer = null;
+            foreach (var r in visual.GetComponentsInChildren<Renderer>(true))
+            {
+                if (string.Equals(r.gameObject.name, targetMeshName, StringComparison.OrdinalIgnoreCase))
+                    activeRenderer = r;
+                else
+                    r.enabled = false;
+            }
+            if (activeRenderer != null)
+            {
+                var bounds = activeRenderer.bounds;
+                if (bounds.size.z > bounds.size.x)
+                {
+                    visual.transform.localRotation = Quaternion.Euler(0, -90f, 0);
+                    bounds = activeRenderer.bounds;
+                }
+                Vector3 scale = new Vector3(
+                    targetSize.x / Mathf.Max(bounds.size.x, .01f),
+                    targetSize.y / Mathf.Max(bounds.size.y, .01f),
+                    targetSize.z / Mathf.Max(bounds.size.z, .01f));
+                visual.transform.localScale = Vector3.Scale(visual.transform.localScale, scale);
+                bounds = activeRenderer.bounds;
+                visual.transform.localPosition -= new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+                var mats = activeRenderer.sharedMaterials;
+                for (int m = 0; m < mats.Length; m++)
+                    mats[m] = (m == mats.Length - 1 && mats.Length > 1) ? rimMetal : bodyColor;
+                activeRenderer.sharedMaterials = mats;
+            }
+            foreach (var c in visual.GetComponentsInChildren<Collider>(true)) UnityEngine.Object.DestroyImmediate(c);
+            if (container.scene != parent.gameObject.scene) SceneManager.MoveGameObjectToScene(container, parent.gameObject.scene);
+            container.transform.SetParent(parent, false);
+            container.transform.localPosition = localBottomPos;
+            container.transform.localRotation = Quaternion.identity;
         }
         private static void Poster(Transform parent,string name,Vector3 position,float yaw,string headline,string message,string photograph)
         {
