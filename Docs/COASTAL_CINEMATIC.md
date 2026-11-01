@@ -47,7 +47,7 @@ Sanatçının `feature/Objects` dalındaki `0106ab2` içeriğinden Art/Environme
 Mevcut oda, arka geri dönüşüm alanı, oyuncu masası ve etkileşim konumları korunur. Kullanıcının analiz cihazı, kapalı kitap ve bank üzerinde yaptığı yerel düzeltmeler `SceneArtCorrections.json` içinde kayıtlıdır. **Refresh signs, portraits and artist props** komutu mevcut sahneye hedefli düzenleme yapar; gizlenen/silinen dekorları yeniden oluşturmaz.
 
 - Dokuz fiziksel tabela, `SM_Prop_Sign_Director_01` çerçeve geometrisini ve temiz, koyu renkli yazı alanını kullanır. Kaynak atlas yazıları kaldırılmıştır; metinler kayıtlı Canvas'tadır. Yaşam alanı uyarısı `SM_Prop_Sign_OutofOrder_01` ve tek bir ahşap direkle sahile yerleşir.
-- Beş afişin arkalığı `SM_Prop_Poster_01` olur; içerikler yerel Canvas üzerinde kalır. Koridor afişleri kamera kadrajına sığar.
+- Mevcut dört afiş ve iki portrenin çerçevesi, `SM_Prop_Blackboard_01` modelindeki gerçek ahşap rim/bevel geometrisini kullanır. Baskılar yerel Canvas üzerinde kalır; gizlenen afişler etkinleştirilmez. Koridor afişleri kamera kadrajına sığar.
 - Masa, bant ve dört atık kutusu sanatçının mesh'lerini kullanır. Normal F analiz cihazının kâğıt ve sinyal parçaları kendi prefab çocuklarıdır. T / Son rapor cihazı, fiziksel faks modeli, ışık/çıktı animasyonu, kısayol ve tekrar rapor kodu kaldırılmıştır. Analiz sonucu otomatik belge olarak açılır; Bakanlık acil faksı tek seferlik sesle ve zorunlu onayla gelir.
 - Katlı gazete ve açık/kapalı kitap fiziksel objelerdir. Kitapçık açılınca fiziksel kitap da açılır; gazete okunurken masadaki katlı kopya gizlenir. `WorkstationDocuments` yalnız belge değişimi olayında görünürlüğü günceller.
 - Basit ambalaj küpü gerçek `SM_Prop_CardboardBox_01`, karar düğmeleri `SM_Prop_Elevator_Button_01`, sahil kayaları ve ağaçları Polygon Office proplarıyla değiştirilir.
@@ -66,12 +66,14 @@ GameUP32 → Authoring → **Rebuild coastal facility and opening**, Game sahnes
 - `CoastalEnvironmentAuthoring`: Polygon Office mimarisi, sahil ve beş caretta.
 - `FacilityPropAuthoring`: gerçek paket/sanatçı propları, dağ mesh'i ve çevre envanteri.
 - `FacilitySceneAuthoring`: mevcut sahne düzenini koruyan tabela/portre yenilemesi ve kullanım dışı cihaz temizliği.
+- `WallArtFrameAuthoring`: paylaşılan ahşap afiş/portre çerçevesi.
+- `ArtistGameKitAuthoring` / `ArtKitReview`: binanın arkasındaki EditorOnly model sergisi, odaklama ve görsel denetim. [Kullanım](ARTIST_GAME_KIT.md).
 - `SceneArtCorrections`: kaydedilmiş kullanıcı yerleşimlerini koruma.
 - `CoastalAssetSetup`: URP materyalleri, EPO kamera/obje ayarları.
 - `IntroCinematic`: yalnız açılışın oynatılması ve kamera/HUD devri; açıklama metni sadece sahne değişince güncellenir.
 - `ShorelineTurtle`: önceden kayıtlı aktörlerin kıyı ve yüzme hareketi.
 
-`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder; logo, kapılar, arka oda, yeni masa tabelaları ve direkli sahil uyarısı dahil. [Unity doğrulama raporu](../VALIDATION.md), yerel `Logs/director-signs-tests.xml`, `Logs/director-signs-tests.log` ve `Logs/director-signs-author.log` test kanıtlarıdır.
+`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder; logo, kapılar, arka oda, ahşap çerçeveler, masa tabelaları ve direkli sahil uyarısı dahil. [Unity doğrulama raporu](../VALIDATION.md), yerel `Logs/art-frames-kit-tests.xml`, `Logs/art-frames-kit-tests.log` ve `Logs/art-frames-kit-author.log` test kanıtlarıdır.
 
 Kontroller: sanatçı aktörlerinin animasyonu/baş yönü; yüzmenin yön ve derinlik değiştirmesi; suya giriş → ortalanmış logo → gerçek parçacıklar → kapı açılması → koridor sırası; doygun renk ve kıvılcım boyutu; efektlerin kapanması; kapalı kapının geçidi örtmesi ve açılan kapıların kameraya yol vermesi; kapılar hareket ederken kamera küre taraması; arka duvar portreleri ve hacimli bayraklar; 16 sanatçı parçasının kullanılması; gerçek tabela/afiş geometrisi ve yazı taşması; geçerli arazi; son kamera pozunun eşleşmesi; outline, söz ve su kaynakları. Üretim testi 90 saniyelik girişi doğal süresinde tamamlar, kapıların bitişte açık kaldığını doğrular, atlama girdilerini reddeder ve üç günlük kampanyayı yürütür.
 
@@ -81,4 +83,4 @@ Gıda–su–iklim ilişkisi, kaynak izleme, soğuk zincir ve atık azaltımı o
 
 Bu dal yerel çalışma içindir. Son adımda pull, push, PR veya main merge işlemi yapılmaz.
 
-1 Kasım doğrulaması: **47/47 geçti**. Tam sinematik, normal F analizi, Bakanlık acil duyurusu, kapılar ve üç günlük kampanya Editor PlayMode'da doğrulandı. Son rapor `Logs/director-signs-tests.xml` içindedir. Kullanıcının isteğiyle build alınmadı.
+1 Kasım doğrulaması: **48/48 geçti**. Tam sinematik, normal F analizi, Bakanlık acil duyurusu, kapılar, ahşap çerçeveler, izole model sergisi ve üç günlük kampanya doğrulandı. Son rapor `Logs/art-frames-kit-tests.xml` içindedir. Kullanıcının isteğiyle build alınmadı.

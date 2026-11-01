@@ -85,6 +85,7 @@ namespace GameUp.Editor
         }
         internal static void ConfigureCamera(Camera camera)
         {
+            camera.cullingMask&=~(1<<30); // Reserved for the EditorOnly artist review kit.
             var data=camera.GetUniversalAdditionalCameraData();
             data.requiresDepthOption=CameraOverrideOption.On;
             data.requiresColorOption=CameraOverrideOption.On;

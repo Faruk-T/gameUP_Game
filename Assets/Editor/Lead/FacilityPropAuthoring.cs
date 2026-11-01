@@ -12,7 +12,7 @@ namespace GameUp.Editor
     internal static class FacilityPropAuthoring
     {
         internal const string Artist="Assets/Art/Environment/Mesh/Environment.fbx";
-        private static GameObject Package(string name)=>AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets(name+" t:Prefab",new[]{"Assets/PolygonOffice/Prefabs"}).Select(AssetDatabase.GUIDToAssetPath).Single(p=>Path.GetFileNameWithoutExtension(p)==name));
+        internal static GameObject Package(string name)=>AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets(name+" t:Prefab",new[]{"Assets/PolygonOffice/Prefabs"}).Select(AssetDatabase.GUIDToAssetPath).Single(p=>Path.GetFileNameWithoutExtension(p)==name));
         internal static GameObject Pack(string name,Transform parent,Vector3 center,Vector3 size,float yaw=0,Material paint=null)
             =>Fit(Package(name),parent,center,size,Quaternion.Euler(0,yaw,0),paint);
         internal static GameObject Esma(string name,Transform parent,Vector3 center,Vector3 size,float yaw=0)
@@ -73,8 +73,7 @@ namespace GameUp.Editor
         }
         internal static void PosterBacking(Transform parent)
         {
-            var stock=Material("COP31PosterStock",Paper);stock.SetFloat("_Cull",0);
-            Pack("SM_Prop_Poster_01",parent,Vector3.zero,new Vector3(1.92f,2.76f,.07f),0,stock);
+            WallArtFrameAuthoring.Create(parent,new Vector2(1.8f,2.64f));
         }
         private static RectTransform WorldCanvas(string name,Transform parent,Vector3 position,float width,float height)
         {
@@ -117,8 +116,9 @@ namespace GameUp.Editor
         internal static void Inventory()
         {
             var scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-            var meshes=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<MeshFilter>(true)).Select(f=>f.sharedMesh)
-                .Concat(scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<SkinnedMeshRenderer>(true)).Select(r=>r.sharedMesh)).Where(m=>m).ToArray();
+            var roots=scene.GetRootGameObjects().Where(r=>!r.CompareTag("EditorOnly")).ToArray();
+            var meshes=roots.SelectMany(r=>r.GetComponentsInChildren<MeshFilter>(true)).Select(f=>f.sharedMesh)
+                .Concat(roots.SelectMany(r=>r.GetComponentsInChildren<SkinnedMeshRenderer>(true)).Select(r=>r.sharedMesh)).Where(m=>m).ToArray();
             var used=new System.Collections.Generic.HashSet<Mesh>(meshes);
             var parts=AssetDatabase.LoadAssetAtPath<GameObject>(Artist).GetComponentsInChildren<MeshFilter>();
             var lines=new System.Collections.Generic.List<string>{"# Sanatçı çevre objeleri — kaynak ve sahne denetimi","","Kaynak: feature/Objects / 0106ab2. 16 çevre parçası, 31 ürün ve caretta kaynağı projededir. Mesh referansı üzerinden, gizli belge durumları da dahil kontrol edilir.","","T / Son rapor cihazı kaldırıldığı için fax ve fax signal kaynakları projede tutulur, aktif sahnede kullanılmaz. Normal F analiz cihazı, xray parçaları ve Bakanlık acil duyurusu korunur.","","| Obje | Projede | Game sahnesi |","|---|---|---|"};

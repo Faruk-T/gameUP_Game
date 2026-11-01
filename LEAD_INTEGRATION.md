@@ -57,6 +57,8 @@ GameUP32 menüsü:
 - **Rebuild Game room and newspaper:** kampanya, varyantlar, ürün prefabları ve yalnız Game sahnesini yeniler.
 - **Rebuild coastal facility and opening:** yeni assetlerin URP ayarlarıyla kıyı, tesis ve Timeline açılışını Game sahnesine kaydeder.
 - **Refresh signs, portraits and artist props:** mevcut sahnenin yerleşimini korur; Director/Out of Order tabelaları ve çerçeveyi dolduran portreleri günceller, kullanım dışı cihazı temizler.
+- **Art / Refresh art frames and Esmanur game kit:** mevcut afiş/portreleri ahşap paket çerçevesine geçirir ve binanın arkasındaki 48 parçalık EditorOnly sergiyi hazırlar.
+- **Art / Focus Esmanur game kit:** Game sahnesinde, Scene görünümünü tüm sanatçı modellerine odaklar. [Sergi rehberi](Docs/ARTIST_GAME_KIT.md).
 - **Rebuild First, Menu and Game:** üç sahneyi yeniden yazar.
 - **Esmanur model inventory:** kaynak ve aktif ürün raporunu yeniler.
 - **Build / Windows:** Builds/Windows/AntalyaDenetimMasasi.exe üretir.
@@ -69,7 +71,7 @@ Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne dü
 
 ## Doğrulama ve kaynaklar
 
-**47/47 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 kaynak çevre parçası (14 aktif, 2 kullanım dışı), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
+**48/48 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 kaynak çevre parçası (14 aktif, 2 kullanım dışı), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
 
 [Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 

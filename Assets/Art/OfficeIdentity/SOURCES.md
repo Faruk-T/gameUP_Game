@@ -11,4 +11,6 @@ Dosyalar kaynaklarından değiştirilmeden alınmıştır. Gerçek fotoğraflard
 
 BM bayrağının renk ve amblem referansı: [Birleşmiş Milletler](https://research.un.org/en/maps/flags). Bayraklar oyun ortamında dekor olarak kullanılır.
 
+Afiş ve portre çerçeveleri, Polygon Office paketinin `SM_Prop_Blackboard_01` modelindeki ahşap kenar ve girintili panel geometrisini kullanır; özgün atlas malzemesi paylaşılır.
+
 Çerçeveler ve direkler mevcut Polygon Office paketinden gelir. Ağırlıklı taban, ay-yıldız başlık ve dökümlü kumaş kayıtlı 3B mesh'lerdir; runtime mesh üretimi veya kumaş simülasyonu bulunmaz. Portreler oranı bozulmadan çerçevenin içini tamamen doldurur; taşan kenarlar kayıtlı RectMask2D ile kırpılır. Boş kâğıt alanı veya isim katmanı yoktur. Bayrak dokuları kumaşın UV'lerine uygulanır.

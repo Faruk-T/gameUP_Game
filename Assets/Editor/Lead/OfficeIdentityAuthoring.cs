@@ -36,7 +36,7 @@ namespace GameUp.Editor
         private static void Portrait(Transform parent,string name,float x,string file)
         {
             var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=new Vector3(x,3.2f,-7.78f);root.localRotation=Quaternion.Euler(0,180,0);
-            FacilityPropAuthoring.Pack("SM_Prop_Poster_01",root,Vector3.zero,new Vector3(1.5f,2.08f,.08f),0,Surface("PortraitFrame",new Color(.13f,.16f,.16f),.35f));
+            WallArtFrameAuthoring.Create(root,new Vector2(1.4f,1.96f));
             var canvas=Rect("PortraitPrint",root,0,0,900,1260);canvas.localPosition=new Vector3(0,0,-.052f);canvas.localScale=Vector3.one*(1.4f/900);
             canvas.gameObject.AddComponent<Canvas>().renderMode=RenderMode.WorldSpace;
             var picture=Image("Photograph",canvas,0,0,900,1260,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(Root+file));picture.preserveAspect=true;

@@ -23,7 +23,7 @@ namespace GameUp.Production.Tests
         [SetUp] public void Open()
         {
             scene=EditorSceneManager.OpenScene(ProductionProjectSetup.GamePath,OpenSceneMode.Additive);
-            all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+            all=scene.GetRootGameObjects().Where(r=>!r.CompareTag("EditorOnly")).SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
         }
         [TearDown] public void Close(){if(scene.IsValid())EditorSceneManager.CloseScene(scene,true);}
         private IntroCinematic BeginOpening()
@@ -134,7 +134,7 @@ namespace GameUp.Production.Tests
             Assert.That(all.Single(t=>t.name=="HabitatSign").GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Pole_01")),Is.True);
             Assert.That(all.Any(t=>t.name=="WaterFoodClimatePoster")&&all.Any(t=>t.name=="ColdChainPoster"),Is.True,"The two corridor story posters stay authored.");
             foreach(var poster in all.Where(t=>t.name.EndsWith("Poster",StringComparison.Ordinal)&&t.Find("Print")))
-                Assert.That(poster.GetComponentsInChildren<MeshFilter>(true).Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Poster_01")),Is.True,poster.name+" must use the package poster prop");
+                Assert.That(poster.GetComponentsInChildren<MeshFilter>(true).Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Blackboard_01")),Is.True,poster.name+" must use the wooden package frame");
             Assert.That(all.Any(t=>t.name=="TaurusMountains"||t.name=="DistantTaurusRidge"),Is.False);
             var terrain=all.Single(t=>t.name=="TaurusTerrain").GetComponent<MeshFilter>().sharedMesh;
             Assert.That(terrain.vertexCount,Is.GreaterThan(2000));Assert.That(terrain.bounds.size.z,Is.GreaterThan(500));Assert.That(terrain.bounds.size.y,Is.GreaterThan(35));Assert.That(terrain.bounds.min.y,Is.LessThan(0));
@@ -214,6 +214,7 @@ namespace GameUp.Production.Tests
                 Assert.That(image.rectTransform.sizeDelta.x,Is.GreaterThanOrEqualTo(viewport.sizeDelta.x));Assert.That(image.rectTransform.sizeDelta.y,Is.GreaterThanOrEqualTo(viewport.sizeDelta.y));
                 Assert.That(image.rectTransform.sizeDelta.x/image.rectTransform.sizeDelta.y,Is.EqualTo(image.sprite.rect.width/image.sprite.rect.height).Within(.001));
                 Assert.That(root.GetComponentsInChildren<Text>(true),Is.Empty);
+                Assert.That(root.Find("ArtworkFrame").GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Blackboard_01")),Is.True);
             }
             foreach(var name in new[]{"TurkiyeStandingFlag","UNStandingFlag"})
             {

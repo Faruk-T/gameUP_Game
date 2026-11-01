@@ -4,7 +4,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **47/47 geçti**, başarısız/atlanan yok |
+| Unity testleri | **48/48 geçti**, başarısız/atlanan yok |
 | T cihazı temizliği | T kısayolu, tekrar rapor akışı, hedef/etiket, faks modeli ve FaxPresenter kaldırıldı; normal F analizi korunur |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
@@ -23,6 +23,9 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Kullanıcı yerleşimleri | Mevcut sahneye hedefli değişiklik; gizlenen dekor ve son elle yapılan yerleşimler korunur |
 | Fiziksel belgeler | Kitapçık açıkken gerçek açık kitap; kapatınca kapalı kitap; gazete okunurken katlı kopya gizli |
 | Portre kadrajı | Yazı yok; görüntü oranı korunur, çerçeve tamamen dolar, taşan kenarlar maskelenir |
+| Ahşap çerçeve | Mevcut 4 afiş + 2 portrede SM_Prop_Blackboard_01; orijinal rim/bevel ve atlas; baskı/yerleşim korunur |
+| Sanatçı Game Kit | Binanın arkasında 31 ürün + 16 çevre parçası + caretta; gerçek mesh referansları eksiksiz |
+| Sergi ayrımı | EditorOnly kök/çocuklar, katman 30; oyun kameraları çizmez; collider, Animator ve etkileşim hedefi yok |
 | Kamera / ses devri | Açılıştan sonra tek etkin kamera ve AudioListener; gazete yalnız bitişten sonra açılır |
 | URP assetleri | Polygon Office materyalleri, gerçek Stylized Water mesh/dokuları, EPO Render Graph feature; derleme ve shader hatası yok |
 | Outline | Native çözünürlük; tek dilation; blur ve duvar arkasından görünüm yok |
@@ -47,7 +50,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/director-signs-tests.xml`. Hedefli sahne yenilemesi, mesh envanteri ve shader kontrolü: `Logs/director-signs-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
+Ham rapor: `Logs/art-frames-kit-tests.xml`. Hedefli sahne yenilemesi, mesh envanteri ve shader kontrolü: `Logs/art-frames-kit-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 
