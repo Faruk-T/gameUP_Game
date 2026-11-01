@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-12
   category: 0
-  displayName: "Yo\u011Furt / Parti 03"
+  displayName: "Toros Doğal Kase Yoğurdu"
   prefab: {fileID: 1879304709147822832, guid: 15dc6deb7364f6e4d97c9b890aac9740, type: 3}
   modelSource: {fileID: 2886687472651308516, guid: 624e4c5d6b7385a4997b28f042abafa9, type: 3}
   condition: 1
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
-    Month: 11
+    Day: 28
+    Month: 10
     Year: 2026
-  declaredProductType: "Yo\u011Furt / Parti 03"
-  listedProductType: "Yo\u011Furt / Parti 03"
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "Doğal Fermente Yoğurt"
+  listedProductType: "Doğal Fermente Yoğurt"
+  ingredientsSummary: "Pastörize tam yağlı süt, canlı yoğurt kültürü."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 3
-  isPackagingContaminated: 1
-  packagingLabelText: "Plastik At\u0131k"
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Toros Doğal Kase Yoğurdu numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize tam yağlı süt, canlı yoğurt kültürü.) ve yasal tür beyanı ('Doğal Fermente Yoğurt') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 28.10.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 2
+  isPackagingContaminated: 0
+  packagingLabelText: "Cam Yoğurt Kavanozu — Cam Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

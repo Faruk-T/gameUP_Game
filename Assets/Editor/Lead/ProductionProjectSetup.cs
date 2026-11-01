@@ -33,18 +33,18 @@ namespace GameUp.Editor
         {
             EditorApplication.delayCall += () =>
             {
-                if (!EditorApplication.isPlayingOrWillChangePlaymode && !SessionState.GetBool("GameUP32_EnvModels_v4", false))
+                if (!EditorApplication.isPlayingOrWillChangePlaymode && !SessionState.GetBool("GameUP32_EnvModels_v7", false))
                 {
-                    SessionState.SetBool("GameUP32_EnvModels_v4", true);
+                    SessionState.SetBool("GameUP32_EnvModels_v7", true);
                     AuthorGame();
                 }
                 EditorSceneManager.playModeStartScene=AssetDatabase.LoadAssetAtPath<SceneAsset>(FirstPath);
             };
             EditorApplication.playModeStateChanged += state =>
             {
-                if (state == PlayModeStateChange.EnteredEditMode && !SessionState.GetBool("GameUP32_EnvModels_v4", false))
+                if (state == PlayModeStateChange.EnteredEditMode && !SessionState.GetBool("GameUP32_EnvModels_v7", false))
                 {
-                    SessionState.SetBool("GameUP32_EnvModels_v4", true);
+                    SessionState.SetBool("GameUP32_EnvModels_v7", true);
                     AuthorGame();
                 }
             };

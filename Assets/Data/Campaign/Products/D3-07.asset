@@ -13,30 +13,28 @@ MonoBehaviour:
   m_Name: D3-07
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-07
-  category: 4
-  displayName: "\xC7ilek / B"
+  category: 3
+  displayName: "Aksu Sera Çileği"
   prefab: {fileID: 8929395124610480387, guid: 1736abdfbc8f06042bd44fdfe4a4c8d5, type: 3}
   modelSource: {fileID: 2642190976995687182, guid: 76ec3816b055a9a4e9bdaa6205488880, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 11
     Month: 11
     Year: 2026
-  declaredProductType: "\xC7ilek / B"
-  listedProductType: "\xC7ilek / B"
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Aksu Sera Çileği)"
+  listedProductType: "Taze Hasat Meyve (Aksu Sera Çileği)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 3
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Aksu Sera Çileği numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Aksu Sera Çileği)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 11.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 2
   isPackagingContaminated: 0
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Cam Muhafaza Kavanozu — Cam Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

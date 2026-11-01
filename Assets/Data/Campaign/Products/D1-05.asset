@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-05
   category: 2
-  displayName: Paketli et / Parti 2
+  displayName: "Toros Kuzu Kuşbaşı Et"
   prefab: {fileID: 9188866857634751926, guid: 202e91ea259031d40b166b89a2aa4ee8, type: 3}
   modelSource: {fileID: 4629107011220831277, guid: 608bc036802c18347bc70331a5651423, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 5
+    Day: 12
     Month: 11
     Year: 2026
-  declaredProductType: Paketli et / Parti 2
-  listedProductType: Paketli et / Parti 2
-  ingredientsSummary: Et numunesi.
+  declaredProductType: "%100 Taze Karkas Et Ürünleri"
+  listedProductType: "%100 Taze Karkas Et Ürünleri"
+  ingredientsSummary: "%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez)."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Toros Kuzu Kuşbaşı Et numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez).) ve yasal tür beyanı ('%100 Taze Karkas Et Ürünleri') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 12.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Streçli Plastik Et Tabağı — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

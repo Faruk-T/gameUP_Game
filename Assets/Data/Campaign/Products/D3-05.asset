@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: D3-05
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-05
-  category: 4
-  displayName: "\xC7ilek / A"
+  category: 3
+  displayName: "Serik Kokulu Tarla Çileği"
   prefab: {fileID: 7446042348620611019, guid: 72136accb817531429b6b21a9a85a9d4, type: 3}
   modelSource: {fileID: 5338894034377604642, guid: 7b0f60faeb0623b488dee92129732ea3, type: 3}
   condition: 0
@@ -23,20 +23,18 @@ MonoBehaviour:
     Day: 7
     Month: 11
     Year: 2026
-  declaredProductType: "\xC7ilek / A"
-  listedProductType: "\xC7ilek / A"
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Serik Kokulu Tarla Çileği)"
+  listedProductType: "Taze Hasat Meyve (Serik Kokulu Tarla Çileği)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 2
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Serik Kokulu Tarla Çileği numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Serik Kokulu Tarla Çileği)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Bölge B  |  Etiket SKT: 07.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Şeffaf Plastik Çilek Kabı — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

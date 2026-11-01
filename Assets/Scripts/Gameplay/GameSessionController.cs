@@ -110,8 +110,10 @@ namespace GameUp.Gameplay
         private void PresentAnalysis(AnalysisReport report)
         {
             fax.Print(false);
-            Documents.Enqueue(new DocumentRequest(DocumentKind.Analysis, "Analiz raporu • " + report.Key.ProductId,
-                "RAPOR NO: " + report.ReportId + "\nÜRÜN: " + report.Key.ProductId + "\n\n" + report.Text));
+            string productName = backend.TryGetProductDefinition(report.Key.ProductId, out var def) ? def.DisplayName : report.Key.ProductId;
+            Documents.Enqueue(new DocumentRequest(DocumentKind.Analysis,
+                "Analiz Raporu • " + productName + " (" + report.Key.ProductId + ")",
+                "RAPOR NO: " + report.ReportId + "\n" + report.Text));
         }
         public void NotifyProductInspected(ProductKey key)
         { if (Flow.Current != null && Flow.Current.Key.Equals(key) && Flow.CanDecide) { inspected = true; Render(); } }
@@ -195,7 +197,7 @@ namespace GameUp.Gameplay
             sb.AppendLine("• <b>B Tuşu veya Masadaki Kitaplar:</b> Bu Denetim El Kitapçığını ve Gazete Özetini aç.");
             sb.AppendLine("• <b>W Tuşu veya Yeşil ONAY Düğmesi:</b> Sağlam ürünü onayla (piyasaya gönder).");
             sb.AppendLine("• <b>R Tuşu veya Kırmızı RED Düğmesi:</b> Kusurlu ürünü reddet ve ardından arkadaki kutularda ayrıştır.");
-            sb.AppendLine("• <b>Puanlama:</b> Doğru Karar <b>+10</b>  |  Doğru Ayrıştırma <b>+5</b>  |  Hatalı Red <b>-5</b>  |  Hatalı Onay <b>-15</b>  |  Yanlış Kutu <b>-5</b>  (Gün sonu hedefi: en az <b>%75</b> doğruluk).");
+            sb.AppendLine("• <b>Puanlama:</b> Doğru Karar <b>+10</b>  |  Doğru Ayrıştırma <b>+2</b>  |  Hatalı Red <b>-10</b>  |  Hatalı Onay <b>-15</b>  |  Yanlış Kutu <b>-2</b>  (Gün sonu hedefi: en az <b>%75</b> doğruluk).");
             return sb.ToString();
         }
         public void ReopenReport() { if (WorldInputAllowed && Flow.LastReport != null) PresentAnalysis(Flow.LastReport); }

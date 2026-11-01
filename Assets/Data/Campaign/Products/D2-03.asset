@@ -13,30 +13,28 @@ MonoBehaviour:
   m_Name: D2-03
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-03
-  category: 4
-  displayName: Ananas / A
+  category: 3
+  displayName: "Gazipaşa Sera Ananası"
   prefab: {fileID: 4962385747418331633, guid: 8c4b238d1db5dca45a7fb0327bb03966, type: 3}
   modelSource: {fileID: 6492598228655074905, guid: 600bf56537eeb6c47a16fd1bd95e8498, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 6
+    Day: 14
     Month: 11
     Year: 2026
-  declaredProductType: Ananas / A
-  listedProductType: Ananas / A
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Gazipaşa Sera Ananası)"
+  listedProductType: "Taze Hasat Meyve (Gazipaşa Sera Ananası)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Gazipaşa Sera Ananası numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Gazipaşa Sera Ananası)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 14.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Karton Sevkiyat Viyolü — Kâğıt Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

@@ -13,29 +13,28 @@ MonoBehaviour:
   m_Name: D2-04
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-04
-  category: 4
-  displayName: Kavun / B
+  category: 3
+  displayName: "Kumluca Sera Kavunu"
   prefab: {fileID: 6668259887857349406, guid: b1deef61cc399a04a95fa57ebd3996f5, type: 3}
   modelSource: {fileID: 6148863201897689449, guid: a65cf9640272c4c45938e213c154932d, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 6
+    Day: 11
     Month: 11
     Year: 2026
-  declaredProductType: Kavun / B
-  listedProductType: Kavun / B
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Kumluca Sera Kavunu)"
+  listedProductType: "Taze Hasat Meyve (Kumluca Sera Kavunu)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 1
-  analysisFindingDetail: "POZ\u0130T\u0130F \u2014 \xC7evresel kal\u0131nt\u0131
-    saptand\u0131. Ambalaj kontamine; ayr\u0131 imha gerekir."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: POZİTİF (TEHLİKELİ) — Kumluca Sera Kavunu numunesinde yasaklı organofosfat pestisit (tarım ilacı) ve ağır metal kalıntısı saptandı! Ürün KESİN RED edilmeli ve ambalajı KIRMIZI (Kontamine Atık) kutusuna atılmalıdır.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Kumluca Sera Kavunu)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 11.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
   isPackagingContaminated: 1
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Koruyucu Plastik File & Streç — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-04
   category: 0
-  displayName: Peynir / Parti 4
+  displayName: "Toros Keçi Ezine Peyniri"
   prefab: {fileID: 7441444151418033516, guid: 7e68f282d5a0b3643ab0cc6478af1c03, type: 3}
   modelSource: {fileID: 1826474846635716907, guid: 1d00fb28b34b2a242bd5d427c1b46793, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 15
     Month: 11
     Year: 2026
-  declaredProductType: Peynir / Parti 4
-  listedProductType: Peynir / Parti 4
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "Geleneksel Tam Yağlı Peynir"
+  listedProductType: "Geleneksel Tam Yağlı Peynir"
+  ingredientsSummary: "Pastörize süt, peynir mayası, kaya tuzu."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 2
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Toros Keçi Ezine Peyniri numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize süt, peynir mayası, kaya tuzu.) ve yasal tür beyanı ('Geleneksel Tam Yağlı Peynir') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Bölge B  |  Etiket SKT: 15.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Mumlu Kâğıt / Karton Kutu — Kâğıt Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

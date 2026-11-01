@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-11
   category: 0
-  displayName: "S\xFCt / Parti 6"
+  displayName: "Döşemealtı Organik Çiftlik Sütü"
   prefab: {fileID: 1203745654608979263, guid: 6d32f38f26aea6741b34bf9a64f7a739, type: 3}
   modelSource: {fileID: 4186170929627925351, guid: 6015c9e2c62325b4f98a046af8f8f33e, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 8
     Month: 11
     Year: 2026
-  declaredProductType: "S\xFCt / Parti 6"
-  listedProductType: "S\xFCt / Parti 6"
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "%100 Pastörize Tam Yağlı Süt"
+  listedProductType: "%100 Pastörize Tam Yağlı Süt"
+  ingredientsSummary: "%100 pastörize inek/keçi sütü (koruyucu içermez)."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Döşemealtı Organik Çiftlik Sütü numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 pastörize inek/keçi sütü (koruyucu içermez).) ve yasal tür beyanı ('%100 Pastörize Tam Yağlı Süt') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 08.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 2
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Cam Süt Şişesi — Cam Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

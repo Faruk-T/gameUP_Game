@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-13
   category: 0
-  displayName: Peynir / Parti 6
+  displayName: "Manavgat Taze Otlu Peyniri"
   prefab: {fileID: 3994274745301574522, guid: 2df10353210f7d24fa8bca61020ab7bf, type: 3}
   modelSource: {fileID: 3197549813616551807, guid: 87fe7b0e40b67de4992ca46d40351c89, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 16
     Month: 11
     Year: 2026
-  declaredProductType: Peynir / Parti 6
-  listedProductType: Peynir / Parti 6
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "Geleneksel Tam Yağlı Peynir"
+  listedProductType: "Geleneksel Tam Yağlı Peynir"
+  ingredientsSummary: "Pastörize süt, peynir mayası, kaya tuzu."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Manavgat Taze Otlu Peyniri numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize süt, peynir mayası, kaya tuzu.) ve yasal tür beyanı ('Geleneksel Tam Yağlı Peynir') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 16.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Vakumlu Plastik Peynir Kabı — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

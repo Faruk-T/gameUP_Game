@@ -13,30 +13,28 @@ MonoBehaviour:
   m_Name: D2-06
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-06
-  category: 4
-  displayName: Ananas / B
+  category: 3
+  displayName: "Alanya Tatlı Ananas"
   prefab: {fileID: 3816410274171494026, guid: 722c49cc00f26b44f9dddf965a01644c, type: 3}
   modelSource: {fileID: 2343757035960165936, guid: eb324c5410a90da41a130846b6763599, type: 3}
   condition: 1
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 6
+    Day: 7
     Month: 11
     Year: 2026
-  declaredProductType: Ananas / B
-  listedProductType: Ananas / B
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Alanya Tatlı Ananas)"
+  listedProductType: "Taze Hasat Meyve (Alanya Tatlı Ananas)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Alanya Tatlı Ananas numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Alanya Tatlı Ananas)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 07.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
-  isPackagingContaminated: 1
-  packagingLabelText: "Plastik At\u0131k"
+  isPackagingContaminated: 0
+  packagingLabelText: "Plastik Koruma Paketi — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

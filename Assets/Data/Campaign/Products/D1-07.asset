@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-07
   category: 0
-  displayName: Peynir / Parti 2
+  displayName: "Akseki Tam Yağlı Tulum Peyniri"
   prefab: {fileID: 4578965961511068483, guid: 556ecf0bb730ab449bc3035626e43768, type: 3}
   modelSource: {fileID: 4827614627173742654, guid: 91b8030948514c54384aefe221aefbf6, type: 3}
   condition: 1
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 5
-    Month: 11
+    Day: 29
+    Month: 10
     Year: 2026
-  declaredProductType: Peynir / Parti 2
-  listedProductType: Peynir / Parti 2
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "Geleneksel Tam Yağlı Peynir"
+  listedProductType: "Geleneksel Tam Yağlı Peynir"
+  ingredientsSummary: "Pastörize süt, peynir mayası, kaya tuzu."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
-  packagingMaterial: 1
-  isPackagingContaminated: 1
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Akseki Tam Yağlı Tulum Peyniri numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize süt, peynir mayası, kaya tuzu.) ve yasal tür beyanı ('Geleneksel Tam Yağlı Peynir') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 29.10.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  packagingMaterial: 2
+  isPackagingContaminated: 0
+  packagingLabelText: "Cam Salamura Kavanozu — Cam Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
