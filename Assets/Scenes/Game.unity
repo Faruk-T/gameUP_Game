@@ -31325,8 +31325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -525, y: -275}
-  m_SizeDelta: {x: 800, y: 140}
+  m_AnchoredPosition: {x: -530, y: 395}
+  m_SizeDelta: {x: 820, y: 88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &344873706
 PrefabInstance:
@@ -44270,7 +44270,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Fare tekerle\u011Fi ile kayd\u0131r"
+  m_Text: "Fare tekerle\u011Fi ile a\u015Fa\u011F\u0131/yukar\u0131 kayd\u0131r"
 --- !u!222 &431533510
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -158560,7 +158560,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 29
+    m_FontSize: 26
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -158569,8 +158569,8 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1.15
   m_Text: 
 --- !u!222 &1430670499
 CanvasRenderer:

@@ -36,11 +36,14 @@ namespace GameUP.Interaction
         }
         private void OnEnable()
         {
-            session.Refreshed += OnSessionChanged;
-            settings.Changed += ApplySettings;
-            ApplySettings();
+            if (session) session.Refreshed += OnSessionChanged;
+            if (settings != null) { settings.Changed += ApplySettings; ApplySettings(); }
         }
-        private void OnDisable() { session.Refreshed -= OnSessionChanged; settings.Changed -= ApplySettings; }
+        private void OnDisable()
+        {
+            if (session) session.Refreshed -= OnSessionChanged;
+            if (settings != null) settings.Changed -= ApplySettings;
+        }
         private void ApplySettings() => playerCamera.fieldOfView = settings.FieldOfView;
         private void OnSessionChanged()
         {

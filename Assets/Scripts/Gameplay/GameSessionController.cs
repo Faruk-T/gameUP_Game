@@ -28,7 +28,7 @@ namespace GameUp.Gameplay
         public ProductionInspectionBackend Backend => backend;
         public bool ProductInspected => inspected;
         public bool IsIntroducing => intro.IsPlaying;
-        public bool WorldInputAllowed => !IsIntroducing && Flow.State == FlowState.Working && !Documents.IsOpen && !pause.IsOpen && !application.IsLoading;
+        public bool WorldInputAllowed => Flow != null && pause && application && !IsIntroducing && Flow.State == FlowState.Working && !Documents.IsOpen && !pause.IsOpen && !application.IsLoading;
         public event Action Refreshed;
 
         private void Awake()
@@ -129,9 +129,8 @@ namespace GameUp.Gameplay
         {
             if (!WorldInputAllowed) return;
             handbookRead = true;
-            Documents.Enqueue(new DocumentRequest(DocumentKind.Handbook, "Denetim el kitapçığı",
-                "TARİH: " + Flow.Day.Date.ToString("dd.MM.yyyy") + "\n\n" + RulesText() +
-                "\n\nATIKLAR\nReddedilen gıda imha edilir. Boş ambalajı malzemesine göre ayrıştır. Kontamine ambalajı ayrı imha hedefine gönder."));
+            Documents.Enqueue(new DocumentRequest(DocumentKind.Handbook, "Denetim El Kitapçığı ve Saha Rehberi",
+                HandbookContent.Build(Flow)));
         }
         public void HandleEscape()
         {
@@ -159,7 +158,7 @@ namespace GameUp.Gameplay
                 if (Flow.DayIndex == 0 && Flow.ProductIndex < 2)
                 {
                     if (!inspected) return "1 / Ürüne bakıp E ile incele. Fareyle döndür; ön ve arka etiketi oku.";
-                    if (!handbookRead) return "2 / B ile el kitapçığını aç ve SKT kuralını kontrol et.";
+                    if (!handbookRead) return "2 / B ile veya masadaki kitaba tıklayarak el kitapçığını ve günün özetini aç.";
                     return "3 / SKT, etiket ve bozulma izlerini kontrol et; W ile onay veya R ile red ver.";
                 }
                 return "Küf, renk değişimi ve şişmeyi incele. F ile analiz al; kaynağı güncel faksla karşılaştır.";
@@ -169,9 +168,15 @@ namespace GameUp.Gameplay
         private void OnApplicationFocus(bool focus) { if (Flow != null) Render(); }
         private void OnDestroy()
         {
-            Flow.Changed -= OnFlowChanged; Flow.PresentationRequested -= PresentProduct; Flow.RoutingRequested -= RouteProduct;
-            Flow.SortingRequested -= SortProduct; Flow.AnalysisAvailable -= PresentAnalysis; Flow.ProductCompleted -= hud.PresentOutcome;
-            Documents.Changed -= OnModalChanged; documentsView.Confirmed -= ConfirmDocument; pause.Changed -= OnModalChanged;
+            if (Flow != null)
+            {
+                Flow.Changed -= OnFlowChanged; Flow.PresentationRequested -= PresentProduct; Flow.RoutingRequested -= RouteProduct;
+                Flow.SortingRequested -= SortProduct; Flow.AnalysisAvailable -= PresentAnalysis;
+                if (hud) Flow.ProductCompleted -= hud.PresentOutcome;
+            }
+            Documents.Changed -= OnModalChanged;
+            if (documentsView) documentsView.Confirmed -= ConfirmDocument;
+            if (pause) pause.Changed -= OnModalChanged;
             if (application) application.SceneReady -= OnSceneReady;
         }
     }

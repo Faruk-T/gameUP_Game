@@ -4,7 +4,9 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **48/48 geçti**, başarısız/atlanan yok |
+| Unity testleri | **52/52 geçti**, başarısız/atlanan yok |
+| Main entegrasyonu | `3db0fa7`: kapsamlı kitapçık, gazete özeti, etkin acil kural ve yaşam döngüsü/GUID düzeltmeleri; T rapor istasyonu hariç |
+| Kitapçık doğrulaması | Üç günün haber/kuralları, duyuru onayından sonra etkinleşen kural, restart temizliği; kaydırma, başlık ve içerik yerleşimi geçti |
 | T cihazı temizliği | T kısayolu, tekrar rapor akışı, hedef/etiket, faks modeli ve FaxPresenter kaldırıldı; normal F analizi korunur |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
@@ -50,7 +52,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/art-frames-kit-tests.xml`. Hedefli sahne yenilemesi, mesh envanteri ve shader kontrolü: `Logs/art-frames-kit-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
+Ham rapor: `Logs/main-sync-tests.xml` (52/52). Hedefli kitapçık düzeni yenilemesi: `Logs/main-sync-author.log`; Game sahnesinde yalnız 6 satır UI ayarı değişti. Önceki mesh envanteri ve shader kontrolü: `Logs/art-frames-kit-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış, kitapçığın üst/alt sayfaları ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar. [Main aktarım kapsamı](Docs/MAIN_SYNC.md).
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 

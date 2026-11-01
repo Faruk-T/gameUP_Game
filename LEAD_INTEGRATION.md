@@ -12,6 +12,8 @@ Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakı
 
 T / Son rapor cihazı, kısayolu ve fiziksel faks sunumu kaldırıldı. Normal F analizi sonucu belge olarak açılır; Bakanlık acil faksı zorunlu belge ve tek seferlik ses bildirimiyle sürer. [Sanatçı kaynak eşleştirmesi](Docs/ARTIST_SYNC.md).
 
+Son main'in gerekli kitapçık, belge düzeni ve servis düzeltmeleri mevcut sahne korunarak aktarıldı. Kitapçık artık günlük gazeteyi, etkin kuralları ve ayrıştırma rehberini içerir. [Alınan değişiklikler ve hariç tutulan T rapor akışı](Docs/MAIN_SYNC.md).
+
 ## Kampanya
 
 | Gün | Yeni açılan grup | Ürün sayısı | Haber |
@@ -71,7 +73,7 @@ Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne dü
 
 ## Doğrulama ve kaynaklar
 
-**48/48 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 kaynak çevre parçası (14 aktif, 2 kullanım dışı), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
+**52/52 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 kaynak çevre parçası (14 aktif, 2 kullanım dışı), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
 
 [Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 
