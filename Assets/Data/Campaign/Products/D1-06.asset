@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-06
   category: 0
-  displayName: "S\xFCt / Parti 2"
+  displayName: "Toros Doğal Çiftlik Sütü"
   prefab: {fileID: 1318573443823681256, guid: 7344e627db601494baf14fc23f89a2a3, type: 3}
   modelSource: {fileID: 4855306916823938717, guid: a36e3d74665a84d40a9d8014455963a3, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 5
+    Day: 9
     Month: 11
     Year: 2026
-  declaredProductType: "S\xFCt / Parti 2"
-  listedProductType: "Bitkisel i\xE7ecek"
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "%100 Pastörize Tam Yağlı Süt"
+  listedProductType: "Bitkisel Yağlı Sütlü İçecek"
+  ingredientsSummary: "Su, yağsız süt tozu, bitkisel palm yağı, emülgatör, aroma verici."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Toros Doğal Çiftlik Sütü numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: UYUMSUZ (TAKLİT / TAĞŞİŞ) — Ön etiket beyanı ('%100 Pastörize Tam Yağlı Süt') ile gerçek içerik ('Bitkisel Yağlı Sütlü İçecek') uyuşmuyor (RED).\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 09.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Tetrapak Karton Süt Kutusu — Kâğıt Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

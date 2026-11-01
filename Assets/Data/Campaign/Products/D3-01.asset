@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-01
   category: 0
-  displayName: "S\xFCt / Parti 4"
+  displayName: "Akseki Yayla Günlük Sütü"
   prefab: {fileID: 7095656017283114679, guid: ccd5c36fa025b9d4fbc1f63c32f01c3d, type: 3}
   modelSource: {fileID: 784909809930390117, guid: 18b4f704d44bbfe478c0a85abbd44ad7, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 9
     Month: 11
     Year: 2026
-  declaredProductType: "S\xFCt / Parti 4"
-  listedProductType: "S\xFCt / Parti 4"
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "%100 Pastörize Tam Yağlı Süt"
+  listedProductType: "%100 Pastörize Tam Yağlı Süt"
+  ingredientsSummary: "%100 pastörize inek/keçi sütü (koruyucu içermez)."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 2
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Akseki Yayla Günlük Sütü numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 pastörize inek/keçi sütü (koruyucu içermez).) ve yasal tür beyanı ('%100 Pastörize Tam Yağlı Süt') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Bölge B  |  Etiket SKT: 09.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  packagingLabelText: "Tetrapak Karton Süt Kutusu — Kâğıt Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

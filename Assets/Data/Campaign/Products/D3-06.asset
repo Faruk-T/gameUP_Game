@@ -13,30 +13,28 @@ MonoBehaviour:
   m_Name: D3-06
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-06
-  category: 4
-  displayName: Karpuz / A
+  category: 3
+  displayName: "Manavgat Çekirdeksiz Karpuz"
   prefab: {fileID: 5592311911732218910, guid: 16e1d35372f9ade4bb0c7484ef714728, type: 3}
   modelSource: {fileID: 4237655564495567707, guid: 3ea4be8afaef8ba42a23b9994e07d3c6, type: 3}
   condition: 1
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 6
     Month: 11
     Year: 2026
-  declaredProductType: Karpuz / A
-  listedProductType: Karpuz / A
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Manavgat Çekirdeksiz Karpuz)"
+  listedProductType: "Taze Hasat Meyve (Manavgat Çekirdeksiz Karpuz)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Manavgat Çekirdeksiz Karpuz numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Manavgat Çekirdeksiz Karpuz)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 06.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 1
-  isPackagingContaminated: 1
-  packagingLabelText: "K\xE2\u011F\u0131t At\u0131k"
+  isPackagingContaminated: 0
+  packagingLabelText: "Oluklu Karton Sevkiyat Kutusu — Kâğıt Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

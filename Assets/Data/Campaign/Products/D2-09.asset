@@ -14,29 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-09
   category: 0
-  displayName: "Yo\u011Furt / Parti 02"
+  displayName: "Antalya Süzme Çiftlik Yoğurdu"
   prefab: {fileID: 7204753121228252790, guid: 3e361c60580adae4eb591d7cbb2df570, type: 3}
   modelSource: {fileID: 304751669955768019, guid: 155eedd0369435e4986d01ef142294ad, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 6
+    Day: 10
     Month: 11
     Year: 2026
-  declaredProductType: "Yo\u011Furt / Parti 02"
-  listedProductType: "Yo\u011Furt / Parti 02"
-  ingredientsSummary: "S\xFCt, \xFCr\xFCne uygun k\xFClt\xFCr/maya."
+  declaredProductType: "Doğal Fermente Yoğurt"
+  listedProductType: "Doğal Fermente Yoğurt"
+  ingredientsSummary: "Pastörize tam yağlı süt, canlı yoğurt kültürü."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "NEGAT\u0130F \u2014 Numunede \xE7evresel kal\u0131nt\u0131
-    saptanmad\u0131. SKT, g\xF6r\xFCn\xFCr bozulma ve y\xFCr\xFCrl\xFCkteki parti
-    duyurular\u0131n\u0131 ayr\u0131ca kontrol edin."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Antalya Süzme Çiftlik Yoğurdu numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize tam yağlı süt, canlı yoğurt kültürü.) ve yasal tür beyanı ('Doğal Fermente Yoğurt') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 10.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
   isPackagingContaminated: 0
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Plastik Yoğurt Kasesi — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

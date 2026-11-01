@@ -14,28 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-03
   category: 2
-  displayName: Paketli et / Parti 5
+  displayName: "Akdeniz Dinlendirilmiş Dana Biftek"
   prefab: {fileID: 5242750373323227690, guid: 30468f6cd9fd68346adea53e35e29793, type: 3}
   modelSource: {fileID: 7604445599010125497, guid: 08afa0af0b1358d4981e44ee7e5e4520, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 12
     Month: 11
     Year: 2026
-  declaredProductType: Paketli et / Parti 5
-  listedProductType: Paketli et / Parti 5
-  ingredientsSummary: Et numunesi.
+  declaredProductType: "%100 Taze Karkas Et Ürünleri"
+  listedProductType: "%100 Taze Karkas Et Ürünleri"
+  ingredientsSummary: "%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez)."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 1
-  analysisFindingDetail: "POZ\u0130T\u0130F \u2014 \xC7evresel kal\u0131nt\u0131
-    saptand\u0131. Ambalaj kontamine; ayr\u0131 imha gerekir."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: POZİTİF (TEHLİKELİ) — Akdeniz Dinlendirilmiş Dana Biftek numunesinde endüstriyel mikroplastik ve kimyasal dioksin bulaşması saptandı! Ürün KESİN RED edilmeli ve ambalajı KIRMIZI (Kontamine Atık) kutusuna atılmalıdır.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez).) ve yasal tür beyanı ('%100 Taze Karkas Et Ürünleri') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 12.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
   isPackagingContaminated: 1
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Streçli Plastik Et Tabağı — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250

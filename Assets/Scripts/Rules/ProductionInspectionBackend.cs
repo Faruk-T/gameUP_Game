@@ -105,9 +105,12 @@ namespace GameUP.Rules
             if (!reports.TryGetValue(session.Key, out var report))
             {
                 var item = GetProductDefinition(session.Product.Id);
-                string packaging = item.IsPackagingContaminated ? "Ambalaj kontamine: ayrı imha hedefine gönder."
-                    : "Ambalaj: temiz " + item.PackagingMaterial.ToTurkishText().ToLowerInvariant() + ".";
-                report = new AnalysisReport(session.Key, "R-" + session.Key.ProductId, item.AnalysisFindingDetail + "\n\n" + packaging);
+                string header = "ÜRÜN ADI: " + item.DisplayName + " (" + item.DefinitionId + ")\n" +
+                                "KATEGORİ: " + item.Category.ToTurkishText() + "  •  KAYNAK: " + item.SourceRegion.ToTurkishText() + "  •  SKT: " + item.ExpiryDate;
+                string packaging = item.IsPackagingContaminated
+                    ? "AMBALAJ YÖNLENDİRMESİ: Ambalaj kontamine (" + item.PackagingLabelText + " üzerinde toksik kalıntı saptandı)! Reddedildiğinde KIRMIZI (Kontamine Atık / Ayrı İmha) kutusuna gönderin."
+                    : "AMBALAJ YÖNLENDİRMESİ: Temiz Ambalaj (" + item.PackagingLabelText + ") — Reddedilirse arkadaki " + item.PackagingMaterial.ToTurkishText().ToUpperInvariant() + " kutusuna gönderin.";
+                report = new AnalysisReport(session.Key, "R-" + session.Key.ProductId, header + "\n\n" + item.AnalysisFindingDetail + "\n\n" + packaging);
                 reports.Add(session.Key, report);
             }
             completed(report);
@@ -200,4 +203,3 @@ namespace GameUP.Rules
           _ => throw new ArgumentOutOfRangeException(nameof(value)) };
     }
 }
-

@@ -13,29 +13,28 @@ MonoBehaviour:
   m_Name: D3-10
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-10
-  category: 4
-  displayName: Karpuz / B
+  category: 3
+  displayName: "Serik Ovaköy Karpuzu"
   prefab: {fileID: 9038027253424306020, guid: 17fa6f501269abf45b8666674ccbd225, type: 3}
   modelSource: {fileID: 5111286845448798770, guid: 164cde0b70fc7524b8402ea5975803fc, type: 3}
   condition: 0
   productIcon: {fileID: 0}
   expiryDate:
-    Day: 7
+    Day: 10
     Month: 11
     Year: 2026
-  declaredProductType: Karpuz / B
-  listedProductType: Karpuz / B
-  ingredientsSummary: Meyve numunesi.
+  declaredProductType: "Taze Hasat Meyve (Serik Ovaköy Karpuzu)"
+  listedProductType: "Taze Hasat Meyve (Serik Ovaköy Karpuzu)"
+  ingredientsSummary: "%100 yerel hasat taze meyve."
   customFrontLabelNote: 
   customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 1
-  analysisFindingDetail: "POZ\u0130T\u0130F \u2014 \xC7evresel kal\u0131nt\u0131
-    saptand\u0131. Ambalaj kontamine; ayr\u0131 imha gerekir."
+  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: POZİTİF (TEHLİKELİ) — Serik Ovaköy Karpuzu numunesinde yasaklı organofosfat pestisit (tarım ilacı) ve ağır metal kalıntısı saptandı! Ürün KESİN RED edilmeli ve ambalajı KIRMIZI (Kontamine Atık) kutusuna atılmalıdır.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Serik Ovaköy Karpuzu)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 10.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
   packagingMaterial: 3
   isPackagingContaminated: 1
-  packagingLabelText: "Plastik At\u0131k"
+  packagingLabelText: "Streçli Plastik Sevkiyat Paketi — Plastik Atık"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
