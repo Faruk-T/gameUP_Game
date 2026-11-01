@@ -13,6 +13,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -69,7 +71,7 @@ namespace GameUp.Production.Tests
             try
             {
                 var all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
-                var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c);
+                var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c&&c.CompareTag("MainCamera"));
                 var player=camera.transform.parent;
                 var bins=all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t&&t.Action>=WorkstationAction.Paper&&t.Action<=WorkstationAction.Contaminated).ToArray();
                 Assert.That(bins.Length,Is.EqualTo(4));Physics.SyncTransforms();
@@ -82,6 +84,9 @@ namespace GameUp.Production.Tests
                     Assert.That(hit.collider.GetComponent<WorkstationTarget>(),Is.SameAs(bin),"Bin must be targetable from the fixed seat.");
                 }
                 Assert.That(all.Any(t=>t.name=="CoastalWindow"||t.name=="CoastalWindowFrame"||t.name=="DairySamples"||t.name=="ChilledSamples"||t.name=="ProduceSamples"),Is.False);
+                Assert.That(all.Count(t=>t.GetComponent<FaxPresenter>()),Is.EqualTo(1),"The ministry fax is authored once; there is no T report interaction.");
+                Assert.That(all.Select(t=>t.GetComponent<WorkstationTarget>()).Count(t=>t&&t.Action==WorkstationAction.Analyzer),Is.EqualTo(1),"The normal F analyzer stays available.");
+                foreach(var target in all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t))Assert.That(Enum.IsDefined(typeof(WorkstationAction),target.Action),Is.True,"No retired interaction IDs may remain in the scene.");
                 var dependencies=new HashSet<string>(AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true));
                 foreach(var guid in AssetDatabase.FindAssets("t:Prefab",new[]{"Assets/Art/Urunler"}))
                     Assert.That(dependencies,Does.Contain(AssetDatabase.GUIDToAssetPath(guid)),"Artist model must have an authored use.");
@@ -172,6 +177,71 @@ namespace GameUp.Production.Tests
             yield return null;
             var session=Object.FindFirstObjectByType<GameSessionController>();
             Assert.That(session,Is.Not.Null,"GameSystems must be active in Game.");
+            Assert.That(session.IsIntroducing,Is.True);
+            Assert.That(session.WorldInputAllowed,Is.False);
+            Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+            session.HandleEscape();session.Restart();session.Approve();session.Reject();
+            Assert.That(session.IsIntroducing,Is.True,"Escape, restart and decisions cannot skip the opening.");
+            Assert.That(session.Documents.IsOpen,Is.False,"The newspaper must wait for the cinematic.");
+            var openingFins=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None).SelectMany(t=>t.GetComponentsInChildren<Transform>()).Where(t=>t.name.StartsWith("frontLeg",StringComparison.Ordinal)).ToArray();
+            var finRotations=openingFins.Select(t=>t.localRotation).ToArray();
+            var finPositions=openingFins.Select(t=>t.localPosition).ToArray();
+            float introDeadline=Time.realtimeSinceStartup+OpeningTiming.End+15;
+            var introduction=Object.FindFirstObjectByType<IntroCinematic>();
+            var openingActors=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None);
+            var openingScene=session.gameObject.scene;
+            var openingTransforms=openingScene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+            var openingLogo=openingTransforms.Single(t=>t.name=="COP31RisingLogo").GetComponent<CanvasGroup>();
+            var openingFireworks=openingTransforms.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
+            var openingCamera=Object.FindFirstObjectByType<Camera>();
+            var openingCanvas=GameObject.Find("OpeningCanvas").GetComponent<Canvas>();
+            var openingNorth=openingTransforms.Single(t=>t.name=="NorthHinge");
+            var openingSouth=openingTransforms.Single(t=>t.name=="SouthHinge");
+            bool swimmingSeen=false,logoSeen=false,fireworksSeen=false,walkSeen=false;
+            while(session.IsIntroducing)
+            {
+                Assert.That(Time.realtimeSinceStartup,Is.LessThan(introDeadline),"Opening must finish naturally.");
+                Assert.That(session.WorldInputAllowed,Is.False);
+                Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+                if(!swimmingSeen&&introduction.Elapsed>=OpeningTiming.SwimReveal)
+                {
+                    Assert.That(openingActors.All(t=>t.IsSwimming),Is.True);Assert.That(openingLogo.alpha,Is.LessThan(.01));swimmingSeen=true;
+                }
+                if(!logoSeen&&introduction.Elapsed>=OpeningTiming.LogoRaised+.2f)
+                {
+                    Assert.That(swimmingSeen,Is.True);Assert.That(openingLogo.alpha,Is.GreaterThan(.99));Assert.That(openingActors.All(t=>t.IsCruising),Is.True);logoSeen=true;
+                }
+                if(introduction.Elapsed>=OpeningTiming.LogoStart&&introduction.Elapsed<OpeningTiming.WalkStart)
+                    Assert.That(openingLogo.GetComponent<RectTransform>().anchoredPosition.x,Is.EqualTo(0).Within(.1));
+                if(introduction.Elapsed<OpeningTiming.DoorsOpenStart)
+                    Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,90),Is.EqualTo(0).Within(.1));
+                if(introduction.Elapsed>=OpeningTiming.DoorsOpenEnd)
+                    Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,0),Is.EqualTo(0).Within(.1));
+                if(!fireworksSeen&&introduction.Elapsed>=46)
+                {
+                    Assert.That(logoSeen,Is.True);Assert.That(openingFireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));fireworksSeen=true;
+                    ProductionSnapshot.Capture(openingCanvas,openingCamera,"Logs/Visuals/cinematic-logo-fireworks.png",1920,1080);
+                }
+                if(!walkSeen&&introduction.Elapsed>=OpeningTiming.WalkStart+.3f)
+                {
+                    Assert.That(fireworksSeen,Is.True);Assert.That(openingLogo.alpha,Is.LessThan(.01));Assert.That(openingFireworks.All(p=>!p.gameObject.activeInHierarchy),Is.True);walkSeen=true;
+                }
+                yield return null;
+            }
+            Assert.That(swimmingSeen&&logoSeen&&fireworksSeen&&walkSeen,Is.True,"Opening stages must play in narrative order.");
+            yield return null;
+            Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,0),Is.EqualTo(0).Within(.1),"North door stays open after the cinematic.");
+            Assert.That(Mathf.DeltaAngle(openingSouth.localEulerAngles.y,180),Is.EqualTo(0).Within(.1),"South door stays open after the cinematic.");
+            foreach(var turtle in Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None))
+            {
+                var animator=turtle.GetComponentInChildren<Animator>();
+                Assert.That(animator.GetCurrentAnimatorClipInfoCount(0),Is.EqualTo(1),"Artist animation must actually play.");
+                Assert.That(animator.GetCurrentAnimatorStateInfo(0).loop,Is.True);
+                Assert.That(animator.GetCurrentAnimatorStateInfo(0).normalizedTime,Is.GreaterThan(1));
+                Assert.That(turtle.IsSwimming,Is.True);
+            }
+            Assert.That(openingFins.Where((fin,i)=>Quaternion.Angle(fin.localRotation,finRotations[i])>.5f||Vector3.Distance(fin.localPosition,finPositions[i])>.002f).Any(),Is.True,"Imported animation must move the flipper bones.");
+            Assert.That(Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             Assert.That(ApplicationRoot.Require().Settings.Sensitivity,Is.EqualTo(.17f).Within(.001f));
             Assert.That(Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             var input=Object.FindFirstObjectByType<WorkstationInteractionController>();
@@ -196,8 +266,22 @@ namespace GameUp.Production.Tests
             Assert.That(posterTitle.preferredHeight,Is.LessThanOrEqualTo(posterTitle.rectTransform.rect.height+1));
             Assert.That(posterTitle.cachedTextGenerator.characterCountVisible,Is.GreaterThan(0));
             player.localRotation=savedYaw;camera.transform.localRotation=savedPitch;
-            input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);Capture("inspection",session.gameObject.scene);input.EndInspection();
-            session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);Capture("handbook",session.gameObject.scene);document.Confirm();
+            yield return ExerciseInspection(input,session,product,camera);
+            session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);
+            Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Null);
+            Canvas.ForceUpdateCanvases();
+            var handbookScroll=GameObject.Find("GameCanvas/DocumentOverlay/DocumentPage/DocumentScroll").GetComponent<ScrollRect>();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(handbookScroll.content);
+            var handbookBody=handbookScroll.content.GetComponentInChildren<Text>();
+            Assert.That(handbookBody.supportRichText,Is.True);
+            Assert.That(handbookScroll.content.rect.height,Is.GreaterThan(handbookScroll.viewport.rect.height),"The full manual must scroll.");
+            Assert.That(handbookBody.rectTransform.rect.height,Is.GreaterThanOrEqualTo(handbookBody.preferredHeight-1),"Manual text must fit its content rect.");
+            var handbookTitle=GameObject.Find("GameCanvas/DocumentOverlay/DocumentPage/DocumentTitle").GetComponent<Text>();
+            Assert.That(handbookTitle.preferredHeight,Is.LessThanOrEqualTo(handbookTitle.rectTransform.rect.height+1));
+            Capture("handbook",session.gameObject.scene);
+            handbookScroll.verticalNormalizedPosition=0;Canvas.ForceUpdateCanvases();
+            Capture("handbook-bottom",session.gameObject.scene);document.Confirm();
+            Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Null);
             session.Analyze();Assert.That(session.Flow.Phase,Is.EqualTo(ProductPhase.Analyzing));
             pause.Open();var position=product.ActiveProduct.transform.position;
             yield return new WaitForSecondsRealtime(.25f);
@@ -205,7 +289,7 @@ namespace GameUp.Production.Tests
             Capture("pause",session.gameObject.scene);pause.Resume();
             yield return Wait(()=>session.Documents.IsOpen);Assert.That(session.Documents.Current.Kind,Is.EqualTo(DocumentKind.Analysis));Capture("analysis",session.gameObject.scene);document.Confirm();
             session.Backend.AnalysisSeconds=.04f;
-            var speed=new SerializedObject(product);speed.FindProperty("moveDuration").floatValue=.055f;speed.ApplyModifiedPropertiesWithoutUndo();
+            var speed=new SerializedObject(product);speed.FindProperty("secondsPerMetre").floatValue=.025f;speed.ApplyModifiedPropertiesWithoutUndo();
             yield return Campaign(session,input,"correct");
             Assert.That(session.Flow.RunSummary.Total,Is.EqualTo(31));Assert.That(session.Flow.RunSummary.Correct,Is.EqualTo(31));
             Assert.That(session.Flow.RunSummary.CorrectSorts,Is.EqualTo(15));Assert.That(session.Flow.RunSummary.Score,Is.EqualTo(340));Assert.That(session.Flow.RunSummary.Passed,Is.True);
@@ -216,7 +300,9 @@ namespace GameUp.Production.Tests
                 session.Restart();Assert.That(session.Flow.RunId,Is.Not.EqualTo(stale.RunId));Assert.That(session.Flow.RunSummary.Total,Is.Zero);
                 Assert.That(session.Flow.NotifyArrival(stale),Is.False);Assert.That(input.IsInspecting,Is.False);
                 yield return Campaign(session,input,scenario==0?"approve":"reject");
-                Assert.That(session.Flow.RunSummary.Accuracy,Is.EqualTo(scenario==0?16f/31:15f/31).Within(.001));Assert.That(session.Flow.RunSummary.Passed,Is.False);
+                Assert.That(session.Flow.State,Is.EqualTo(FlowState.GameOver));Assert.That(session.Flow.DailyMistakes,Is.EqualTo(3));
+                Assert.That(session.Flow.RunSummary.Total,Is.LessThan(31));Assert.That(session.WorldInputAllowed,Is.False);
+                Capture(scenario==0?"lost-approve":"lost-reject",session.gameObject.scene);
             }
             session.Restart();document.Confirm();yield return Wait(()=>session.Flow.CanDecide);
             session.Analyze();session.Restart();yield return new WaitForSecondsRealtime(.15f);
@@ -226,12 +312,33 @@ namespace GameUp.Production.Tests
             Assert.That(Object.FindObjectsByType<ApplicationRoot>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             Assert.That(Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length,Is.EqualTo(1));Assert.That(Time.timeScale,Is.EqualTo(1));
         }
+        private static IEnumerator ExerciseInspection(WorkstationInteractionController input,GameSessionController session,ProductPresentation product,Camera camera)
+        {
+            var previousBehavior=InputSystem.settings.backgroundBehavior;
+            InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+            var mouse=InputSystem.AddDevice<Mouse>("InspectionTestMouse");
+            InputSystem.EnableDevice(mouse);mouse.MakeCurrent();
+            try
+            {
+                var position=camera.transform.position;var rotation=camera.transform.rotation;
+                input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);
+                Assert.That(session.WorldInputAllowed,Is.True);Assert.That(input.enabled&&input.gameObject.activeInHierarchy,Is.True);
+                InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
+                InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
+                Assert.That(camera.transform.position,Is.EqualTo(position));Assert.That(Quaternion.Angle(camera.transform.rotation,rotation),Is.LessThan(.001));
+                var held=product.ActiveProduct.transform.rotation;
+                input.RotateInspection(new Vector2(25,-12));yield return null;
+                Assert.That(Quaternion.Angle(product.ActiveProduct.transform.rotation,held),Is.GreaterThan(.5f));
+                Assert.That(Quaternion.Angle(camera.transform.rotation,rotation),Is.LessThan(.001));Capture("inspection",session.gameObject.scene);
+            }
+            finally {input.EndInspection();InputSystem.RemoveDevice(mouse);InputSystem.settings.backgroundBehavior=previousBehavior;}
+        }
         private static IEnumerator Campaign(GameSessionController session,WorkstationInteractionController input,string scenario)
         {
             var invalid=new HashSet<string>{"D1-02","D1-03","D1-06","D1-07","D2-02","D2-04","D2-06","D2-08","D2-10","D3-03","D3-04","D3-06","D3-08","D3-10","D3-12"};
             var targets=Object.FindObjectsByType<WorkstationTarget>(FindObjectsSortMode.None).Where(t=>t.Action!=WorkstationAction.Product).ToDictionary(t=>t.Action);
             float deadline=Time.realtimeSinceStartup+90;
-            while(session.Flow.State!=FlowState.GameSummary)
+            while(session.Flow.State!=FlowState.GameSummary&&session.Flow.State!=FlowState.GameOver)
             {
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline),"Campaign stalled: "+session.Flow.State+"/"+session.Flow.Phase);
                 if(session.Documents.IsOpen)
@@ -240,9 +347,20 @@ namespace GameUp.Production.Tests
                     {Assert.That(session.Flow.DayIndex,Is.EqualTo(2));Assert.That(session.Flow.ProductIndex,Is.EqualTo(3));if(scenario=="correct")Capture("emergency",session.gameObject.scene);}
                     if(session.Documents.Current.Kind==DocumentKind.Newspaper)
                     {if(scenario=="correct")Capture("newspaper-day"+(session.Flow.DayIndex+1),session.gameObject.scene);AssertNewspaperReadable();}
+                    if(session.Documents.Current.Kind==DocumentKind.Infraction)
+                    {
+                        Assert.That(scenario,Is.Not.EqualTo("correct"));Assert.That(session.Flow.State,Is.EqualTo(FlowState.MistakeBriefing));
+                        Assert.That(Object.FindFirstObjectByType<FaxPresenter>().IsAlarming,Is.True);
+                        long token=session.Documents.Current.Token;session.HandleEscape();Assert.That(session.Documents.Current.Token,Is.EqualTo(token));
+                        Assert.That(ApplicationRoot.Require().Audio.IsBeltRunning,Is.False);Capture("ministry-warning",session.gameObject.scene);
+                    }
                     ConfirmDocument(session);
                 }
-                else if(session.Flow.State==FlowState.DaySummary)session.ContinueSummary();
+                else if(session.Flow.State==FlowState.DaySummary)
+                {
+                    Assert.That(GameObject.Find("GameCanvas/ResultsOverlay/ShiftPaper"),Is.Not.Null);
+                    Capture("shift-report-day"+(session.Flow.DayIndex+1),session.gameObject.scene);session.ContinueSummary();
+                }
                 else if(session.Flow.CanDecide)
                 {
                     string id=session.Flow.Current.Key.ProductId;
@@ -287,7 +405,7 @@ namespace GameUp.Production.Tests
         private static void Capture(string name,Scene scene)
         {
             if(SystemInfo.graphicsDeviceType==UnityEngine.Rendering.GraphicsDeviceType.Null)return;
-            var canvas=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Canvas>(true)).Single(c=>c.isRootCanvas&&c.renderMode!=RenderMode.WorldSpace);
+            var canvas=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Canvas>(true)).Single(c=>c.gameObject.activeInHierarchy&&c.isRootCanvas&&c.renderMode!=RenderMode.WorldSpace);
             ProductionSnapshot.Capture(canvas,scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Camera>()).FirstOrDefault(),"Logs/Visuals/"+name+".png",1920,1080);
             if(name=="menu"||name=="newspaper")ProductionSnapshot.Capture(canvas,null,"Logs/Visuals/"+name+"-720.png",1280,720);
         }

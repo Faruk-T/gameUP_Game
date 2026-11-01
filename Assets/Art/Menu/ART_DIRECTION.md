@@ -27,4 +27,4 @@ Oyundaki 1–2 Kasım tarihleri konferans öncesi hazırlık günleridir. Haberl
 
 ## Unity import
 
-Menü arka planı: en çok 2048; belge ve logo: en çok 1024. Mipmap kapalı, Read/Write kapalı, platform sıkıştırması açık. Menü sahnesi boşaltılınca büyük arka planın sahne referansı bırakılır; Game sahnesinde menü rotatorü veya arka plan kopyası bulunmaz.
+Menü arka planı ve sinematikte de kullanılan logo: en çok 2048; belge: en çok 1024. Mipmap kapalı, Read/Write kapalı, platform sıkıştırması açık. Menü sahnesi boşaltılınca büyük arka planın sahne referansı bırakılır; Game sahnesinde menü rotatorü veya arka plan kopyası bulunmaz. Makam duvarı portreleri ve bayrakların kaynakları [OfficeIdentity/SOURCES.md](../OfficeIdentity/SOURCES.md) içindedir.

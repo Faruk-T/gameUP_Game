@@ -1,0 +1,5 @@
+{
+  "name": "GameUp.LegacyBuiltinEffects",
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["GAMEUP_LEGACY_BUILTIN_DEMO"]
+}

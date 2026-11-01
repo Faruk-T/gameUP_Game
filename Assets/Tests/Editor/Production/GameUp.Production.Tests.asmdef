@@ -1,6 +1,6 @@
 {
   "name": "GameUp.Production.Tests",
-  "references": ["GameUp.Application", "GameUp.Contracts", "GameUp.Lead.Core", "GameUp.Gameplay", "GameUp.Rules", "GameUp.Interaction", "GameUp.Lead.Editor", "Unity.InputSystem", "Unity.ugui"],
+  "references": ["GameUp.Application", "GameUp.Contracts", "GameUp.Lead.Core", "GameUp.Gameplay", "GameUp.Rules", "GameUp.Interaction", "GameUp.Lead.Editor", "Unity.InputSystem", "Unity.ugui", "EPOOutline.Runtime", "Unity.RenderPipelines.Universal.Runtime", "Unity.RenderPipelines.Core.Runtime"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"]
 }

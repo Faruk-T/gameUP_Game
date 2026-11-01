@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-06
   category: 0
-  displayName: "Toros Doğal Çiftlik Sütü"
+  displayName: "Toros Do\u011Fal \xC7iftlik S\xFCt\xFC"
   prefab: {fileID: 1318573443823681256, guid: 7344e627db601494baf14fc23f89a2a3, type: 3}
   modelSource: {fileID: 4855306916823938717, guid: a36e3d74665a84d40a9d8014455963a3, type: 3}
   condition: 0
@@ -23,24 +23,35 @@ MonoBehaviour:
     Day: 9
     Month: 11
     Year: 2026
-  declaredProductType: "%100 Pastörize Tam Yağlı Süt"
-  listedProductType: "Bitkisel Yağlı Sütlü İçecek"
-  ingredientsSummary: "Su, yağsız süt tozu, bitkisel palm yağı, emülgatör, aroma verici."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "%100 Past\xF6rize Tam Ya\u011Fl\u0131 S\xFCt"
+  listedProductType: "Bitkisel Ya\u011Fl\u0131 S\xFCtl\xFC \u0130\xE7ecek"
+  ingredientsSummary: "Su, ya\u011Fs\u0131z s\xFCt tozu, bitkisel palm ya\u011F\u0131,
+    em\xFClgat\xF6r, aroma verici."
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Toros Doğal Çiftlik Sütü numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: UYUMSUZ (TAKLİT / TAĞŞİŞ) — Ön etiket beyanı ('%100 Pastörize Tam Yağlı Süt') ile gerçek içerik ('Bitkisel Yağlı Sütlü İçecek') uyuşmuyor (RED).\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 09.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Toros Do\u011Fal \xC7iftlik S\xFCt\xFC numunesinde pestisit, a\u011F\u0131r
+    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
+    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
+    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: UYUMSUZ (TAKL\u0130T / TA\u011E\u015E\u0130\u015E)
+    \u2014 \xD6n etiket beyan\u0131 ('%100 Past\xF6rize Tam Ya\u011Fl\u0131 S\xFCt')
+    ile ger\xE7ek i\xE7erik ('Bitkisel Ya\u011Fl\u0131 S\xFCtl\xFC \u0130\xE7ecek')
+    uyu\u015Fmuyor (RED).\r\n\u2022 KAYNAK & SKT KAYDI: Kaynak B\xF6lgesi: Antalya
+    Yerel  |  Etiket SKT: 09.11.2026 (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki faks
+    duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "Tetrapak Karton Süt Kutusu — Kâğıt Atık"
+  packagingLabelText: "Tetrapak Karton S\xFCt Kutusu \u2014 K\xE2\u011F\u0131t At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

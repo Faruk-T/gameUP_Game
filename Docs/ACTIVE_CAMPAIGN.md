@@ -1,6 +1,6 @@
 # Aktif üç günlük kampanya
 
-Bu dosya önceki iki günlük balıklı prototipin yerine geçen oynanış kapsamını açıklar. Çalışma dalı `feat/lead-category-progression`. Başlangıç First → Menu → Game, Unity 6000.3.13f1.
+Bu dosya önceki iki günlük balıklı prototipin yerine geçen oynanış kapsamını açıklar. Çalışma dalı `feat/lead-coastal-cinematic`. Başlangıç First → Menu → Game, Unity 6000.3.13f1. Yeni görevde gazete öncesi [kıyı ve tesis açılışı](COASTAL_CINEMATIC.md) oynar.
 
 | Gün / tarih | Açılan grup | O gün gelen ürünler | Gazetenin konusu | Oyuncunun uyguladığı kontrol |
 |---|---|---|---|---|
@@ -21,6 +21,8 @@ Her gazetenin RelatedRuleIds listesi, günün InitialRules listesiyle eşleşir.
 - D3-05: B kaynaklı çilek; normal kontrolleri geçiyorsa onaylanır.
 
 ## Modeller ve bozulma
+
+Güncel vardiya sınırı: hatalı karar ve hatalı ayrıştırma ayrı yanlış işlemlerdir. Aynı gün üçüncü yanlışta oyun kaybedilir; sayaç her sabah sıfırlanır. Hatalı işlem Bakanlık faksıyla bildirilir. Gün sonunda faksın vardiya raporu açılır. [Güncel çalışma alanı ve ses entegrasyonu](WORKSTATION_UPGRADE.md).
 
 Esmanur'un 31 kaynak prefabı kullanılır; hepsi sırayla masaya gelir. Teşhir dolapları kaldırılmıştır. Her kaynak için Fresh ve Spoiled olmak üzere 62 kaydedilmiş görünüm varyantı vardır. Yeni ürün mesh'i import edilmez veya kopyalanmaz.
 

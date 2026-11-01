@@ -82,4 +82,3 @@ namespace GameUP.Rules
         }
     }
 }
-

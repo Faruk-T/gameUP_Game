@@ -41,13 +41,7 @@ namespace GameUp.Editor
                 foreach(var t in root.GetComponentsInChildren<Transform>())t.gameObject.layer=8;
                 var box=root.AddComponent<BoxCollider>();box.center=new Vector3(0,.33f,0);box.size=new Vector3(.8f,.72f,.8f);
                 var target=root.AddComponent<WorkstationTarget>();SetAction(target,WorkstationAction.Product);
-                var renderers=model.GetComponentsInChildren<Renderer>();var bounds=renderers[0].bounds;
-                foreach(var renderer in renderers.Skip(1))bounds.Encapsulate(renderer.bounds);
-                float width=Mathf.Clamp(bounds.size.x*.7f,.12f,.42f),height=Mathf.Clamp(bounds.size.y*.3f,.035f,.12f);
-                float depth=bounds.size.z*.5f*(definition.Condition==FoodCondition.Spoiled?1.24f:1)+.005f;
-                var front=Face(root.transform,"Front",new Vector3(0,bounds.size.y*.5f,-depth),Quaternion.identity,width,height);
-                var back=Face(root.transform,"Back",new Vector3(0,bounds.size.y*.5f,depth),Quaternion.Euler(0,180,0),width,height);
-                var labels=root.AddComponent<ProductWorldLabelBinder>();labels.Configure(definition,front,back);
+                ProductLabelAuthoring.Configure(root,model,definition);
                 var prefab=PrefabUtility.SaveAsPrefabAsset(root,ProductionProjectSetup.Products+"/"+definition.DefinitionId+".prefab");
                 Set(definition,"prefab",prefab);UnityEngine.Object.DestroyImmediate(root);
             }
@@ -71,16 +65,6 @@ namespace GameUp.Editor
             if(container.scene!=parent.gameObject.scene)SceneManager.MoveGameObjectToScene(container,parent.gameObject.scene);
             container.transform.SetParent(parent,false);container.transform.localPosition=position;container.transform.localRotation=Quaternion.Euler(0,yaw,0);
             return container;
-        }
-        private static Text Face(Transform parent,string name,Vector3 position,Quaternion rotation,float width,float height)
-        {
-            var go=new GameObject(name,typeof(RectTransform),typeof(Canvas));go.transform.SetParent(parent,false);
-            go.transform.localPosition=position;go.transform.localRotation=rotation;go.transform.localScale=Vector3.one*(width/1000);
-            float logicalHeight=height/width*1000;
-            var rect=(RectTransform)go.transform;rect.sizeDelta=new Vector2(1000,logicalHeight);go.GetComponent<Canvas>().renderMode=RenderMode.WorldSpace;
-            var card=Image("LabelPaper",rect,0,0,1000,logicalHeight,Paper);
-            var text=Text("LabelText",card.transform,"",0,0,940,logicalHeight-10,38,Ink,TextAnchor.MiddleCenter);
-            text.resizeTextForBestFit=true;text.resizeTextMinSize=12;text.resizeTextMaxSize=38;return text;
         }
     }
 }

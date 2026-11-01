@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: D3-07
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D3-07
-  category: 3
-  displayName: "Aksu Sera Çileği"
+  category: 4
+  displayName: "Aksu Sera \xC7ile\u011Fi"
   prefab: {fileID: 8929395124610480387, guid: 1736abdfbc8f06042bd44fdfe4a4c8d5, type: 3}
   modelSource: {fileID: 2642190976995687182, guid: 76ec3816b055a9a4e9bdaa6205488880, type: 3}
   condition: 0
@@ -23,24 +23,33 @@ MonoBehaviour:
     Day: 11
     Month: 11
     Year: 2026
-  declaredProductType: "Taze Hasat Meyve (Aksu Sera Çileği)"
-  listedProductType: "Taze Hasat Meyve (Aksu Sera Çileği)"
-  ingredientsSummary: "%100 yerel hasat taze meyve."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "Taze Hasat Meyve (Aksu Sera \xC7ile\u011Fi)"
+  listedProductType: "Taze Hasat Meyve (Aksu Sera \xC7ile\u011Fi)"
+  ingredientsSummary: '%100 yerel hasat taze meyve.'
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Aksu Sera Çileği numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 yerel hasat taze meyve.) ve yasal tür beyanı ('Taze Hasat Meyve (Aksu Sera Çileği)') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 11.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Aksu Sera \xC7ile\u011Fi numunesinde pestisit, a\u011F\u0131r metal veya
+    mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022 M\u0130KROB\u0130YOLOJ\u0130K
+    / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014 Numunenin tazelik, renk ve doku
+    de\u011Ferleri standartlara uygun.\r\n\u2022 \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI:
+    DO\u011ERULANDI \u2014 \u0130\xE7erik (%100 yerel hasat taze meyve.) ve yasal
+    t\xFCr beyan\u0131 ('Taze Hasat Meyve (Aksu Sera \xC7ile\u011Fi)') birbiriyle
+    uyumlu.\r\n\u2022 KAYNAK & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket
+    SKT: 11.11.2026 (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla
+    kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
   packagingMaterial: 2
   isPackagingContaminated: 0
-  packagingLabelText: "Cam Muhafaza Kavanozu — Cam Atık"
+  packagingLabelText: "Cam Muhafaza Kavanozu \u2014 Cam At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-07
   category: 0
-  displayName: "Akseki Tam Yağlı Tulum Peyniri"
+  displayName: "Akseki Tam Ya\u011Fl\u0131 Tulum Peyniri"
   prefab: {fileID: 4578965961511068483, guid: 556ecf0bb730ab449bc3035626e43768, type: 3}
   modelSource: {fileID: 4827614627173742654, guid: 91b8030948514c54384aefe221aefbf6, type: 3}
   condition: 1
@@ -23,24 +23,34 @@ MonoBehaviour:
     Day: 29
     Month: 10
     Year: 2026
-  declaredProductType: "Geleneksel Tam Yağlı Peynir"
-  listedProductType: "Geleneksel Tam Yağlı Peynir"
-  ingredientsSummary: "Pastörize süt, peynir mayası, kaya tuzu."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "Geleneksel Tam Ya\u011Fl\u0131 Peynir"
+  listedProductType: "Geleneksel Tam Ya\u011Fl\u0131 Peynir"
+  ingredientsSummary: "Past\xF6rize s\xFCt, peynir mayas\u0131, kaya tuzu."
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Akseki Tam Yağlı Tulum Peyniri numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUNSUZ — Numunede ileri derecede küflenme, renk bozulması ve doku yıkımı tespit edildi (RED).\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (Pastörize süt, peynir mayası, kaya tuzu.) ve yasal tür beyanı ('Geleneksel Tam Yağlı Peynir') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 29.10.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Akseki Tam Ya\u011Fl\u0131 Tulum Peyniri numunesinde pestisit, a\u011F\u0131r
+    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUNSUZ \u2014
+    Numunede ileri derecede k\xFCflenme, renk bozulmas\u0131 ve doku y\u0131k\u0131m\u0131
+    tespit edildi (RED).\r\n\u2022 \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI:
+    DO\u011ERULANDI \u2014 \u0130\xE7erik (Past\xF6rize s\xFCt, peynir mayas\u0131,
+    kaya tuzu.) ve yasal t\xFCr beyan\u0131 ('Geleneksel Tam Ya\u011Fl\u0131 Peynir')
+    birbiriyle uyumlu.\r\n\u2022 KAYNAK & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel
+    |  Etiket SKT: 29.10.2026 (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla
+    kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
   packagingMaterial: 2
   isPackagingContaminated: 0
-  packagingLabelText: "Cam Salamura Kavanozu — Cam Atık"
+  packagingLabelText: "Cam Salamura Kavanozu \u2014 Cam At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

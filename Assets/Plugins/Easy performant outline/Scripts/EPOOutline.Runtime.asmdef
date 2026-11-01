@@ -1,0 +1,5 @@
+{
+  "name": "EPOOutline.Runtime",
+  "references": ["Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
+  "versionDefines": [{"name":"com.unity.render-pipelines.universal","expression":"17.0.0","define":"URP_OUTLINE"}]
+}

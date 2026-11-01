@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using GameUp.App;
 using UnityEngine;
 
 namespace GameUp.Gameplay
@@ -6,31 +8,52 @@ namespace GameUp.Gameplay
     public sealed class FaxPresenter : MonoBehaviour
     {
         [SerializeField] private Light indicator;
-        [SerializeField] private Transform paper;
-        [SerializeField] private AudioSource speaker;
-        [SerializeField] private AudioClip notification;
-        private Vector3 paperRest;
-        private void Awake() => paperRest = paper.localPosition;
-        public void Print(bool emergency)
+        [SerializeField] private MeshRenderer beacon;
+        [SerializeField] private Material idleBeacon, alertBeacon;
+        [SerializeField] private Transform paper, paperStart, paperEnd;
+        private Coroutine printing;
+        private bool alarming;
+        public bool IsAlarming => alarming;
+
+        private void Awake()
         {
+            if (!indicator || !beacon || !idleBeacon || !alertBeacon || !paper || !paperStart || !paperEnd)
+                throw new InvalidOperationException("Fax requires its saved paper route and alarm references.");
             ResetPresentation();
-            speaker.pitch = emergency ? 1.3f : 0.8f; speaker.PlayOneShot(notification);
-            StartCoroutine(Animate(emergency));
         }
-        private IEnumerator Animate(bool emergency)
+
+        public void Print(bool alarm)
         {
-            for (float t = 0; t < 1.5f; t += Time.deltaTime)
-            {
-                indicator.color = emergency ? Color.red : Color.cyan;
-                indicator.intensity = Mathf.PingPong(t * 5, 1) * 3;
-                paper.localPosition = paperRest + Vector3.back * Mathf.Min(t, 1) * 0.2f;
-                yield return null;
-            }
-            indicator.intensity = 0;
+            if (printing != null) StopCoroutine(printing);
+            alarming = alarm;
+            ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Fax);
+            if (alarm) ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Alert);
+            printing = StartCoroutine(Animate());
         }
+
+        private IEnumerator Animate()
+        {
+            float elapsed = 0;
+            bool wasLit=false;
+            paper.gameObject.SetActive(true);
+            do
+            {
+                float previous=elapsed;
+                elapsed += Time.unscaledDeltaTime;
+                if(previous<1.35f)paper.SetPositionAndRotation(Vector3.Lerp(paperStart.position, paperEnd.position, Mathf.Clamp01(elapsed / 1.35f)), paperEnd.rotation);
+                bool lit = alarming && Mathf.Repeat(elapsed, .7f) < .38f;
+                if(lit!=wasLit){indicator.enabled = lit; beacon.sharedMaterial = lit ? alertBeacon : idleBeacon;wasLit=lit;}
+                yield return null;
+            } while (elapsed < 1.35f || alarming);
+            indicator.enabled = false; beacon.sharedMaterial = idleBeacon; printing = null;
+        }
+
+        public void Acknowledge() => alarming = false;
         public void ResetPresentation()
         {
-            StopAllCoroutines(); indicator.intensity = 0; paper.localPosition = paperRest; speaker.Stop();
+            if (printing != null) StopCoroutine(printing);
+            printing = null; alarming = false; indicator.enabled = false;
+            beacon.sharedMaterial = idleBeacon; paper.gameObject.SetActive(false);
         }
     }
 }

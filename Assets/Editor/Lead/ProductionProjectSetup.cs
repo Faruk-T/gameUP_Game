@@ -29,26 +29,8 @@ namespace GameUp.Editor
         }
 
         [InitializeOnLoadMethod]
-        private static void ConfigureEditorStart()
-        {
-            EditorApplication.delayCall += () =>
-            {
-                if (!EditorApplication.isPlayingOrWillChangePlaymode && !SessionState.GetBool("GameUP32_EnvModels_v7", false))
-                {
-                    SessionState.SetBool("GameUP32_EnvModels_v7", true);
-                    AuthorGame();
-                }
-                EditorSceneManager.playModeStartScene=AssetDatabase.LoadAssetAtPath<SceneAsset>(FirstPath);
-            };
-            EditorApplication.playModeStateChanged += state =>
-            {
-                if (state == PlayModeStateChange.EnteredEditMode && !SessionState.GetBool("GameUP32_EnvModels_v7", false))
-                {
-                    SessionState.SetBool("GameUP32_EnvModels_v7", true);
-                    AuthorGame();
-                }
-            };
-        }
+        private static void ConfigureEditorStart() => EditorApplication.delayCall += () =>
+            EditorSceneManager.playModeStartScene=AssetDatabase.LoadAssetAtPath<SceneAsset>(FirstPath);
 
         [MenuItem("GameUP32/Authoring/Rebuild First, Menu and Game")]
         public static void Author()
@@ -74,7 +56,6 @@ namespace GameUp.Editor
         public static void AuthorGame()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop play mode before authoring.");
-            AssetDatabase.Refresh();
             ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
             CampaignAuthoring.Create();ProductAuthoring.Create(Days());
             WorkstationAuthoring.Game();AssetDatabase.SaveAssets();ArtistModelAudit.Generate();
@@ -99,7 +80,7 @@ namespace GameUp.Editor
             Overlay("Background",loading.transform,Ink);
             Text("Title",loading.transform,"Antalya\nDenetim Masası",0,65,1000,250,80,Paper,TextAnchor.MiddleCenter,true);
             Text("LoadingLabel",loading.transform,"COP31  •  Görev hazırlanıyor…",0,-150,1000,90,30,Paper,TextAnchor.MiddleCenter);
-            Set(app,"defaults",defaults);Set(app,"loadingScreen",group); EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),FirstPath);
+            Set(app,"defaults",defaults);Set(app,"loadingScreen",group);AudioAuthoring.Configure(root.transform); EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),FirstPath);
         }
         private static void Menu()
         {
@@ -125,7 +106,7 @@ namespace GameUp.Editor
             var settings=Settings(canvas.transform);
             var help=Overlay("Help",canvas.transform,new Color(.025f,.08f,.09f,.97f));
             Text("HelpTitle",help.transform,"Denetçi rehberi",0,380,1250,100,64,Paper,TextAnchor.MiddleLeft,true);
-            Text("HelpBody",help.transform,"Her sabah gazeteyi oku; o günün kurallarıyla çalış.\n\nE / Sol tık  —  Ürünü incele. Sürükleyerek döndür; tekerlekle yaklaş.\nB  —  El kitapçığı       F  —  Laboratuvar analizi       T  —  Son rapor\nW  —  Onay: ürün piyasaya gider       R  —  Red: gıda imha edilir\n\nRedden sonra ambalajı uygun hedefe gönder: kâğıt, cam, plastik veya kontamine atık.\nBakanlık acil faksını onayladığında yeni kural yalnızca sonraki ürünlere uygulanır.\n\nEsc  —  Belgeyi kapat / Duraklat       Fare  —  Etrafa bak\nZorunlu gazete ve acil faksı, devam düğmesiyle onayla.",0,40,1250,520,30,Paper);
+            Text("HelpBody",help.transform,"Her sabah gazeteyi oku; o günün kurallarıyla çalış.\n\nE / Sol tık  —  Ürünü incele. Sürükleyerek döndür; tekerlekle yaklaş.\nB  —  El kitapçığı       F  —  Laboratuvar analizi\nW  —  Onay: ürün piyasaya gider       R  —  Red: gıda imha edilir\n\nRedden sonra ambalajı uygun hedefe gönder: kâğıt, cam, plastik veya kontamine atık.\nBakanlık acil faksını onayladığında yeni kural yalnızca sonraki ürünlere uygulanır.\n\nEsc  —  Belgeyi kapat / Duraklat       Fare  —  Etrafa bak\nZorunlu gazete ve acil faksı, devam düğmesiyle onayla.",0,40,1250,520,30,Paper);
             var helpBack=Button("Back",help.transform,"Menüye dön",0,-380,440,controller.ShowHome);help.SetActive(false);
             var about=Overlay("About",canvas.transform,new Color(.025f,.08f,.09f,.97f));
             Text("AboutTitle",about.transform,"Ortak gelecek için",0,380,1250,100,64,Paper,TextAnchor.MiddleLeft,true);

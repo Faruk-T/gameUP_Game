@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D1-01
   category: 0
-  displayName: "Antalya Günlük Tam Yağlı Süt"
+  displayName: "Antalya G\xFCnl\xFCk Tam Ya\u011Fl\u0131 S\xFCt"
   prefab: {fileID: 6647008415364348017, guid: 023294121b9cff645b4fd53941a3181b, type: 3}
   modelSource: {fileID: 5415645192462525797, guid: c221ba13811b76c43848a62378e265ae, type: 3}
   condition: 0
@@ -23,24 +23,33 @@ MonoBehaviour:
     Day: 8
     Month: 11
     Year: 2026
-  declaredProductType: "%100 Pastörize Tam Yağlı Süt"
-  listedProductType: "%100 Pastörize Tam Yağlı Süt"
-  ingredientsSummary: "%100 pastörize inek/keçi sütü (koruyucu içermez)."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "%100 Past\xF6rize Tam Ya\u011Fl\u0131 S\xFCt"
+  listedProductType: "%100 Past\xF6rize Tam Ya\u011Fl\u0131 S\xFCt"
+  ingredientsSummary: "%100 past\xF6rize inek/ke\xE7i s\xFCt\xFC (koruyucu i\xE7ermez)."
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: NEGATİF (TEMİZ) — Antalya Günlük Tam Yağlı Süt numunesinde pestisit, ağır metal veya mikroplastik kalıntısına rastlanmadı.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 pastörize inek/keçi sütü (koruyucu içermez).) ve yasal tür beyanı ('%100 Pastörize Tam Yağlı Süt') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 08.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
+    \u2014 Antalya G\xFCnl\xFCk Tam Ya\u011Fl\u0131 S\xFCt numunesinde pestisit,
+    a\u011F\u0131r metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
+    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014
+    Numunenin tazelik, renk ve doku de\u011Ferleri standartlara uygun.\r\n\u2022
+    \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI: DO\u011ERULANDI \u2014 \u0130\xE7erik
+    (%100 past\xF6rize inek/ke\xE7i s\xFCt\xFC (koruyucu i\xE7ermez).) ve yasal t\xFCr
+    beyan\u0131 ('%100 Past\xF6rize Tam Ya\u011Fl\u0131 S\xFCt') birbiriyle uyumlu.\r\n\u2022
+    KAYNAK & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 08.11.2026
+    (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
   packagingMaterial: 1
   isPackagingContaminated: 0
-  packagingLabelText: "Tetrapak Karton Süt Kutusu — Kâğıt Atık"
+  packagingLabelText: "Tetrapak Karton S\xFCt Kutusu \u2014 K\xE2\u011F\u0131t At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

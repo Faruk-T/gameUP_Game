@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameUP.Interaction
 {
-    public enum WorkstationAction { Product, Analyzer, Approve, Reject, Paper, Glass, Plastic, Contaminated, Handbook, Report }
+    public enum WorkstationAction { Product, Analyzer, Approve, Reject, Paper, Glass, Plastic, Contaminated, Handbook }
 
     public sealed class WorkstationTarget : MonoBehaviour
     {
@@ -19,7 +19,6 @@ namespace GameUP.Interaction
             WorkstationAction.Plastic => "Sol tık / Plastik ambalaj",
             WorkstationAction.Contaminated => "Sol tık / Kontamine atık",
             WorkstationAction.Handbook => "B / El kitapçığı",
-            WorkstationAction.Report => "T / Son analiz raporu",
             _ => ""
         };
     }

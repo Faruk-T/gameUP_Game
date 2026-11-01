@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Contracts.ProductDefinition
   definitionId: D2-10
   category: 2
-  displayName: "Elmalı Kasap Köftelik Kıyma"
+  displayName: "Elmal\u0131 Kasap K\xF6ftelik K\u0131yma"
   prefab: {fileID: 603643611136969614, guid: ed7c9d8ff029e4648be5a4e3e0a22571, type: 3}
   modelSource: {fileID: 3322518912612625448, guid: e3871a6f0c9614f4ebbd0492904ca0c2, type: 3}
   condition: 0
@@ -23,24 +23,35 @@ MonoBehaviour:
     Day: 8
     Month: 11
     Year: 2026
-  declaredProductType: "%100 Taze Karkas Et Ürünleri"
-  listedProductType: "%100 Taze Karkas Et Ürünleri"
-  ingredientsSummary: "%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez)."
-  customFrontLabelNote: 
-  customBackLabelNote: 
+  declaredProductType: "%100 Taze Karkas Et \xDCr\xFCnleri"
+  listedProductType: "%100 Taze Karkas Et \xDCr\xFCnleri"
+  ingredientsSummary: "%100 so\u011Fuk zincir dana/kuzu eti (katk\u0131 maddesi i\xE7ermez)."
+  customFrontLabelNote:
+  customBackLabelNote:
   sourceRegion: 3
   habitat: 0
   isPolluted: 1
-  analysisFindingDetail: "• ÇEVRESEL KALINTI TESTİ: POZİTİF (TEHLİKELİ) — Elmalı Kasap Köftelik Kıyma numunesinde endüstriyel mikroplastik ve kimyasal dioksin bulaşması saptandı! Ürün KESİN RED edilmeli ve ambalajı KIRMIZI (Kontamine Atık) kutusuna atılmalıdır.\n• MİKROBİYOLOJİK / FİZİKSEL ANALİZ: UYGUN — Numunenin tazelik, renk ve doku değerleri standartlara uygun.\n• İÇERİK & TÜR DOĞRULAMASI: DOĞRULANDI — İçerik (%100 soğuk zincir dana/kuzu eti (katkı maddesi içermez).) ve yasal tür beyanı ('%100 Taze Karkas Et Ürünleri') birbiriyle uyumlu.\n• KAYNAK & SKT KAYDI: Kaynak Bölgesi: Antalya Yerel  |  Etiket SKT: 08.11.2026 (Vardiya tarihi ve yürürlükteki faks duyurularıyla karşılaştırın)."
+  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: POZ\u0130T\u0130F
+    (TEHL\u0130KEL\u0130) \u2014 Elmal\u0131 Kasap K\xF6ftelik K\u0131yma numunesinde
+    end\xFCstriyel mikroplastik ve kimyasal dioksin bula\u015Fmas\u0131 saptand\u0131!
+    \xDCr\xFCn KES\u0130N RED edilmeli ve ambalaj\u0131 KIRMIZI (Kontamine At\u0131k)
+    kutusuna at\u0131lmal\u0131d\u0131r.\r\n\u2022 M\u0130KROB\u0130YOLOJ\u0130K
+    / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUN \u2014 Numunenin tazelik, renk ve doku
+    de\u011Ferleri standartlara uygun.\r\n\u2022 \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI:
+    DO\u011ERULANDI \u2014 \u0130\xE7erik (%100 so\u011Fuk zincir dana/kuzu eti (katk\u0131
+    maddesi i\xE7ermez).) ve yasal t\xFCr beyan\u0131 ('%100 Taze Karkas Et \xDCr\xFCnleri')
+    birbiriyle uyumlu.\r\n\u2022 KAYNAK & SKT KAYDI: Kaynak B\xF6lgesi: Antalya Yerel
+    |  Etiket SKT: 08.11.2026 (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki faks duyurular\u0131yla
+    kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
   packagingMaterial: 3
   isPackagingContaminated: 1
-  packagingLabelText: "Streçli Plastik Et Tabağı — Plastik Atık"
+  packagingLabelText: "Stre\xE7li Plastik Et Taba\u011F\u0131 \u2014 Plastik At\u0131k"
   hasWeightData: 0
   declaredWeightGrams: 250
   actualWeightGrams: 250
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName: 
+  trackedIngredientName:
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

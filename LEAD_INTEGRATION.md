@@ -1,12 +1,18 @@
 # Dördüncü kişi — güncel entegrasyon
 
-Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-category-progression`. Ayrıntılı gün/ürün/haber planı: [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md).
+Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-coastal-cinematic`. Ayrıntılı gün/ürün/haber planı: [ACTIVE_CAMPAIGN.md](Docs/ACTIVE_CAMPAIGN.md). [Kıyı, tesis ve açılış sinematiği](Docs/COASTAL_CINEMATIC.md).
 
 ## Çalıştırma
 
 `Assets/Scenes/First.unity` açılır ve Play'e basılır. Yalnız **First → Menu → Game** build'e alınır. First uygulama, ayar ve EventSystem sahibidir; Menu/Game doğrudan başlatılmaz.
 
-Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+Yeni görevin başında 90 saniyelik atlanamayan açılış vardır: siyah fonda söz → carettaların kumdan denize geçip kavisli yüzmesi → ortalanmış COP31 logosunun yükselmesi → 24 renkli büyük havai fişek → yaklaşınca animasyonla açılan çift kapı → gıda güvenliği afişlerinin olduğu koridor → çalışma masası. Giriş boyunca kamera ve oynanış kilitlidir; gazete bitişten sonra açılır. Yeniden başlatma açılışı tekrarlamaz. Arka duvarda çerçeveli Atatürk/Cumhurbaşkanı portreleri, arka köşelerde ayaklı Türkiye/BM bayrakları bulunur.
+
+Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+
+Masadaki Bakanlık faksı hata, analiz, acil kural ve vardiya raporlarını yazdırır. Hatalı işlemde siren yanar; aynı gün üçüncü yanlışta vardiya kaybedilir. Sayaç her sabah sıfırlanır. T / eski raporu yeniden açma eylemi bulunmaz. Normal F analizi korunur. [Çalışma alanı, yeni kutular, ürün etiketleri ve AudioManager](Docs/WORKSTATION_UPGRADE.md).
+
+Son main'in gerekli kitapçık, belge düzeni ve servis düzeltmeleri mevcut sahne korunarak aktarıldı. Kitapçık artık günlük gazeteyi, etkin kuralları ve ayrıştırma rehberini içerir. [Alınan değişiklikler ve hariç tutulan T rapor akışı](Docs/MAIN_SYNC.md).
 
 ## Kampanya
 
@@ -34,7 +40,10 @@ Esmanur'un **31 mevcut modeli**, 31 denetim ürünü olarak kullanılır. Ürün
 | WorkstationInteractionController | Tek oynanış girdi sahibi |
 | NewspaperView / DocumentPresenter / ResultsPresenter | Kayıtlı UI sunumu |
 | FoodCondition shader | Aynı kaynak mesh üzerinde bozulma deseni ve şişme |
-| PauseMenu / SettingsPanel / FaxPresenter | Duraklatma, ayarlar, faks sunumu |
+| PauseMenu / SettingsPanel / DocumentPresenter | Duraklatma, ayarlar, belge ve acil bildirim sunumu |
+| IntroCinematic / OpeningTiming | Kayıtlı Timeline'ın tek saati, aktör/altyazı örnekleme ve kamera/HUD devri |
+| ShorelineTurtle | Kum, kavisli suya giriş, dönüşlü ve hafif dalışlı yüzme |
+| WorkstationDocuments | Belge olayından fiziksel gazete ve açık/kapalı kitap görünürlüğü |
 
 Ürün prefabları, sağlam/bozuk malzemeler, UI ve bütün referanslar Editor'de kaydedilir. Oyuncuda Instantiate, Renderer.material, otomatik sahne/asset üretimi veya yedek ürün modeli yoktur. Katalog bir kez indekslenir; eksik yapılandırma açık hata verir.
 
@@ -48,6 +57,10 @@ GameUP32 menüsü:
 
 - **Render campaign press photographs:** mevcut modellerden üç haber fotoğrafını render eder; grafik aygıtı gerekir.
 - **Rebuild Game room and newspaper:** kampanya, varyantlar, ürün prefabları ve yalnız Game sahnesini yeniler.
+- **Rebuild coastal facility and opening:** yeni assetlerin URP ayarlarıyla kıyı, tesis ve Timeline açılışını Game sahnesine kaydeder.
+- **Refresh signs, portraits and artist props:** mevcut sahnenin yerleşimini korur; Director/Out of Order tabelaları ve çerçeveyi dolduran portreleri günceller, kullanım dışı cihazı temizler.
+- **Art / Refresh art frames and Esmanur game kit:** mevcut afiş/portreleri ahşap paket çerçevesine geçirir ve binanın arkasındaki 52 parçalık EditorOnly sergiyi hazırlar.
+- **Art / Focus Esmanur game kit:** Game sahnesinde, Scene görünümünü tüm sanatçı modellerine odaklar. [Sergi rehberi](Docs/ARTIST_GAME_KIT.md).
 - **Rebuild First, Menu and Game:** üç sahneyi yeniden yazar.
 - **Esmanur model inventory:** kaynak ve aktif ürün raporunu yeniler.
 - **Build / Windows:** Builds/Windows/AntalyaDenetimMasasi.exe üretir.
@@ -55,12 +68,12 @@ GameUP32 menüsü:
 Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne düzenlediysen yeniden üretmeden önce değişikliklerini koru. Fotoğraflar repoda kayıtlıdır; normal açılışta render gerekmez.
 
 ```powershell
-.\Tools\Lead\Verify.ps1 -UnityEditor 'D:\Programs\UnityInstalls\6000.3.13f1\Editor\Unity.exe' -Visuals -Build
+.\Tools\Lead\Verify.ps1 -UnityEditor 'D:\Programs\UnityInstalls\6000.3.13f1\Editor\Unity.exe' -Visuals
 ```
 
 ## Doğrulama ve kaynaklar
 
-**37/37 test:** 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir.
+**59/59 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 20/20 kaynak çevre parçası (16 aktif, dört eski kutu yenilendi), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay ve tümüne red senaryoları günlük üçüncü yanlışta GameOver ile sonlanır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
 
 [Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 

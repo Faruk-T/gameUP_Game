@@ -1,0 +1,5 @@
+{
+  "name": "EPOOutline.Demo.Editor",
+  "references": ["EPOOutline.Runtime", "Unity.ugui"],
+  "includePlatforms": ["Editor"]
+}
