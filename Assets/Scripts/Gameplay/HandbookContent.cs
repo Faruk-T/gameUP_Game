@@ -47,7 +47,7 @@ namespace GameUp.Gameplay
 
             Heading(text, "4. KONTROLLER VE PUANLAMA");
             text.AppendLine("• <b>E veya ürüne sol tık:</b> Yakından incele / masaya bırak.");
-            text.AppendLine("• <b>İncelemede sol tık + sürükle:</b> Döndür. <b>Fare tekerleği:</b> Yaklaş / uzaklaş.");
+            text.AppendLine("• <b>İncelemede fare hareketi:</b> Yalnız ürünü döndür. <b>Fare tekerleği:</b> Yaklaş / uzaklaş. <b>E / sağ tık:</b> Bırak.");
             text.AppendLine("• <b>F veya analiz cihazı:</b> Gizli kirlilik analizi al; tamamlanan rapor otomatik açılır.");
             text.AppendLine("• <b>Bakanlık faksı:</b> Hatalı karar ve hatalı ayrıştırma ayrı yanlış işlemlerdir. Aynı gün üçüncü yanlış işlemde vardiya kaybedilir. Sayaç her sabah sıfırlanır; hata bildirimini onaylamadan yeni ürün gelmez.");
             text.AppendLine("• <b>İnceleme:</b> Kamera sabit kalır; sadece ürün döner ve yakınlaşır. Tüm bilgiler ürünün ön/arka etiketindedir.");

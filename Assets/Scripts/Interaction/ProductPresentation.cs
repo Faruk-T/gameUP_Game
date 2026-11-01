@@ -23,6 +23,7 @@ namespace GameUP.Interaction
     {
         [SerializeField] private ProductVisual[] visuals;
         [SerializeField] private Transform arrivalPoint, deskPoint, approvedExitPoint, foodDisposalPoint;
+        [SerializeField] private Transform[] intakePath;
         [SerializeField] private GameObject packagingVisual;
         [SerializeField] private Transform[] wastePoints;
         [FormerlySerializedAs("moveDuration"), SerializeField, Min(0.001f)] private float secondsPerMetre = 0.22f;
@@ -36,7 +37,7 @@ namespace GameUP.Interaction
         private void Awake()
         {
             if (visuals == null || visuals.Length == 0 || !arrivalPoint || !deskPoint || !approvedExitPoint ||
-                !foodDisposalPoint || !packagingVisual || wastePoints == null || wastePoints.Length != 4)
+                !foodDisposalPoint || !packagingVisual || intakePath == null || intakePath.Length < 2 || wastePoints == null || wastePoints.Length != 4)
                 throw new InvalidOperationException("ProductPresentation requires its authored pool and workstation points.");
             foreach (var item in visuals)
             {
@@ -45,6 +46,7 @@ namespace GameUP.Interaction
                 item.Visual.SetActive(false);
             }
             foreach (var target in wastePoints) if (!target) throw new InvalidOperationException("Missing waste point.");
+            foreach (var point in intakePath) if (!point) throw new InvalidOperationException("Missing authored conveyor waypoint.");
             packagingVisual.SetActive(false);
         }
 
@@ -55,7 +57,7 @@ namespace GameUP.Interaction
             CurrentSession = session;
             active.Visual.transform.SetPositionAndRotation(arrivalPoint.position, arrivalPoint.rotation);
             active.Visual.SetActive(true);
-            movement = StartCoroutine(Move(active.Visual.transform, deskPoint, () => arrived(session.Key)));
+            movement = StartCoroutine(Arrive(session, arrived));
         }
 
         public void Route(ProductSession session, PlayerDecision decision, Action<ProductKey> finished)
@@ -80,7 +82,17 @@ namespace GameUP.Interaction
             { packagingVisual.SetActive(false); finished(session.Key, waste); }));
         }
 
+        private IEnumerator Arrive(ProductSession session, Action<ProductKey> arrived)
+        {
+            foreach (var point in intakePath) yield return Travel(active.Visual.transform, point);
+            movement = null; arrived(session.Key);
+        }
         private IEnumerator Move(Transform item, Transform destination, Action finished)
+        {
+            yield return Travel(item, destination);
+            movement = null; finished();
+        }
+        private IEnumerator Travel(Transform item, Transform destination)
         {
             Vector3 start = item.position; Quaternion rotation = item.rotation;
             float duration=Mathf.Max(.05f,Vector3.Distance(start,destination.position)*secondsPerMetre);
@@ -91,8 +103,6 @@ namespace GameUP.Interaction
                 yield return null;
             }
             item.SetPositionAndRotation(destination.position, destination.rotation);
-            movement = null;
-            finished();
         }
         private void RequireSession(ProductSession session)
         {

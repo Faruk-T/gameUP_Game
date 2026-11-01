@@ -37,14 +37,21 @@ namespace GameUp.Production.Tests
             {
                 var binder=product.Prefab.GetComponent<GameUP.Rules.ProductWorldLabelBinder>();
                 Assert.That(binder.ProductDefinition,Is.SameAs(product));Assert.That(product.Prefab.GetComponentsInChildren<Canvas>(true),Is.Empty);
-                foreach(var surface in new[]{binder.FrontLabelSurface,binder.BackLabelSurface})
+                Assert.That(binder.PrintedSurfaces,Is.EquivalentTo(product.Prefab.GetComponentsInChildren<MeshRenderer>(true)));
+                Assert.That(product.Prefab.transform.Find("Front"),Is.Null);
+                Assert.That(product.Prefab.transform.Find("Back"),Is.Null);
+                var bounds=binder.LocalBounds;
+                Assert.That(binder.InspectionMultiplier*Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z),Is.EqualTo(.86f).Within(.001f));
+                foreach(var surface in binder.PrintedSurfaces)
                 {
                     Assert.That(surface,Is.Not.Null,product.DefinitionId);
-                    Assert.That(AssetDatabase.GetAssetPath(surface.sharedMaterial.mainTexture),Does.StartWith("Assets/Art/ProductLabels/"+product.DefinitionId+"_"));
-                    Assert.That(surface.sharedMaterial.mainTexture.width,Is.EqualTo(1024));
+                    foreach(var material in surface.sharedMaterials)
+                    {
+                        Assert.That(AssetDatabase.GetAssetPath(material.mainTexture),Does.StartWith("Assets/Art/ProductPrints/"+product.DefinitionId+"_"));
+                        Assert.That(material.mainTexture.width,Is.EqualTo(2048));
+                    }
                     Assert.That(surface.GetComponent<MeshFilter>().sharedMesh.triangles.Length,Is.GreaterThan(30));
-                    var size=surface.GetComponent<MeshFilter>().sharedMesh.bounds.size;
-                    Assert.That(Mathf.Min(size.x,Mathf.Min(size.y,size.z)),Is.LessThan(.00001f),"Saved print surfaces must remain planar so text is not occluded: "+product.DefinitionId);
+                    Assert.That(AssetDatabase.GetAssetPath(surface.GetComponent<MeshFilter>().sharedMesh),Does.StartWith("Assets/Art/ProductPrints/"));
                 }
             }
         }
@@ -59,9 +66,14 @@ namespace GameUp.Production.Tests
                 var presentation=roots.SelectMany(r=>r.GetComponentsInChildren<ProductPresentation>(true)).Single();var so=new SerializedObject(presentation);
                 var arrival=(Transform)so.FindProperty("arrivalPoint").objectReferenceValue;var checkpoint=(Transform)so.FindProperty("deskPoint").objectReferenceValue;
                 var exit=(Transform)so.FindProperty("approvedExitPoint").objectReferenceValue;
-                Assert.That(arrival.position.z,Is.GreaterThan(12));Assert.That(exit.position.z,Is.LessThan(-10));
-                Assert.That(Vector3.Distance(arrival.position,exit.position),Is.GreaterThanOrEqualTo(30));
-                Assert.That(checkpoint.position.x,Is.GreaterThan(3));Assert.That(checkpoint.position.x,Is.EqualTo(arrival.position.x).Within(.001));
+                var path=so.FindProperty("intakePath");Assert.That(path.arraySize,Is.EqualTo(2));
+                var corner=(Transform)path.GetArrayElementAtIndex(0).objectReferenceValue;
+                var player=roots.Single(r=>r.name=="PlayerView").transform;
+                Assert.That(arrival.position.x,Is.GreaterThan(12));Assert.That(exit.position.z,Is.LessThan(-10));
+                Assert.That(Vector3.Distance(arrival.position,corner.position)+Vector3.Distance(corner.position,exit.position),Is.GreaterThanOrEqualTo(30));
+                Assert.That(checkpoint.position.x-player.position.x,Is.InRange(1.8f,2.3f));
+                Assert.That(checkpoint.position.z,Is.EqualTo(player.position.z).Within(.01));
+                Assert.That(arrival.position.z,Is.EqualTo(3.55f).Within(.01));
                 var desk=office.transform.Find("Prop_desk").GetComponentsInChildren<Renderer>();var bounds=desk[0].bounds;
                 foreach(var renderer in desk.Skip(1))bounds.Encapsulate(renderer.bounds);
                 Assert.That(bounds.max.x,Is.LessThan(checkpoint.position.x-.65f),"Conveyor must not overlap the desk.");

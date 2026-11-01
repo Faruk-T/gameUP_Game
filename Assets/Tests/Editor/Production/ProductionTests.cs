@@ -40,14 +40,23 @@ namespace GameUp.Production.Tests
                 {
                     foreach(var t in scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)))
                     {
+                        var text=t.GetComponent<Text>();
+                        if(text)Assert.That(AssetDatabase.GetAssetPath(text.font),Is.EqualTo("Assets/Fonts/PatrickHand-Regular.ttf"),"All visible scene text uses the authored handwriting font: "+t.name);
                         Assert.That(GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject),Is.Zero,t.name);
                         foreach(var component in t.GetComponents<MonoBehaviour>())
                         {
                             if(!component || !component.GetType().Assembly.GetName().Name.StartsWith("GameUp."))continue;
                             var so=new SerializedObject(component);var p=so.GetIterator();
-                            while(p.NextVisible(true))if(p.propertyType==SerializedPropertyType.ObjectReference)
+                            while(p.NextVisible(true))if(p.propertyType==SerializedPropertyType.ObjectReference&&!p.propertyPath.Contains(".m_Arguments."))
                                 Assert.That(p.objectReferenceValue,Is.Not.Null,component.GetType().Name+"."+p.propertyPath);
                         }
+                    }
+                    if(path==ProductionProjectSetup.MenuPath)
+                    {
+                        var dependencies=AssetDatabase.GetDependencies(path,true);
+                        Assert.That(dependencies,Does.Contain("Assets/Prefabs/Environment/MenuFacility.prefab"));
+                        Assert.That(dependencies,Does.Not.Contain("Assets/Art/Menu/AntalyaHarbour.png"));
+                        Assert.That(scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Camera>(true)).Count(),Is.EqualTo(1));
                     }
                     if(path==ProductionProjectSetup.GamePath)
                     {
@@ -282,17 +291,21 @@ namespace GameUp.Production.Tests
             session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);
             Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Null);
             Canvas.ForceUpdateCanvases();
-            var handbookScroll=GameObject.Find("GameCanvas/DocumentOverlay/DocumentPage/DocumentScroll").GetComponent<ScrollRect>();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(handbookScroll.content);
-            var handbookBody=handbookScroll.content.GetComponentInChildren<Text>();
-            Assert.That(handbookBody.supportRichText,Is.True);
-            Assert.That(handbookScroll.content.rect.height,Is.GreaterThan(handbookScroll.viewport.rect.height),"The full manual must scroll.");
-            Assert.That(handbookBody.rectTransform.rect.height,Is.GreaterThanOrEqualTo(handbookBody.preferredHeight-1),"Manual text must fit its content rect.");
-            var handbookTitle=GameObject.Find("GameCanvas/DocumentOverlay/DocumentPage/DocumentTitle").GetComponent<Text>();
-            Assert.That(handbookTitle.preferredHeight,Is.LessThanOrEqualTo(handbookTitle.rectTransform.rect.height+1));
+            var handbook=Object.FindFirstObjectByType<GuideBookView>();
+            yield return null;yield return null;
+            Assert.That(handbook.CurrentDay,Is.EqualTo(session.Flow.DayIndex+1));
+            Assert.That(string.Join("\n",handbook.Pages),Does.Contain(session.Flow.Day.Date.ToString("dd.MM.yyyy")));
             Capture("handbook",session.gameObject.scene);
-            handbookScroll.verticalNormalizedPosition=0;Canvas.ForceUpdateCanvases();
-            Capture("handbook-bottom",session.gameObject.scene);document.Confirm();
+            handbook.Book.DragRightPageToPoint(handbook.Book.EndBottomRight);
+            handbook.Book.UpdateBookRTLToPoint(handbook.Book.EndBottomLeft);
+            handbook.Book.ReleasePage();yield return new WaitForSecondsRealtime(.3f);
+            Assert.That(handbook.Book.currentPage,Is.EqualTo(2));
+            Capture("handbook-bottom",session.gameObject.scene);
+            handbook.Book.DragRightPageToPoint(handbook.Book.EndBottomRight);
+            document.Confirm();yield return null;
+            session.OpenHandbook();yield return null;yield return null;
+            Assert.That(handbook.Book.currentPage,Is.Zero,"Reopening after a drag must reset the book.");
+            document.Confirm();
             Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Null);
             session.Analyze();Assert.That(session.Flow.Phase,Is.EqualTo(ProductPhase.Analyzing));
             pause.Open();var position=product.ActiveProduct.transform.position;
@@ -334,10 +347,12 @@ namespace GameUp.Production.Tests
             {
                 var position=camera.transform.position;var rotation=camera.transform.rotation;
                 input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);
+                var initialProductRotation=product.ActiveProduct.transform.rotation;
                 Assert.That(session.WorldInputAllowed,Is.True);Assert.That(input.enabled&&input.gameObject.activeInHierarchy,Is.True);
                 InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
                 InputSystem.QueueDeltaStateEvent(mouse.delta,new Vector2(70,-40));InputSystem.Update();mouse.MakeCurrent();input.SendMessage("Update");yield return null;
                 Assert.That(camera.transform.position,Is.EqualTo(position));Assert.That(Quaternion.Angle(camera.transform.rotation,rotation),Is.LessThan(.001));
+                Assert.That(Quaternion.Angle(product.ActiveProduct.transform.rotation,initialProductRotation),Is.GreaterThan(1),"Locked-cursor mouse delta must rotate the product without a drag-position threshold.");
                 var held=product.ActiveProduct.transform.rotation;
                 input.RotateInspection(new Vector2(25,-12));yield return null;
                 Assert.That(Quaternion.Angle(product.ActiveProduct.transform.rotation,held),Is.GreaterThan(.5f));
@@ -349,6 +364,7 @@ namespace GameUp.Production.Tests
         {
             var invalid=new HashSet<string>{"D1-02","D1-03","D1-06","D1-07","D2-02","D2-04","D2-06","D2-08","D2-10","D3-03","D3-04","D3-06","D3-08","D3-10","D3-12"};
             var targets=Object.FindObjectsByType<WorkstationTarget>(FindObjectsSortMode.None).Where(t=>t.Action!=WorkstationAction.Product).ToDictionary(t=>t.Action);
+            var checkedGuides=new HashSet<string>();
             float deadline=Time.realtimeSinceStartup+90;
             while(session.Flow.State!=FlowState.GameSummary&&session.Flow.State!=FlowState.GameOver)
             {
@@ -376,6 +392,16 @@ namespace GameUp.Production.Tests
                 else if(session.Flow.CanDecide)
                 {
                     string id=session.Flow.Current.Key.ProductId;
+                    if(scenario=="correct"&&(id=="D2-01"||id=="D3-01"||id=="D3-04")&&checkedGuides.Add(id))
+                    {
+                        session.OpenHandbook();yield return null;yield return null;
+                        var guide=Object.FindFirstObjectByType<GuideBookView>();
+                        Assert.That(guide.CurrentDay,Is.EqualTo(session.Flow.DayIndex+1));
+                        string contents=string.Join("\n",guide.Pages);
+                        foreach(var rule in session.Flow.CurrentRules)Assert.That(contents,Does.Contain(rule.Text));
+                        if(id=="D3-04")Assert.That(contents,Does.Contain("AKTİF BAKANLIK ACİL FAKSI"));
+                        Capture("guide-"+id,session.gameObject.scene);session.HandleEscape();continue;
+                    }
                     if(id=="D3-04")Assert.That(session.Flow.Current.Rules.Version,Is.EqualTo(2));
                     if(session.Flow.DayIndex>=1&&session.Flow.LastReport==null)
                     {input.Interact(targets[WorkstationAction.Analyzer]);yield return null;continue;}

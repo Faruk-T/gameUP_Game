@@ -1,0 +1,4 @@
+{
+  "name": "GameUp.BookUI",
+  "references": ["Unity.ugui", "Unity.InputSystem"]
+}

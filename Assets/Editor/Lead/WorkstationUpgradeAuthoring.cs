@@ -47,7 +47,7 @@ namespace GameUp.Editor
             Debug.Log("WORKSTATION_UPGRADE_OK / physical ministry fax / daily 3 mistakes / right-hand 32m conveyor / 31 baked labels / authored AudioManager");
         }
         public static void ApplyAndReview(){Apply();WorkstationReview.Capture();}
-        public static void RefreshLabelSurfacesAndReview(){ProductLabelAuthoring.RefreshCampaign(false,false);WorkstationReview.Capture();}
+        public static void RefreshLabelSurfacesAndReview(){ProductLabelAuthoring.RefreshCampaign();WorkstationReview.Capture();}
         public static void FinalizeArtAndReview()
         {
             ProductLabelAuthoring.RefreshCampaign();

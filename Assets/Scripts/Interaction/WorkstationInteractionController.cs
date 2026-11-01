@@ -18,11 +18,11 @@ namespace GameUP.Interaction
         [SerializeField] private float rayDistance = 5, pitchLimit = 55, maxInspectionZoom = 0.25f;
         private WorkstationTarget hovered;
         private UserSettings settings;
-        private bool inspecting, ignoreMouseDelta = true, dragging, pressedWhileInspecting;
+        private bool inspecting, ignoreMouseDelta = true;
         private float yaw, pitch, zoom;
-        private Vector2 pressPosition;
-        private Vector3 originalPosition;
+        private Vector3 originalPosition, originalScale, heldCenter;
         private Quaternion originalRotation;
+        private Transform held;
         public bool IsInspecting => inspecting;
 
         private void Awake()
@@ -48,7 +48,7 @@ namespace GameUP.Interaction
         private void OnSessionChanged()
         {
             ignoreMouseDelta = true;
-            if (inspecting && presentation.CurrentSession == null) inspecting = false;
+            if (inspecting && presentation.CurrentSession == null) EndInspection();
             if (!session.WorldInputAllowed) { hovered = null; session.SetTargetHint(""); }
         }
         private void Update()
@@ -56,6 +56,8 @@ namespace GameUP.Interaction
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) { session.HandleEscape(); return; }
+            if (keyboard != null && keyboard.bKey.wasPressedThisFrame && session.Documents.Current?.Kind == DocumentKind.Handbook)
+            { session.HandleEscape(); return; }
             if (!session.WorldInputAllowed || mouse == null) return;
             if (keyboard != null)
             {
@@ -84,24 +86,11 @@ namespace GameUP.Interaction
                 hovered = target;
                 session.SetTargetHint(inspecting ? InspectionHint : target ? target.Hint : "");
             }
-            if (mouse.leftButton.wasPressedThisFrame)
-            {
-                pressedWhileInspecting = inspecting;
-                pressPosition = mouse.position.ReadValue(); dragging = false;
-                if (!inspecting && hovered) Interact(hovered);
-            }
-            if (inspecting && pressedWhileInspecting && mouse.leftButton.isPressed)
-            {
-                dragging |= Vector2.Distance(pressPosition, mouse.position.ReadValue()) > 4;
-                if (dragging)
-                {
-                    RotateInspection(delta*.35f);
-                }
-            }
-            if (inspecting && pressedWhileInspecting && mouse.leftButton.wasReleasedThisFrame && !dragging) EndInspection();
+            if (mouse.leftButton.wasPressedThisFrame && !inspecting && hovered) Interact(hovered);
             if (inspecting)
             {
                 if(mouse.rightButton.wasPressedThisFrame){EndInspection();return;}
+                RotateInspection(delta * .45f);
                 if(keyboard!=null)
                 {
                     float keyYaw=(keyboard.rightArrowKey.isPressed?1:0)-(keyboard.leftArrowKey.isPressed?1:0);
@@ -109,7 +98,7 @@ namespace GameUP.Interaction
                     RotateInspection(new Vector2(keyYaw,keyPitch)*(120*Time.deltaTime));
                 }
                 zoom = Mathf.Clamp(zoom + mouse.scroll.ReadValue().y * 0.001f, -maxInspectionZoom, maxInspectionZoom);
-                presentation.ActiveProduct.transform.position = inspectionAnchor.position - playerCamera.transform.forward * zoom;
+                PositionHeldProduct();
             }
         }
         public void Interact(WorkstationTarget target)
@@ -138,10 +127,14 @@ namespace GameUP.Interaction
         {
             if (!session.Flow.CanDecide || !presentation.ActiveProduct) return;
             if (inspecting) { EndInspection(); return; }
-            inspecting = true; zoom = 0; dragging = false; pressedWhileInspecting = false;
-            originalPosition = presentation.ActiveProduct.transform.position;
-            originalRotation = presentation.ActiveProduct.transform.rotation;
-            presentation.ActiveProduct.transform.position = inspectionAnchor.position;
+            inspecting = true; zoom = 0; ignoreMouseDelta = true;
+            held = presentation.ActiveProduct.transform;
+            originalPosition = held.position; originalRotation = held.rotation; originalScale = held.localScale;
+            var label = held.GetComponent<GameUP.Rules.ProductWorldLabelBinder>();
+            heldCenter = label.LocalBounds.center;
+            held.localScale = originalScale * label.InspectionMultiplier;
+            held.rotation = playerCamera.transform.rotation * label.InspectionRotation;
+            PositionHeldProduct();
             ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.ProductPickup);
             session.NotifyProductInspected(session.Flow.Current.Key);
             session.SetTargetHint(InspectionHint);
@@ -149,18 +142,20 @@ namespace GameUP.Interaction
         public void RotateInspection(Vector2 degrees)
         {
             if(!inspecting)return;
-            var held=presentation.ActiveProduct.transform;
             held.Rotate(playerCamera.transform.up,-degrees.x,Space.World);
             held.Rotate(playerCamera.transform.right,degrees.y,Space.World);
+            PositionHeldProduct();
         }
+        private void PositionHeldProduct() => held.position = inspectionAnchor.position - playerCamera.transform.forward * zoom - held.TransformVector(heldCenter);
         public void EndInspection()
         {
             if (!inspecting) return;
-            inspecting = false; pressedWhileInspecting = false; zoom = 0; ignoreMouseDelta = true;
-            if (presentation.ActiveProduct) presentation.ActiveProduct.transform.SetPositionAndRotation(originalPosition, originalRotation);
+            inspecting = false; zoom = 0; ignoreMouseDelta = true;
+            if (held) { held.localScale = originalScale; held.SetPositionAndRotation(originalPosition, originalRotation); }
+            held = null;
             session.SetTargetHint("");
         }
-        private const string InspectionHint="Sürükle / yön tuşları: Döndür  •  Tekerlek: Yakınlaş  •  E / Sağ tık: Bırak";
+        private const string InspectionHint="Fare / yön tuşları: Ürünü döndür  •  Tekerlek: Yakınlaş  •  E / Sağ tık: Bırak";
         private void OnApplicationFocus(bool focus) { if (focus) ignoreMouseDelta = true; }
     }
 }

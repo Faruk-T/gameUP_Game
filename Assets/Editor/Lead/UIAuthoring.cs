@@ -14,8 +14,8 @@ namespace GameUp.Editor
         internal static readonly Color Ink = new Color(.06f, .17f, .19f);
         internal static readonly Color Paper = new Color(.96f, .93f, .85f);
         internal static readonly Color Accent = new Color(.15f, .63f, .57f);
-        internal static Font Body => Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        internal static Font Title => AssetDatabase.LoadAssetAtPath<Font>("Assets/Fonts/Kurale-Regular.ttf");
+        internal static Font Body => AssetDatabase.LoadAssetAtPath<Font>("Assets/Fonts/PatrickHand-Regular.ttf");
+        internal static Font Title => Body;
 
         internal static void Set(UnityEngine.Object owner, string field, UnityEngine.Object value)
         {

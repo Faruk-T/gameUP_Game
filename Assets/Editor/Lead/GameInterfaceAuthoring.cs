@@ -43,7 +43,7 @@ namespace GameUp.Editor
             Set(hud,"status",Text("Status",canvas.transform,"",-120,492,1600,70,28,Paper,TextAnchor.MiddleLeft));
             Text("PauseKey",canvas.transform,"ESC / Menü",810,492,250,70,24,Paper,TextAnchor.MiddleRight);
             Text("Reticle",canvas.transform,"·",0,0,30,50,38,Paper,TextAnchor.MiddleCenter);
-            Set(hud,"targetHint",Text("Target",canvas.transform,"",0,-70,1000,70,28,Paper,TextAnchor.MiddleCenter));
+            Set(hud,"targetHint",Text("Target",canvas.transform,"",0,-350,1600,60,24,Paper,TextAnchor.MiddleCenter));
             Image("InstructionBar",canvas.transform,0,-462,1920,156,new Color(.025f,.08f,.09f,.92f));
             Set(hud,"tutorial",Text("Tutorial",canvas.transform,"",0,-418,1760,60,27,Paper,TextAnchor.MiddleLeft));
             Text("Controls",canvas.transform,"E / İncele     B / Kitapçık     F / Analiz     W / Onay     R / Red     Sol tık / Etkileşim",0,-494,1760,55,24,new Color(.65f,.81f,.77f),TextAnchor.MiddleLeft);
@@ -72,14 +72,8 @@ namespace GameUp.Editor
             Set(results,"menuButton",Button("Menu",resultOverlay.transform,"Ana menü",270,-350,500,session.ReturnToMenu));resultOverlay.SetActive(false);
 
             var pause=canvas.gameObject.AddComponent<PauseMenu>();Set(session,"pause",pause);
-            var pauseOverlay=Overlay("PauseOverlay",canvas.transform,new Color(.025f,.08f,.09f,.96f));Set(pause,"overlay",pauseOverlay);
-            var home=Rect("PauseHome",pauseOverlay.transform,0,0,1920,1080);Stretch(home);Set(pause,"home",home.gameObject);
-            Text("Title",home,"Görev duraklatıldı",0,280,1200,140,70,Paper,TextAnchor.MiddleCenter,true);
-            Set(pause,"resume",Button("Resume",home,"Devam et",0,70,550,pause.Resume));
-            Button("Settings",home,"Ayarlar",0,-30,550,pause.ShowSettings);
-            Button("Menu",home,"Ana menü",0,-130,550,pause.ReturnToMenu);
-            Text("PauseHint",home,"Analiz ve ürün hareketi, devam ettiğinde sürer.",0,-290,1000,80,28,Paper,TextAnchor.MiddleCenter);
-            Set(pause,"settings",Settings(pauseOverlay.transform));pauseOverlay.SetActive(false);
+            DocumentMenuAuthoring.CreatePause(canvas.gameObject,pause);
+            GuideBookAuthoring.Apply(canvas.gameObject);
             WorkstationUIAuthoring.Apply(canvas.gameObject);
             return canvas;
         }
