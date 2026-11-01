@@ -4,10 +4,11 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **99/99 geçti**, başarısız/atlanan yok; son tam koşu 148.48 saniye. Interaction 1, Lead 33, Production 64, Rules 1 |
+| Unity testleri | **100/100 geçti**, başarısız/atlanan yok; son tam koşu 152.09 saniye. Interaction 1, Lead 33, Production 65, Rules 1 |
 | Ürün / rapor / karar denetimi | **31 ürün, 1540 kontrol, 0 hata**. Gerçek faks kuyruğunda 31 ayrı rapor; doğru onay/red ve ayrıştırmada hata sayacı artmaz. Editor: GameUP32 → QA → Product inspection audit |
 | SKT / numune ayrımı | Yoğurtların eski 2021 kapak baskısı temizlendi. Günle eşit SKT geçerli ve açıkça belirtilir; geçmiş SKT / fiziksel bozulma / kalıntı / tür / geri çağırma ayrı gösterilir. Nihai rapor ve karar aynı snapshot'tan gelir |
 | Güncel yüklenen modeller | Kullanıcının 1 Kasım Trashbin.fbx ve buttons.fbx dosyaları birebir alındı; dört kutu, sergi kopyaları ve onay/red butonları güncellendi. Butonlar masa üzerinde, eski görsel kopyaları yok; EditorOnly sergi izolasyonu geçti |
+| Bitişik geri dönüşüm kutuları | Dört kutu aralıksız, toplam 2.88 m sıra; collider'lar çakışmaz, WastePoint hedefleri yeni yerleşimle aynı. Oyuncunun gerçek etkileşim mesafesinden dört kutu da ayrı seçilir. Son ilgili kontroller **5/5 geçti**; güncel görsel Docs/Previews/InspectionAudit/RecyclingBins.png |
 | Evrak ana menüsü / pause | Menü gerçek tesis kamerasını gösterir; ikinci oynanış sistemi veya AudioListener yoktur. Pause aynı pano/kâğıt düzenindedir; 4:3, 16:9 ve 21:9 menü görüntüsü kontrol edildi |
 | El yazısı fontu | Etkin üç sahnedeki tüm Text bileşenleri, ürün baskıları ve kitap metinleri Patrick Hand; Türkçe karakterler ve tabela/gazete taşmaları kontrol edildi |
 | Güncel kaynak entegrasyonu | Faruk `04a87a2/a9fee0f`, Esmanur `4b6292a`, Özgür `10bb33f`; mevcut sahne ve sinematik korunur |
@@ -17,7 +18,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Sağ bant | Sağ duvar açıklığından kapalı servis kabul bölümü; 35.45 m rota ve kayıtlı köşe waypoint'i. Ürün oyuncunun doğrudan sağında x=2.1, z=-3.2 noktasında durur; masa ile boşluk korunur |
 | İnceleme | Kilitli imleçte gerçek fare deltası ürünü döndürür; ekran konumuna bağlı sürükleme eşiği yoktur. Kamera sabit; nesne merkezine göre döner, yaklaşık 0.86 m normalize boyut; bırakınca özgün poz/ölçek geri gelir |
 | Ürün baskıları | 31 üründe özgün albedo + ön/arka bilgiler tek UV atlasına işlenir. Kaynak modeller korunur; ayrı etiket mesh/Renderer yok; BC7/mipmap ve runtime texture üretimi yok. 198 kullanılmayan eski etiket asseti referans taramasından sonra çıkarıldı |
-| Ses | First'te tek AudioManager/AudioListener, beş kanal, tüm Özgür sesleri ve iki müzik; uzun kayıtlar Streaming; duraklatma/belge eşgüdümü |
+| Ses | First'te tek AudioManager/AudioListener, yedi kayıtlı kanal; analiz 0.95, okyanus menü/kıyı/çalışma alanında etkin. 86.064 sn dublaj sinematik saatiyle eşgüdümlü; uzun kayıtlar Streaming. Yazıcı ayrı kanalda tek baskı, mevcut raporu açmak sesi tekrarlamaz; native oynatım testleri geçti |
 | Gazete referansı | Yıpranmış kâğıt, caretta halftone fotoğrafı, büyük başlık ve görev kutusu; üç günün metinleri kesilmez; faks/rapor aynı kâğıt dokusunda |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |

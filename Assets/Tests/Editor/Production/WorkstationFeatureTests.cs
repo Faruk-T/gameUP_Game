@@ -20,9 +20,16 @@ namespace GameUp.Production.Tests
             {
                 var managers=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<AudioManager>(true)).ToArray();
                 Assert.That(managers.Length,Is.EqualTo(1));
-                Assert.That(managers[0].GetComponentsInChildren<AudioSource>().Length,Is.EqualTo(5));
+                Assert.That(managers[0].GetComponentsInChildren<AudioSource>().Length,Is.EqualTo(7));
                 Assert.That(scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<AudioListener>(true)).Count(),Is.EqualTo(1));
                 var so=new SerializedObject(managers[0]);var cues=so.FindProperty("cues");Assert.That(cues.arraySize,Is.EqualTo(9));
+                var analyzer=(AudioSource)so.FindProperty("analyzer").objectReferenceValue;Assert.That(analyzer.volume,Is.EqualTo(.95f));
+                foreach(string name in new[]{"analyzer","effects","printer","narration"})Assert.That(((AudioSource)so.FindProperty(name).objectReferenceValue).loop,Is.False,name+" must play once");
+                var narration=(AudioSource)so.FindProperty("narration").objectReferenceValue;
+                Assert.That(AssetDatabase.GetAssetPath(narration.clip),Is.EqualTo("Assets/Audio/Cinematic/sinema_senkron_ses.mp3"));
+                Assert.That(narration.clip.length,Is.LessThanOrEqualTo(OpeningTiming.End));
+                Assert.That(((AudioImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(narration.clip))).defaultSampleSettings.loadType,Is.EqualTo(AudioClipLoadType.Streaming));
+                Assert.That(so.FindProperty("workstationOceanVolume").floatValue,Is.GreaterThanOrEqualTo(.2f));
                 for(int i=0;i<cues.arraySize;i++)Assert.That(cues.GetArrayElementAtIndex(i).FindPropertyRelative("Clip").objectReferenceValue,Is.Not.Null);
                 foreach(var path in AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets/Audio/Music"}).Select(AssetDatabase.GUIDToAssetPath))
                     Assert.That(((AudioImporter)AssetImporter.GetAtPath(path)).defaultSampleSettings.loadType,Is.EqualTo(AudioClipLoadType.Streaming));

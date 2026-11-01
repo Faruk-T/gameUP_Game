@@ -8,23 +8,29 @@ namespace GameUp.Editor
     internal static class RecyclingBinAuthoring
     {
         internal const string Source="Assets/Art/Environment/Mesh/Trashbin.fbx";
+        private static readonly Vector3 BinSize=new Vector3(.72f,1.38f,.68f);
         internal static readonly string[] Names={"trashbin-paper","trashbin-glass","trashbin-plastic","Trashbin"};
         internal static void Apply(Transform office)
         {
             RemapSource();
+            var station=office.Find("RecyclingStation");
+            float center=Enumerable.Range(0,4).Average(i=>station.Find("Waste_"+i).localPosition.x);
             var colors=new[]{new Color(.16f,.37f,.7f),new Color(.14f,.5f,.35f),new Color(.8f,.63f,.12f),new Color(.65f,.18f,.16f)};
             for(int i=0;i<4;i++)
             {
-                var bin=office.Find("RecyclingStation/Waste_"+i);
+                var bin=station.Find("Waste_"+i);
+                bin.localPosition=new Vector3(center+(i-1.5f)*BinSize.x,bin.localPosition.y,bin.localPosition.z);
                 foreach(var child in bin.Cast<Transform>().Where(t=>t.GetComponentsInChildren<MeshFilter>(true).Length>0).ToArray())UnityEngine.Object.DestroyImmediate(child.gameObject);
-                var model=Place(i,bin,new Vector3(0,.05f,0),new Vector3(.72f,1.38f,.68f));
+                var model=Place(i,bin,new Vector3(0,.05f,0),BinSize);
                 model.transform.localRotation=Quaternion.Euler(0,180,0);
                 var label=bin.Find("BinLabel");label.localScale=Vector3.one*(.68f/900);label.localPosition=new Vector3(0,.03f,-.36f);
                 foreach(var renderer in model.GetComponentsInChildren<MeshRenderer>())
                     renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>CategoryMaterial(m,i,colors[i])).ToArray();
                 CoastalAssetSetup.Outline(model);
+                var collider=bin.GetComponent<BoxCollider>();collider.center=new Vector3(0,.05f,0);collider.size=BinSize;
+                station.Find("WastePoint_"+i).position=bin.position+Vector3.up*.73f;
             }
-            Debug.Log("NEW_RECYCLING_BINS_OK / user 2026-11-01 FBX / 4 current meshes / preserved targets and labels");
+            Debug.Log("NEW_RECYCLING_BINS_OK / supplied FBX / 4 adjoining containers / non-overlapping targets / aligned sorting points");
         }
         internal static GameObject Place(int category,Transform parent,Vector3 center,Vector3 size)
             =>FacilityPropAuthoring.ArtistPart(Source,Names[category],parent,center,size);

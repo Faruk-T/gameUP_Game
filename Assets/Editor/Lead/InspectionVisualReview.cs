@@ -16,6 +16,21 @@ namespace GameUp.Editor
     public static class InspectionVisualReview
     {
         private const string Output = "Docs/Previews/InspectionAudit";
+        public static void CaptureRecyclingStation()
+        {
+            var scene = EditorSceneManager.OpenScene(ProductionProjectSetup.GamePath);
+            var roots = scene.GetRootGameObjects();
+            foreach (var c in roots.SelectMany(r => r.GetComponentsInChildren<Canvas>(true)).Where(c => c.isRootCanvas && c.renderMode != RenderMode.WorldSpace)) c.gameObject.SetActive(false);
+            var camera = roots.SelectMany(r => r.GetComponentsInChildren<Camera>(true)).Single(c => c.CompareTag("MainCamera")); camera.gameObject.SetActive(true);
+            var capture = Canvas("__RecyclingStationCapture");
+            try
+            {
+                View(camera, new Vector3(0, 2.1f, -3.6f), new Vector3(0, .9f, -7), 70);
+                ProductionSnapshot.Capture(capture, camera, Output + "/RecyclingBins.png", 1920, 1080);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(capture.gameObject); EditorSceneManager.OpenScene(ProductionProjectSetup.FirstPath); }
+            Debug.Log("ADJOINING_RECYCLING_BINS_CAPTURE_OK");
+        }
         [MenuItem("GameUP32/QA/Capture product inspection visuals")]
         public static void Capture()
         {

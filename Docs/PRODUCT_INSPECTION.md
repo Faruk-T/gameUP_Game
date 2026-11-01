@@ -48,7 +48,7 @@ Veri veya model değişikliğinden sonra **GameUP32 → Authoring → Update pro
 
 ## Regresyon doğrulaması
 
-Son Unity koşusu: **99/99 geçti**, 0 başarısız, 0 atlanan; **148.48 saniye**. Ayrı Editor matrisi: **31 ürün / 1540 kontrol / 0 hata**. XML/loglar yerelde `Logs/InspectionAudit/tests-final.xml` ve `tests-final.log` içinde tutulur; build alınmadı.
+Son Unity koşusu: **100/100 geçti**, 0 başarısız, 0 atlanan; **152.09 saniye**. Ayrı Editor matrisi: **31 ürün / 1540 kontrol / 0 hata**. En güncel tam koşu `Logs/AudioPolish/tests.xml` ve `tests.log` içindedir; önceki ürün tanı kayıtları `Logs/InspectionAudit` altında tutulur. Build alınmadı.
 
 `ProductInspectionRegressionTests`, her ürün için evaluator'dan türetilmeyen ayrı senaryo beklentileri kullanır. SKT sınırı, gerçek takvim/artık yıl, peynir/yoğurt örnekleri, geri çağırmadan önce/sonra aynı ürün ve temiz numune ayrımı, eski rapor metninin yeni sonucu değiştirememesi, kaynak modellerin bağlantıları denetlenir.
 
@@ -59,3 +59,9 @@ Yeni modellerin kaynağı kullanıcının 1 Kasım 2026 yüklemeleridir. Proje i
 Model SHA256: Trashbin `01952C34ACDADEB5D9271D0B420E1DC9AF7A9DEA5466CF3F6C39AEE63827D9CB`; buttons `A0CDEAB1127C9C2DBA289703C55B0E9B7397E147B557AFF431D5FF4F4430C9DD`.
 
 Yassı ürünlerde arka UV baskısının yönü düzeltilmiştir; yumurta üzerindeki baskı kartona sınırlandırılır. `ProductWorldLabelBinder` v4 imzası güncel basılı veriyle karşılaştırılır. Sergi kutuları da mevcut Game Kit ile birlikte EditorOnly / katman 30 olarak kalır.
+
+## Bitişik geri dönüşüm istasyonu
+
+Kullanıcının yeniden verdiği `Trashbin.fbx`, projede kullanılan dosyayla aynı SHA256'ya sahiptir; aynı kaynak dosya korunmuştur. Dört aktif kutu artık mevcut sıra merkezi korunarak aralıksız yerleştirilir. Her kutu 0.72 m genişliğindedir; toplam sıra 2.88 m'dir. Kutu collider'ları model ölçüsüne daraltılır ve `WastePoint_0..3` yeni konumlara taşınır. Böylece komşu kutuların tıklama alanları çakışmaz ve ayrıştırma animasyonu doğru kutuya gider. Ana menünün tesis kopyası da güncellenmiştir.
+
+Bu yerleşim **GameUP32 → Authoring → Update adjoining recycling bins** komutuyla tekrar uygulanabilir; ürün verileri ve butonlar değiştirilmez. Son odaklı doğrulama **5/5 geçti**: gerçek oyuncu etkileşim mesafesinden dört ayrı raycast, sıfır geometrik boşluk, collider ayrımı, hareket hedefleri, sahne/prefab bağlantıları, sergi izolasyonu ve mevcut ürün denetim matrisi. Kayıtlar `Logs/RecyclingStation/tests.xml` içindedir; build alınmadı.

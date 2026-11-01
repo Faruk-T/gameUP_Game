@@ -15,7 +15,7 @@ namespace GameUp.Editor
             {
                 var importer=(AudioImporter)AssetImporter.GetAtPath(path);
                 var sample=importer.defaultSampleSettings;
-                sample.loadType=path.Contains("/Music/")||path.EndsWith("ocean_wave_background.ogg",StringComparison.Ordinal)
+                sample.loadType=path.Contains("/Music/")||path.Contains("/Cinematic/")||path.EndsWith("ocean_wave_background.ogg",StringComparison.Ordinal)
                     ?AudioClipLoadType.Streaming:AudioClipLoadType.DecompressOnLoad;
                 sample.compressionFormat=AudioCompressionFormat.Vorbis;sample.quality=.7f;
                 sample.preloadAudioData=sample.loadType!=AudioClipLoadType.Streaming;importer.defaultSampleSettings=sample;
@@ -27,10 +27,12 @@ namespace GameUp.Editor
             var manager=root.gameObject.AddComponent<AudioManager>();
             Set(application.GetComponent<ApplicationRoot>(),"audioManager",manager);
             Set(manager,"music",Channel(root,"Music",true,.2f));
-            Set(manager,"ambience",Channel(root,"Ocean",true,.45f,Clip("ocean_wave_background.ogg")));
+            Set(manager,"ambience",Channel(root,"Ocean",true,.22f,Clip("ocean_wave_background.ogg"),160));
             Set(manager,"conveyor",Channel(root,"Conveyor",true,.2f,Clip("conveyor.mp3")));
-            Set(manager,"analyzer",Channel(root,"Analyzer",false,.4f,Clip("analyzer_full.mp3")));
+            Set(manager,"analyzer",Channel(root,"Analyzer",false,.95f,Clip("analyzer_full.mp3"),64));
             Set(manager,"effects",Channel(root,"Effects",false,.65f));
+            Set(manager,"printer",Channel(root,"Printer",false,.65f,Clip("fax_machine.mp3"),80));
+            Set(manager,"narration",Channel(root,"OpeningNarration",false,.85f,Clip("Cinematic/sinema_senkron_ses.mp3"),32));
             var music=AssetDatabase.FindAssets("t:AudioClip",new[]{"Assets/Audio/Music"}).Select(AssetDatabase.GUIDToAssetPath).ToArray();
             Set(manager,"menuMusic",AssetDatabase.LoadAssetAtPath<AudioClip>(music.Single(p=>p.Contains("Herbal Tea"))));
             Set(manager,"gameMusic",AssetDatabase.LoadAssetAtPath<AudioClip>(music.Single(p=>p.Contains("Way Home"))));
@@ -47,17 +49,17 @@ namespace GameUp.Editor
                 item.FindPropertyRelative("Clip").objectReferenceValue=Clip(bindings[i].Item2);item.FindPropertyRelative("Volume").floatValue=bindings[i].Item3;
             }
             so.ApplyModifiedPropertiesWithoutUndo();
-            Debug.Log("AUDIO_CATALOG_OK / source chore/audio-assets 10bb33f / 9 effects, 2 music, ocean, conveyor, analyzer");
+            Debug.Log("AUDIO_CATALOG_OK / 7 authored channels / dedicated single-job printer / streamed cinematic narration / audible ocean and analyzer");
         }
         internal static AudioClip Clip(string name)
         {
             string path="Assets/Audio/"+name;
             return AssetDatabase.LoadAssetAtPath<AudioClip>(path)??throw new InvalidOperationException("Missing audio: "+path);
         }
-        private static AudioSource Channel(Transform parent,string name,bool loop,float volume,AudioClip clip=null)
+        private static AudioSource Channel(Transform parent,string name,bool loop,float volume,AudioClip clip=null,int priority=128)
         {
             var source=new GameObject(name).AddComponent<AudioSource>();source.transform.SetParent(parent,false);
-            source.playOnAwake=false;source.loop=loop;source.volume=volume;source.spatialBlend=0;source.clip=clip;
+            source.playOnAwake=false;source.loop=loop;source.volume=volume;source.spatialBlend=0;source.clip=clip;source.priority=priority;
             return source;
         }
     }

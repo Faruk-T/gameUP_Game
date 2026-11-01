@@ -27,15 +27,32 @@ namespace GameUp.Editor
             var scene = EditorSceneManager.OpenScene(ProductionProjectSetup.GamePath);
             var roots = scene.GetRootGameObjects(); var office = roots.Single(r => r.name == "InspectionOffice").transform;
             RecyclingBinAuthoring.Apply(office); DecisionButtonAuthoring.Apply(office);
+            RefreshKitBins(roots);
+            // Keep all gameplay target actions/colliders and user-authored workstation transforms.
+            foreach (var text in office.GetComponentsInChildren<UnityEngine.UI.Text>(true)) text.font = UIAuthoring.Body;
+            EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
+            MenuEnvironmentAuthoring.ReadSource();
+        }
+        private static void RefreshKitBins(GameObject[] roots)
+        {
             var kit = roots.Single(r => r.name == ArtistGameKitAuthoring.RootName).transform.Find("UpdatedBins_4");
             foreach (var old in kit.Cast<Transform>().Where(t => t.name.StartsWith("Prop_trashbin", StringComparison.OrdinalIgnoreCase)).ToArray())
                 UnityEngine.Object.DestroyImmediate(old.gameObject);
             for (int i = 0; i < 4; i++) RecyclingBinAuthoring.Place(i, kit, new Vector3(1 + i * 4.2f, 1.37f, -14), new Vector3(.68f, 1.3f, .65f));
             ArtistGameKitAuthoring.Isolate(kit);
-            // Keep all gameplay target actions/colliders and user-authored workstation transforms.
-            foreach (var text in office.GetComponentsInChildren<UnityEngine.UI.Text>(true)) text.font = UIAuthoring.Body;
+        }
+        [MenuItem("GameUP32/Authoring/Update adjoining recycling bins")]
+        public static void UpdateRecyclingStation()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop Play Mode before authoring.");
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var scene = EditorSceneManager.OpenScene(ProductionProjectSetup.GamePath);
+            var roots = scene.GetRootGameObjects();
+            RecyclingBinAuthoring.Apply(roots.Single(r => r.name == "InspectionOffice").transform);
+            RefreshKitBins(roots);
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
             MenuEnvironmentAuthoring.ReadSource();
+            InspectionVisualReview.CaptureRecyclingStation();
         }
         public static void ApplyAndReview() { Apply(); InspectionVisualReview.Capture(); }
     }

@@ -83,14 +83,33 @@ namespace GameUp.Production.Tests
                 var camera=all.Select(t=>t.GetComponent<Camera>()).Single(c=>c&&c.CompareTag("MainCamera"));
                 var player=camera.transform.parent;
                 var bins=all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t&&t.Action>=WorkstationAction.Paper&&t.Action<=WorkstationAction.Contaminated).ToArray();
+                var interaction=all.Select(t=>t.GetComponent<WorkstationInteractionController>()).Single(c=>c);
+                float reach=new SerializedObject(interaction).FindProperty("rayDistance").floatValue;
                 Assert.That(bins.Length,Is.EqualTo(4));Physics.SyncTransforms();
                 foreach(var bin in bins)
                 {
                     Assert.That(Vector3.Dot(player.forward,bin.transform.position-player.position),Is.LessThan(0),"Bin must be behind the player.");
                     var direction=bin.GetComponent<Collider>().bounds.center-camera.transform.position;
-                    Assert.That(direction.magnitude,Is.LessThan(8));
-                    Assert.That(Physics.Raycast(camera.transform.position,direction.normalized,out var hit,8,1<<8),Is.True);
+                    Assert.That(direction.magnitude,Is.LessThan(reach));
+                    Assert.That(Physics.Raycast(camera.transform.position,direction.normalized,out var hit,reach,1<<8),Is.True);
                     Assert.That(hit.collider.GetComponent<WorkstationTarget>(),Is.SameAs(bin),"Bin must be targetable from the fixed seat.");
+                }
+                var adjoining=bins.OrderBy(b=>b.transform.position.x).ToArray();
+                var presentation=all.Select(t=>t.GetComponent<ProductPresentation>()).Single(p=>p);
+                var wastePoints=new SerializedObject(presentation).FindProperty("wastePoints");
+                for(int i=0;i<adjoining.Length;i++)
+                {
+                    var renderers=adjoining[i].GetComponentsInChildren<MeshRenderer>();var bounds=renderers[0].bounds;
+                    foreach(var renderer in renderers.Skip(1))bounds.Encapsulate(renderer.bounds);
+                    int category=(int)adjoining[i].Action-(int)WorkstationAction.Paper;
+                    var destination=(Transform)wastePoints.GetArrayElementAtIndex(category).objectReferenceValue;
+                    Assert.That(destination.position.x,Is.EqualTo(bounds.center.x).Within(.001f),"Sorting animation must reach the relocated bin.");
+                    Assert.That(destination.position.z,Is.EqualTo(bounds.center.z).Within(.001f));
+                    if(i==0)continue;
+                    var previousRenderers=adjoining[i-1].GetComponentsInChildren<MeshRenderer>();var previous=previousRenderers[0].bounds;
+                    foreach(var renderer in previousRenderers.Skip(1))previous.Encapsulate(renderer.bounds);
+                    Assert.That(bounds.min.x-previous.max.x,Is.EqualTo(0).Within(.003f),"Containers must touch with no gap or mesh intersection.");
+                    Assert.That(adjoining[i].GetComponent<Collider>().bounds.min.x-adjoining[i-1].GetComponent<Collider>().bounds.max.x,Is.GreaterThanOrEqualTo(-.001f),"Adjacent bin targets must not overlap.");
                 }
                 Assert.That(all.Any(t=>t.name=="CoastalWindow"||t.name=="CoastalWindowFrame"||t.name=="DairySamples"||t.name=="ChilledSamples"||t.name=="ProduceSamples"),Is.False);
                 Assert.That(all.Count(t=>t.GetComponent<FaxPresenter>()),Is.EqualTo(1),"The ministry fax is authored once; there is no T report interaction.");
@@ -209,6 +228,12 @@ namespace GameUp.Production.Tests
             var finPositions=openingFins.Select(t=>t.localPosition).ToArray();
             float introDeadline=Time.realtimeSinceStartup+OpeningTiming.End+15;
             var introduction=Object.FindFirstObjectByType<IntroCinematic>();
+            var audio=ApplicationRoot.Require().Audio;
+            var audioSettings=new SerializedObject(audio);
+            var narration=(AudioSource)audioSettings.FindProperty("narration").objectReferenceValue;
+            var ocean=(AudioSource)audioSettings.FindProperty("ambience").objectReferenceValue;
+            var printer=(AudioSource)audioSettings.FindProperty("printer").objectReferenceValue;
+            Assert.That(narration.isPlaying,Is.True);Assert.That(ocean.isPlaying,Is.True);
             var openingActors=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None);
             var openingScene=session.gameObject.scene;
             var openingTransforms=openingScene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
@@ -224,6 +249,11 @@ namespace GameUp.Production.Tests
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(introDeadline),"Opening must finish naturally.");
                 Assert.That(session.WorldInputAllowed,Is.False);
                 Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+                if(introduction.Elapsed>.5&&introduction.Elapsed<narration.clip.length-.25)
+                {
+                    Assert.That(narration.isPlaying,Is.True,"Opening narration must actually play.");
+                    Assert.That(Math.Abs(narration.time-introduction.Elapsed),Is.LessThan(.25),"Voice must follow the same opening clock.");
+                }
                 if(!swimmingSeen&&introduction.Elapsed>=OpeningTiming.SwimReveal)
                 {
                     Assert.That(openingActors.All(t=>t.IsSwimming),Is.True);Assert.That(openingLogo.alpha,Is.LessThan(.01));swimmingSeen=true;
@@ -250,6 +280,8 @@ namespace GameUp.Production.Tests
                 yield return null;
             }
             Assert.That(swimmingSeen&&logoSeen&&fireworksSeen&&walkSeen,Is.True,"Opening stages must play in narrative order.");
+            Assert.That(narration.isPlaying,Is.False,"Narration must finish before workstation gameplay.");
+            Assert.That(ocean.isPlaying,Is.True);Assert.That(ocean.volume,Is.EqualTo(.2f));
             yield return null;
             Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,0),Is.EqualTo(0).Within(.1),"North door stays open after the cinematic.");
             Assert.That(Mathf.DeltaAngle(openingSouth.localEulerAngles.y,180),Is.EqualTo(0).Within(.1),"South door stays open after the cinematic.");
@@ -312,7 +344,14 @@ namespace GameUp.Production.Tests
             yield return new WaitForSecondsRealtime(.25f);
             Assert.That(Time.timeScale,Is.Zero);Assert.That(session.Flow.Phase,Is.EqualTo(ProductPhase.Analyzing));Assert.That(product.ActiveProduct.transform.position,Is.EqualTo(position));
             Capture("pause",session.gameObject.scene);pause.Resume();
-            yield return Wait(()=>session.Documents.IsOpen);Assert.That(session.Documents.Current.Kind,Is.EqualTo(DocumentKind.Analysis));Capture("analysis",session.gameObject.scene);document.Confirm();
+            yield return Wait(()=>session.Documents.IsOpen);Assert.That(session.Documents.Current.Kind,Is.EqualTo(DocumentKind.Analysis));Capture("analysis",session.gameObject.scene);
+            var cachedAnalysis=session.Flow.LastReport;
+            yield return new WaitForSecondsRealtime(audio.FaxDuration+.15f);
+            Assert.That(printer.isPlaying,Is.False,"Printer must stop while its report remains open.");
+            document.Confirm();session.Analyze();yield return null;
+            Assert.That(session.Flow.LastReport,Is.SameAs(cachedAnalysis));
+            Assert.That(printer.isPlaying,Is.False,"Reopening an existing analysis must not start another print job.");
+            document.Confirm();
             session.Backend.AnalysisSeconds=.04f;
             var speed=new SerializedObject(product);speed.FindProperty("secondsPerMetre").floatValue=.025f;speed.ApplyModifiedPropertiesWithoutUndo();
             yield return Campaign(session,input,"correct");
