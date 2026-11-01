@@ -118,15 +118,23 @@ namespace GameUp.Production.Tests
             var meshes=all.Select(t=>t.GetComponent<MeshFilter>()).Where(f=>f).Select(f=>f.sharedMesh).ToArray();
             var artist=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Environment/Mesh/Environment.fbx").GetComponentsInChildren<MeshFilter>();
             Assert.That(artist.Length,Is.EqualTo(16));
-            foreach(var part in artist)Assert.That(meshes,Does.Contain(part.sharedMesh),"Artist object absent: "+part.name);
-            foreach(var name in new[]{"HabitatSign","InspectionDirection","FacilityName","FacilityCOP31","BeltInstructions"})
+            foreach(var part in artist)
             {
-                var sign=all.Single(t=>t.name==name);
-                Assert.That(sign.GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).StartsWith("Assets/PolygonOffice/",StringComparison.Ordinal)),Is.True,name);
-                foreach(var text in sign.GetComponentsInChildren<Text>())Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),name+" lettering overflow");
+                bool retired=part.name=="fax"||part.name=="fax signal";
+                if(retired)Assert.That(meshes.Contains(part.sharedMesh),Is.False,"T report device must be removed.");
+                else Assert.That(meshes,Does.Contain(part.sharedMesh),"Artist object absent: "+part.name);
             }
-            foreach(var name in new[]{"FoodSecurityPoster","ClimateActionPoster","WasteSortingPoster","WaterFoodClimatePoster","ColdChainPoster"})
-                Assert.That(all.Single(t=>t.name==name).GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Poster_01")),Is.True,name+" must use the package poster prop");
+            foreach(var sign in all.Where(t=>t.Find("Lettering")&&t.Find("Lettering").GetComponent<Canvas>()))
+            {
+                string concept=sign.name=="HabitatSign"?"SM_Prop_Sign_OutofOrder_01":"SM_Prop_Sign_Director_01";
+                Assert.That(sign.GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains(concept)),Is.True,sign.name);
+                Assert.That(sign.Find("Lettering/CleanInsert"),Is.Not.Null);
+                foreach(var text in sign.GetComponentsInChildren<Text>())Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),sign.name+" lettering overflow");
+            }
+            Assert.That(all.Single(t=>t.name=="HabitatSign").GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Pole_01")),Is.True);
+            Assert.That(all.Any(t=>t.name=="WaterFoodClimatePoster")&&all.Any(t=>t.name=="ColdChainPoster"),Is.True,"The two corridor story posters stay authored.");
+            foreach(var poster in all.Where(t=>t.name.EndsWith("Poster",StringComparison.Ordinal)&&t.Find("Print")))
+                Assert.That(poster.GetComponentsInChildren<MeshFilter>(true).Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Poster_01")),Is.True,poster.name+" must use the package poster prop");
             Assert.That(all.Any(t=>t.name=="TaurusMountains"||t.name=="DistantTaurusRidge"),Is.False);
             var terrain=all.Single(t=>t.name=="TaurusTerrain").GetComponent<MeshFilter>().sharedMesh;
             Assert.That(terrain.vertexCount,Is.GreaterThan(2000));Assert.That(terrain.bounds.size.z,Is.GreaterThan(500));Assert.That(terrain.bounds.size.y,Is.GreaterThan(35));Assert.That(terrain.bounds.min.y,Is.LessThan(0));
@@ -201,6 +209,11 @@ namespace GameUp.Production.Tests
                 var root=all.Single(t=>t.name==name);var image=root.GetComponentsInChildren<Image>().Single(i=>i.name=="Photograph");
                 Assert.That(image.sprite,Is.Not.Null);Assert.That(AssetDatabase.GetAssetPath(image.sprite),Does.StartWith("Assets/Art/OfficeIdentity/"));
                 Assert.That(root.position.z,Is.LessThan(-7.5));Assert.That(root.position.y,Is.GreaterThan(2));Assert.That(image.preserveAspect,Is.True);
+                var viewport=(RectTransform)image.transform.parent;
+                Assert.That(viewport.GetComponent<RectMask2D>(),Is.Not.Null);
+                Assert.That(image.rectTransform.sizeDelta.x,Is.GreaterThanOrEqualTo(viewport.sizeDelta.x));Assert.That(image.rectTransform.sizeDelta.y,Is.GreaterThanOrEqualTo(viewport.sizeDelta.y));
+                Assert.That(image.rectTransform.sizeDelta.x/image.rectTransform.sizeDelta.y,Is.EqualTo(image.sprite.rect.width/image.sprite.rect.height).Within(.001));
+                Assert.That(root.GetComponentsInChildren<Text>(true),Is.Empty);
             }
             foreach(var name in new[]{"TurkiyeStandingFlag","UNStandingFlag"})
             {

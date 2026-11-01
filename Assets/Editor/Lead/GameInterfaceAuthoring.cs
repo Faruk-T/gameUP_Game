@@ -18,7 +18,7 @@ namespace GameUp.Editor
             Set(hud,"targetHint",Text("Target",canvas.transform,"",0,-70,1000,70,28,Paper,TextAnchor.MiddleCenter));
             Image("InstructionBar",canvas.transform,0,-462,1920,156,new Color(.025f,.08f,.09f,.92f));
             Set(hud,"tutorial",Text("Tutorial",canvas.transform,"",0,-418,1760,60,27,Paper,TextAnchor.MiddleLeft));
-            Text("Controls",canvas.transform,"E / İncele     B / Kitapçık     F / Analiz     T / Rapor     W / Onay     R / Red     Sol tık / Etkileşim",0,-494,1760,55,24,new Color(.65f,.81f,.77f),TextAnchor.MiddleLeft);
+            Text("Controls",canvas.transform,"E / İncele     B / Kitapçık     F / Analiz     W / Onay     R / Red     Sol tık / Etkileşim",0,-494,1760,55,24,new Color(.65f,.81f,.77f),TextAnchor.MiddleLeft);
             Set(hud,"feedback",Text("Feedback",canvas.transform,"",-525,-275,800,140,24,Paper));
             var card=Image("ProductCard",canvas.transform,670,60,500,730,new Color(.97f,.95f,.88f,.98f));
             Set(hud,"productCard",card.gameObject);
@@ -28,6 +28,8 @@ namespace GameUp.Editor
             label.gameObject.AddComponent<LayoutElement>();Set(hud,"productLabel",label);card.gameObject.SetActive(false);
 
             var presenter=canvas.gameObject.AddComponent<DocumentPresenter>();Set(session,"documentsView",presenter);
+            var notification=canvas.gameObject.AddComponent<AudioSource>();notification.playOnAwake=false;notification.spatialBlend=0;
+            Set(presenter,"notificationSpeaker",notification);Set(presenter,"emergencyNotification",UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/FaxSignal.wav"));
             var overlay=Overlay("DocumentOverlay",canvas.transform,new Color(.015f,.055f,.065f,.86f));Set(presenter,"panel",overlay);
             var page=Image("DocumentPage",overlay.transform,0,0,1360,960,Paper);
             Set(presenter,"documentPage",page.gameObject);

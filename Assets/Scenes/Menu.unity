@@ -284,7 +284,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -363,7 +363,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -619,7 +619,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 70
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2154,11 +2154,11 @@ MonoBehaviour:
   m_Text: "Her sabah gazeteyi oku; o g\xFCn\xFCn kurallar\u0131yla \xE7al\u0131\u015F.\n\nE
     / Sol t\u0131k  \u2014  \xDCr\xFCn\xFC incele. S\xFCr\xFCkleyerek d\xF6nd\xFCr;
     tekerlekle yakla\u015F.\nB  \u2014  El kitap\xE7\u0131\u011F\u0131       F  \u2014 
-    Laboratuvar analizi       T  \u2014  Son rapor\nW  \u2014  Onay: \xFCr\xFCn piyasaya
-    gider       R  \u2014  Red: g\u0131da imha edilir\n\nRedden sonra ambalaj\u0131
-    uygun hedefe g\xF6nder: k\xE2\u011F\u0131t, cam, plastik veya kontamine at\u0131k.\nBakanl\u0131k
-    acil faks\u0131n\u0131 onaylad\u0131\u011F\u0131nda yeni kural yaln\u0131zca
-    sonraki \xFCr\xFCnlere uygulan\u0131r.\n\nEsc  \u2014  Belgeyi kapat / Duraklat      
+    Laboratuvar analizi\nW  \u2014  Onay: \xFCr\xFCn piyasaya gider       R  \u2014 
+    Red: g\u0131da imha edilir\n\nRedden sonra ambalaj\u0131 uygun hedefe g\xF6nder:
+    k\xE2\u011F\u0131t, cam, plastik veya kontamine at\u0131k.\nBakanl\u0131k acil
+    faks\u0131n\u0131 onaylad\u0131\u011F\u0131nda yeni kural yaln\u0131zca sonraki
+    \xFCr\xFCnlere uygulan\u0131r.\n\nEsc  \u2014  Belgeyi kapat / Duraklat      
     Fare  \u2014  Etrafa bak\nZorunlu gazete ve acil faks\u0131, devam d\xFC\u011Fmesiyle
     onayla."
 --- !u!222 &991865810
@@ -2390,7 +2390,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 64
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

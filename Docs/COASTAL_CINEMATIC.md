@@ -40,18 +40,18 @@ EPO'nun Unity 6 köprüsü, assetin kendi maske/dilation/composite uygulamasın�
 
 Asset demoları ve eski su yansıma kodu yalnız Editor assembly'lerine ayrılmıştır. Eksik bağımlılıkları olan eski Standard Assets görüntü efektleri `GAMEUP_LEGACY_BUILTIN_DEMO` koşuluyla derleme dışında tutulur; dosyalar korunur. Üretim sahnesi bunlara bağlı değildir.
 
-Esmanur'un `feature/Objects` dalındaki `0106ab2` içeriğinden yalnız Art/Environment, Art/Outside ve ilgili prefablar GUID'leriyle alındı. **16/16 çevre mesh'i**, **31/31 ürün modeli** ve animasyonlu caretta aktif sahne/kampanyada kullanılır. [Çevre envanteri](ENVIRONMENT_INVENTORY.md), sahnedeki gerçek mesh referanslarından otomatik yazılır. Ürün kampanyası ve üç günlük haber/kural eşleşmeleri korunur.
+Sanatçının `feature/Objects` dalındaki `0106ab2` içeriğinden Art/Environment, Art/Outside ve ilgili prefablar GUID'leriyle alındı. **16/16 çevre mesh'i projededir; 14'ü aktif, iki faks parçası T cihazıyla birlikte kullanım dışıdır.** **31/31 ürün modeli** ve animasyonlu caretta aktif kampanya/sahnede kullanılır. [Kaynak eşleştirmesi](ARTIST_SYNC.md) ve [çevre envanteri](ENVIRONMENT_INVENTORY.md) gerçek mesh referanslarıyla denetlenir. Üç günlük haber/kural eşleşmeleri korunur.
 
 ## Prop ve çevre yerleşimi
 
-Mevcut oda, arka geri dönüşüm alanı, oyuncu masası ve etkileşim konumları korunur. Kullanıcının faks, analiz cihazı, kapalı kitap ve bank üzerinde yaptığı yerel düzeltmeler `SceneArtCorrections.json` içinde kayıtlıdır; yeniden yazımda uygulanır.
+Mevcut oda, arka geri dönüşüm alanı, oyuncu masası ve etkileşim konumları korunur. Kullanıcının analiz cihazı, kapalı kitap ve bank üzerinde yaptığı yerel düzeltmeler `SceneArtCorrections.json` içinde kayıtlıdır. **Refresh signs, portraits and artist props** komutu mevcut sahneye hedefli düzenleme yapar; gizlenen/silinen dekorları yeniden oluşturmaz.
 
-- Tesis adı, COP31, ürün kontrol yönü ve masa kontrol yazıları gerçek `SM_Prop_Sign_Exit_01` geometrisine bağlanır. Yaşam alanı uyarısı `SM_Prop_Sign_Wetfloor_01` ayaklı propunu kullanır.
+- Dokuz fiziksel tabela, `SM_Prop_Sign_Director_01` çerçeve geometrisini ve temiz, koyu renkli yazı alanını kullanır. Kaynak atlas yazıları kaldırılmıştır; metinler kayıtlı Canvas'tadır. Yaşam alanı uyarısı `SM_Prop_Sign_OutofOrder_01` ve tek bir ahşap direkle sahile yerleşir.
 - Beş afişin arkalığı `SM_Prop_Poster_01` olur; içerikler yerel Canvas üzerinde kalır. Koridor afişleri kamera kadrajına sığar.
-- Masa, bant ve dört atık kutusu Esmanur'un mesh'lerini kullanır. Faks/analiz cihazının kâğıt ve sinyal parçaları kendi prefab çocuklarıdır; kopya parça eklenmez.
+- Masa, bant ve dört atık kutusu sanatçının mesh'lerini kullanır. Normal F analiz cihazının kâğıt ve sinyal parçaları kendi prefab çocuklarıdır. T / Son rapor cihazı, fiziksel faks modeli, ışık/çıktı animasyonu, kısayol ve tekrar rapor kodu kaldırılmıştır. Analiz sonucu otomatik belge olarak açılır; Bakanlık acil faksı tek seferlik sesle ve zorunlu onayla gelir.
 - Katlı gazete ve açık/kapalı kitap fiziksel objelerdir. Kitapçık açılınca fiziksel kitap da açılır; gazete okunurken masadaki katlı kopya gizlenir. `WorkstationDocuments` yalnız belge değişimi olayında görünürlüğü günceller.
 - Basit ambalaj küpü gerçek `SM_Prop_CardboardBox_01`, karar düğmeleri `SM_Prop_Elevator_Button_01`, sahil kayaları ve ağaçları Polygon Office proplarıyla değiştirilir.
-- Oyuncunun arkasındaki duvarda çerçeveli Atatürk ve Cumhurbaşkanı portreleri bulunur. Atık afişi ve dört kutu korunur. İki arka köşede ağırlıklı taban, metal direk, ay-yıldız başlık ve dökümlü kumaştan oluşan Türkiye/BM makam bayrakları vardır. Kumaşlar ortak kayıtlı mesh'i, ayrı gerçek bayrak dokularını kullanır; kumaş simülasyonu çalışmaz. Portreler oran korunarak gösterilir. [Görsel kaynakları](../Assets/Art/OfficeIdentity/SOURCES.md).
+- Oyuncunun arkasındaki duvarda yalnız fotoğraf içeren Atatürk ve Cumhurbaşkanı portreleri bulunur. Fotoğraflar oranı bozulmadan çerçeveyi doldurur; taşan kenarlar kayıtlı maskeyle kırpılır, boş kâğıt bandı bırakılmaz. İki arka köşede Türkiye/BM makam bayrakları vardır. Kumaşlar ortak kayıtlı mesh'i, ayrı gerçek bayrak dokularını kullanır; kumaş simülasyonu çalışmaz. [Görsel kaynakları](../Assets/Art/OfficeIdentity/SOURCES.md).
 
 İçe aktarılan paketlerde ayrı bir dağ modeli bulunmadı. Fotoğraf/tek düzlem arka plan kaldırıldı; çevreyi 360° saran, zirve ve vadileri olan **7.453 köşeli kayıtlı 3B arazi mesh'i** kullanılır. Arazi rengi eğim/yükseklikten gelir; düşük bitki tonları ve kireç taşı sırtları URP ışığı ve sisle görünür. Arazi yalnız Editor'de üretilir, runtime'da değişmez. Deniz ve kıyı tabanı ufukta boşluk bırakmayacak şekilde genişletildi.
 
@@ -65,12 +65,13 @@ GameUP32 → Authoring → **Rebuild coastal facility and opening**, Game sahnes
 - `OfficeIdentityAuthoring`: arka duvar portreleri, ayaklı bayrakların kayıtlı mesh/materyalleri ve import ayarları.
 - `CoastalEnvironmentAuthoring`: Polygon Office mimarisi, sahil ve beş caretta.
 - `FacilityPropAuthoring`: gerçek paket/sanatçı propları, dağ mesh'i ve çevre envanteri.
+- `FacilitySceneAuthoring`: mevcut sahne düzenini koruyan tabela/portre yenilemesi ve kullanım dışı cihaz temizliği.
 - `SceneArtCorrections`: kaydedilmiş kullanıcı yerleşimlerini koruma.
 - `CoastalAssetSetup`: URP materyalleri, EPO kamera/obje ayarları.
 - `IntroCinematic`: yalnız açılışın oynatılması ve kamera/HUD devri; açıklama metni sadece sahne değişince güncellenir.
 - `ShorelineTurtle`: önceden kayıtlı aktörlerin kıyı ve yüzme hareketi.
 
-`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder; 1080p/720p logo, kapalı/açılan/açık kapılar ve arka oda dahil. [Unity doğrulama raporu](../VALIDATION.md), yerel `Logs/opening-polish-tests.xml`, `Logs/opening-polish-tests.log` ve `Logs/opening-polish-final-art.log` test kanıtlarıdır.
+`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder; logo, kapılar, arka oda, yeni masa tabelaları ve direkli sahil uyarısı dahil. [Unity doğrulama raporu](../VALIDATION.md), yerel `Logs/director-signs-tests.xml`, `Logs/director-signs-tests.log` ve `Logs/director-signs-author.log` test kanıtlarıdır.
 
 Kontroller: sanatçı aktörlerinin animasyonu/baş yönü; yüzmenin yön ve derinlik değiştirmesi; suya giriş → ortalanmış logo → gerçek parçacıklar → kapı açılması → koridor sırası; doygun renk ve kıvılcım boyutu; efektlerin kapanması; kapalı kapının geçidi örtmesi ve açılan kapıların kameraya yol vermesi; kapılar hareket ederken kamera küre taraması; arka duvar portreleri ve hacimli bayraklar; 16 sanatçı parçasının kullanılması; gerçek tabela/afiş geometrisi ve yazı taşması; geçerli arazi; son kamera pozunun eşleşmesi; outline, söz ve su kaynakları. Üretim testi 90 saniyelik girişi doğal süresinde tamamlar, kapıların bitişte açık kaldığını doğrular, atlama girdilerini reddeder ve üç günlük kampanyayı yürütür.
 
@@ -80,4 +81,4 @@ Gıda–su–iklim ilişkisi, kaynak izleme, soğuk zincir ve atık azaltımı o
 
 Bu dal yerel çalışma içindir. Son adımda pull, push, PR veya main merge işlemi yapılmaz.
 
-1 Kasım doğrulaması: **47/47 test geçti**. Tam sinematik, açıldıktan sonra açık kalan kapılar ve kampanya Editor PlayMode'da çalıştırıldı. Son kamera eğrisi düzeltmesinin ardından **10/10 çevre/sinematik testi** ayrıca geçti (`Logs/opening-polish-final-assets.xml`). Kullanıcının isteğiyle build alınmadı.
+1 Kasım doğrulaması: **47/47 geçti**. Tam sinematik, normal F analizi, Bakanlık acil duyurusu, kapılar ve üç günlük kampanya Editor PlayMode'da doğrulandı. Son rapor `Logs/director-signs-tests.xml` içindedir. Kullanıcının isteğiyle build alınmadı.

@@ -18,7 +18,6 @@ namespace GameUp.Gameplay
         [SerializeField] private DocumentPresenter documentsView;
         [SerializeField] private ResultsPresenter resultsView;
         [SerializeField] private PauseMenu pause;
-        [SerializeField] private FaxPresenter fax;
         [SerializeField] private IntroCinematic intro;
         private ApplicationRoot application;
         private IProductPresentation presentation;
@@ -35,7 +34,7 @@ namespace GameUp.Gameplay
         private void Awake()
         {
             application = ApplicationRoot.Require();
-            if (!backend || !hud || !documentsView || !resultsView || !pause || !fax || !intro || !(presentationSource is IProductPresentation port))
+            if (!backend || !hud || !documentsView || !resultsView || !pause || !intro || !(presentationSource is IProductPresentation port))
                 throw new InvalidOperationException("Game scene composition is incomplete. Run the editor scene validator.");
             presentation = port;
             Flow = new DayFlowSession(backend.CreateCampaign(), backend);
@@ -60,7 +59,7 @@ namespace GameUp.Gameplay
             if (IsIntroducing) return;
             resetting = true;
             if (pause.IsOpen) pause.Resume();
-            Documents.Clear(); presentation.ResetPresentation(); fax.ResetPresentation(); hud.ClearFeedback();
+            Documents.Clear(); presentation.ResetPresentation(); hud.ClearFeedback();
             inspected = handbookRead = false; presentedState = FlowState.Boot;
             Flow.StartNewRun(); resetting = false; OnFlowChanged();
         }
@@ -77,7 +76,6 @@ namespace GameUp.Gameplay
                         () => { if (Flow.RunId == run) Flow.AcknowledgeMorning(); }));
                 else if (Flow.State == FlowState.EmergencyBriefing)
                 {
-                    fax.Print(true);
                     Documents.Enqueue(new DocumentRequest(DocumentKind.Emergency, "Bakanlık acil faksı — 12.00",
                         Flow.Day.Emergency.Text, true, "Okudum, yeni kuralla devam et",
                         () => { if (Flow.RunId == run) Flow.AcknowledgeEmergency(); }));
@@ -118,7 +116,6 @@ namespace GameUp.Gameplay
             presentation.Sort(session, waste, (key, bin) => Flow.NotifySortingFinished(key, bin));
         private void PresentAnalysis(AnalysisReport report)
         {
-            fax.Print(false);
             Documents.Enqueue(new DocumentRequest(DocumentKind.Analysis, "Analiz raporu • " + report.Key.ProductId,
                 "RAPOR NO: " + report.ReportId + "\nÜRÜN: " + report.Key.ProductId + "\n\n" + report.Text));
         }
@@ -136,7 +133,6 @@ namespace GameUp.Gameplay
                 "TARİH: " + Flow.Day.Date.ToString("dd.MM.yyyy") + "\n\n" + RulesText() +
                 "\n\nATIKLAR\nReddedilen gıda imha edilir. Boş ambalajı malzemesine göre ayrıştır. Kontamine ambalajı ayrı imha hedefine gönder."));
         }
-        public void ReopenReport() { if (WorldInputAllowed && Flow.LastReport != null) PresentAnalysis(Flow.LastReport); }
         public void HandleEscape()
         {
             if (IsIntroducing) return;

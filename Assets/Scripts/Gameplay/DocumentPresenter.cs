@@ -15,6 +15,8 @@ namespace GameUp.Gameplay
         [SerializeField] private Text kind, title, body, confirmationLabel;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Button confirmButton;
+        [SerializeField] private AudioSource notificationSpeaker;
+        [SerializeField] private AudioClip emergencyNotification;
         private long token;
         public event Action<long> Confirmed;
         public bool IsVisible => panel.activeSelf;
@@ -25,6 +27,8 @@ namespace GameUp.Gameplay
             panel.SetActive(true);
             if (changed)
             {
+                notificationSpeaker.Stop();
+                if(document.Kind==DocumentKind.Emergency)notificationSpeaker.PlayOneShot(emergencyNotification);
                 token = document.Token;
                 bool isNews = document.Kind == DocumentKind.Newspaper;
                 documentPage.SetActive(!isNews);
@@ -35,7 +39,7 @@ namespace GameUp.Gameplay
                     kind.text = document.Kind switch
                     {
                         DocumentKind.Handbook => "DENETİM EL KİTAPÇIĞI",
-                        DocumentKind.Analysis => "LABORATUVAR / FAKS RAPORU",
+                        DocumentKind.Analysis => "LABORATUVAR / ANALİZ RAPORU",
                         _ => "BAKANLIK / ACİL DUYURU"
                     };
                     title.text = document.Title; body.text = document.Body;

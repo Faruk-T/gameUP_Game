@@ -45,13 +45,29 @@ namespace GameUp.Editor
         internal static void Sign(Transform parent,string name,Vector3 position,float yaw,float width,float height,string message)
         {
             var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=position;root.localRotation=Quaternion.Euler(0,yaw,0);
+            SignContents(root,width,height,message);
+        }
+        internal static void RefreshSign(Transform root)
+        {
+            var old=(RectTransform)root.Find("Lettering");string message=old.GetComponentInChildren<Text>().text;
+            float width=old.sizeDelta.x*old.localScale.x,height=old.sizeDelta.y*old.localScale.y;
+            foreach(var child in root.Cast<Transform>().ToArray())UnityEngine.Object.DestroyImmediate(child.gameObject);
+            SignContents(root,width,height,message);
+        }
+        private static void SignContents(Transform root,float width,float height,string message)
+        {
+            string name=root.name;
             bool habitat=name=="HabitatSign";
-            var paint=Material("FacilitySignPaint",new Color(.025f,.16f,.19f));
+            var paint=Material(habitat?"CoastalWarningFrame":"DirectorSignFrame",habitat?new Color(.5f,.43f,.29f):new Color(.52f,.46f,.32f),habitat?0:.45f);
             paint.SetFloat("_Cull",0);
-            Pack(habitat?"SM_Prop_Sign_Wetfloor_01":"SM_Prop_Sign_Exit_01",root,Vector3.zero,habitat?new Vector3(width+.1f,1.8f,1):new Vector3(width+.16f,height+.12f,.09f),0,paint);
-            var canvas=WorldCanvas("Lettering",root,new Vector3(0,habitat?.08f:0,habitat?-.28f:-.057f),width,height);
-            if(habitat)canvas.localRotation=Quaternion.Euler(16,0,0);
-            var text=Text("Message",canvas,message,0,0,1120,canvas.sizeDelta.y-24,habitat?37:width<=1.25f?130:42,Paper,TextAnchor.MiddleCenter);
+            paint.SetTexture("_BaseMap",null);
+            var prop=Pack(habitat?"SM_Prop_Sign_OutofOrder_01":"SM_Prop_Sign_Director_01",root,Vector3.zero,new Vector3(width+.16f,height+.12f,.09f),0,paint);
+            CoastalAssetSetup.Outline(prop);
+            if(habitat)Pack("SM_Prop_Pole_01",root,new Vector3(0,-.42f,.06f),new Vector3(.09f,1.5f,.09f),0,Material("CoastalWarningPost",new Color(.28f,.2f,.12f)));
+            var canvas=WorldCanvas("Lettering",root,new Vector3(0,0,-.057f),width,height);
+            Image("CleanInsert",canvas,0,0,1200,canvas.sizeDelta.y,habitat?Paper:new Color(.025f,.14f,.16f));
+            var text=Text("Message",canvas,message,0,0,1120,canvas.sizeDelta.y-24,habitat?60:width<=1.25f?130:42,Paper,TextAnchor.MiddleCenter);
+            if(habitat)text.color=Ink;
             if(text.preferredHeight>text.rectTransform.rect.height)
                 text.fontSize=Mathf.FloorToInt(text.fontSize*text.rectTransform.rect.height/text.preferredHeight);
         }
@@ -105,14 +121,17 @@ namespace GameUp.Editor
                 .Concat(scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<SkinnedMeshRenderer>(true)).Select(r=>r.sharedMesh)).Where(m=>m).ToArray();
             var used=new System.Collections.Generic.HashSet<Mesh>(meshes);
             var parts=AssetDatabase.LoadAssetAtPath<GameObject>(Artist).GetComponentsInChildren<MeshFilter>();
-            var lines=new System.Collections.Generic.List<string>{"# Esmanur çevre objeleri — aktif sahne denetimi","","Kaynak: feature/Objects / 0106ab2. Mesh referansı üzerinden, gizli belge durumları da dahil kontrol edilir.","","| Obje | Game sahnesi |","|---|---|"};
+            var lines=new System.Collections.Generic.List<string>{"# Sanatçı çevre objeleri — kaynak ve sahne denetimi","","Kaynak: feature/Objects / 0106ab2. 16 çevre parçası, 31 ürün ve caretta kaynağı projededir. Mesh referansı üzerinden, gizli belge durumları da dahil kontrol edilir.","","T / Son rapor cihazı kaldırıldığı için fax ve fax signal kaynakları projede tutulur, aktif sahnede kullanılmaz. Normal F analiz cihazı, xray parçaları ve Bakanlık acil duyurusu korunur.","","| Obje | Projede | Game sahnesi |","|---|---|---|"};
+            int active=0;
             foreach(var part in parts)
             {
-                bool present=used.Contains(part.sharedMesh);lines.Add("| "+part.name+" | "+(present?"Var":"EKSİK")+" |");
-                if(!present)throw new InvalidOperationException("Artist object missing: "+part.name);
+                bool present=used.Contains(part.sharedMesh),retired=part.name=="fax"||part.name=="fax signal";
+                lines.Add("| "+part.name+" | Var | "+(present?"Var":retired?"İstek gereği kaldırıldı":"EKSİK")+" |");
+                if(present)active++;
+                if(!present&&!retired)throw new InvalidOperationException("Artist object missing: "+part.name);
             }
             lines.Add("");lines.Add("31 ürün modeli kampanya havuzunda; caretta modeli beş animasyonlu aktörde kullanılır. Tüm sayımlar otomatik testlerle doğrulanır.");
-            File.WriteAllLines("Docs/ENVIRONMENT_INVENTORY.md",lines);Debug.Log("ESMANUR_ENVIRONMENT_OK "+parts.Length+"/"+parts.Length);
+            File.WriteAllLines("Docs/ENVIRONMENT_INVENTORY.md",lines);Debug.Log("ARTIST_ENVIRONMENT_OK imported="+parts.Length+"/"+parts.Length+" active="+active+" retired=2");
         }
     }
 }

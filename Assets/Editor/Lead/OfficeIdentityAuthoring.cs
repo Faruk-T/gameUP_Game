@@ -39,8 +39,17 @@ namespace GameUp.Editor
             FacilityPropAuthoring.Pack("SM_Prop_Poster_01",root,Vector3.zero,new Vector3(1.5f,2.08f,.08f),0,Surface("PortraitFrame",new Color(.13f,.16f,.16f),.35f));
             var canvas=Rect("PortraitPrint",root,0,0,900,1260);canvas.localPosition=new Vector3(0,0,-.052f);canvas.localScale=Vector3.one*(1.4f/900);
             canvas.gameObject.AddComponent<Canvas>().renderMode=RenderMode.WorldSpace;
-            Image("Mat",canvas,0,0,900,1260,Paper);
-            var picture=Image("Photograph",canvas,0,0,820,1160,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(Root+file));picture.preserveAspect=true;
+            var picture=Image("Photograph",canvas,0,0,900,1260,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(Root+file));picture.preserveAspect=true;
+            FillPortrait(canvas,picture);
+        }
+        internal static void FillPortrait(RectTransform canvas,Image picture)
+        {
+            if(!canvas.GetComponent<RectMask2D>())canvas.gameObject.AddComponent<RectMask2D>();
+            float aspect=picture.sprite.rect.width/picture.sprite.rect.height;
+            var viewport=canvas.sizeDelta;
+            picture.rectTransform.anchoredPosition=Vector2.zero;
+            picture.rectTransform.sizeDelta=aspect>viewport.x/viewport.y?new Vector2(viewport.y*aspect,viewport.y):new Vector2(viewport.x,viewport.x/aspect);
+            picture.preserveAspect=true;
         }
         private static void Flag(Transform parent,string name,Vector3 position,float yaw,string texture)
         {

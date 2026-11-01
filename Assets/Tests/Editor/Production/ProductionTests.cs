@@ -82,6 +82,9 @@ namespace GameUp.Production.Tests
                     Assert.That(hit.collider.GetComponent<WorkstationTarget>(),Is.SameAs(bin),"Bin must be targetable from the fixed seat.");
                 }
                 Assert.That(all.Any(t=>t.name=="CoastalWindow"||t.name=="CoastalWindowFrame"||t.name=="DairySamples"||t.name=="ChilledSamples"||t.name=="ProduceSamples"),Is.False);
+                Assert.That(all.Any(t=>t.name=="Fax"||t.name=="FaxLabel"||t.name=="Model_fax"||t.name=="FaxIndicator"),Is.False,"The T report machine and its physical presentation are retired.");
+                Assert.That(all.Select(t=>t.GetComponent<WorkstationTarget>()).Count(t=>t&&t.Action==WorkstationAction.Analyzer),Is.EqualTo(1),"The normal F analyzer stays available.");
+                foreach(var target in all.Select(t=>t.GetComponent<WorkstationTarget>()).Where(t=>t))Assert.That(Enum.IsDefined(typeof(WorkstationAction),target.Action),Is.True,"No retired interaction IDs may remain in the scene.");
                 var dependencies=new HashSet<string>(AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true));
                 foreach(var guid in AssetDatabase.FindAssets("t:Prefab",new[]{"Assets/Art/Urunler"}))
                     Assert.That(dependencies,Does.Contain(AssetDatabase.GUIDToAssetPath(guid)),"Artist model must have an authored use.");

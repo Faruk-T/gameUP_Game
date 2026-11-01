@@ -26,7 +26,7 @@ namespace GameUp.Editor
             var architecture=new GameObject("InspectionOffice").transform;
             RoomAuthoring.Create(architecture);
             var pale=Material("Linen",Paper);
-            var teal=Material("Teal",new Color(.08f,.28f,.29f));var metal=Material("Metal",new Color(.22f,.3f,.31f),.3f);
+            var teal=Material("Teal",new Color(.08f,.28f,.29f));
             var green=Material("Accept",new Color(.08f,.55f,.36f));var red=Material("Reject",new Color(.65f,.17f,.12f));
             FacilityPropAuthoring.Esma("desk",architecture,new Vector3(0,.52f,.1f),new Vector3(7,1.04f,2.7f));
             FacilityPropAuthoring.Esma("donen alet yanları",architecture,new Vector3(0,1.06f,.25f),new Vector3(1.05f,.1f,3.6f),90);
@@ -40,11 +40,7 @@ namespace GameUp.Editor
             Target("Reject",architecture,new Vector3(2.1f,1.18f,-.75f),new Vector3(.6f,.23f,.45f),red,WorkstationAction.Reject,"R / RED");
             Target("Analyzer",architecture,new Vector3(-2.4f,1.37f,.3f),new Vector3(1,.6f,.9f),teal,WorkstationAction.Analyzer,"F / ANALİZ");
             Target("Handbook",architecture,new Vector3(-1.4f,1.15f,-.8f),new Vector3(.65f,.12f,.45f),pale,WorkstationAction.Handbook,"B / KİTAPÇIK");
-            var faxObject=Target("Fax",architecture,new Vector3(-2.55f,1.28f,-.85f),new Vector3(.9f,.45f,.5f),metal,WorkstationAction.Report,"T / SON RAPOR");
-            var fax=faxObject.AddComponent<FaxPresenter>();var paper=PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/paper.prefab"),architecture,new Vector3(-2.55f,1.53f,-.85f),.65f);
-            var indicator=new GameObject("FaxIndicator",typeof(Light)).GetComponent<Light>();indicator.transform.SetParent(faxObject.transform,false);indicator.transform.localPosition=new Vector3(0,1,-.8f);indicator.type=LightType.Point;indicator.range=1;indicator.intensity=0;
-            var audio=faxObject.AddComponent<AudioSource>();audio.playOnAwake=false;audio.spatialBlend=0;
-            Set(fax,"indicator",indicator);Set(fax,"paper",paper.transform);Set(fax,"speaker",audio);Set(fax,"notification",AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/FaxSignal.wav"));Set(session,"fax",fax);
+            FacilityPropAuthoring.Esma("paper",architecture,new Vector3(-2.85f,1.05f,-.8f),new Vector3(.6f,.006f,.42f));
             var openBook=PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/openBook.prefab"),architecture,new Vector3(-1.4f,1.1f,-.8f),.65f);
             var newspaper=PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/Closed_NewsPaper.prefab"),architecture,new Vector3(-.45f,1.06f,-.8f),.58f);
             var masthead=new GameObject("FoldedNewspaperPrint",typeof(RectTransform),typeof(Canvas)).GetComponent<RectTransform>();masthead.SetParent(newspaper.transform,false);
@@ -78,7 +74,6 @@ namespace GameUp.Editor
             var gameCanvas=GameInterfaceAuthoring.Create(session);
             CinematicAuthoring.Create(session,camera,gameCanvas);
             SceneArtCorrections.Apply();
-            indicator.transform.position=architecture.GetComponentsInChildren<Renderer>().Single(r=>r.name=="fax signal").bounds.center+Vector3.up*.02f;indicator.range=.3f;
             FacilityPropAuthoring.Inventory();
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),ProductionProjectSetup.GamePath);
         }
@@ -87,7 +82,7 @@ namespace GameUp.Editor
         {
             var go=new GameObject(name,typeof(BoxCollider));go.transform.SetParent(parent,false);go.transform.localPosition=position;go.GetComponent<BoxCollider>().size=scale;
             SetAction(go.AddComponent<WorkstationTarget>(),action);
-            string artistPrefab=action==WorkstationAction.Analyzer?"xray":action==WorkstationAction.Handbook?"closedBook":action==WorkstationAction.Report?"fax":null;
+            string artistPrefab=action==WorkstationAction.Analyzer?"xray":action==WorkstationAction.Handbook?"closedBook":null;
             if(artistPrefab!=null)
             {
                 var model=PlaceModel(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Environment/"+artistPrefab+".prefab"),parent,position-Vector3.up*scale.y*.5f,Mathf.Max(scale.x,scale.z));
@@ -105,7 +100,6 @@ namespace GameUp.Editor
             if(name.EndsWith("Label",System.StringComparison.Ordinal))
             {
                 position.y=.89f;position.z=-1.29f;height=.15f;width=.8f;
-                if(name=="FaxLabel"){position.x=-3.17f;width=.52f;}
                 if(name=="AnalyzerLabel")position.x=-2.32f;
                 if(name=="HandbookLabel")position.x=-1.3f;
                 if(name=="ApproveLabel"||name=="RejectLabel")width=.65f;

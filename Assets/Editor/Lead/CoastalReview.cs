@@ -50,6 +50,10 @@ namespace GameUp.Editor
             ((UnityEngine.UI.Text)so.FindProperty("caption").objectReferenceValue).text="";
             ((CanvasGroup)so.FindProperty("captionBackdrop").objectReferenceValue).alpha=0;
             ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/RearOffice.png",1920,1080);
+            camera.transform.SetPositionAndRotation(new Vector3(-17.3f,1.2f,19.4f),Quaternion.LookRotation(new Vector3(0,-.3f,3.1f)));camera.fieldOfView=60;
+            ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/HabitatWarning.png",1920,1080);
+            camera.transform.SetPositionAndRotation(new Vector3(0,1.75f,-2),Quaternion.LookRotation(new Vector3(0,-.35f,3.1f)));
+            ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/WorkstationSigns.png",1920,1080);
             director.Stop();
             var shaders=AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true).Where(p=>p.EndsWith(".shader")).Select(AssetDatabase.LoadAssetAtPath<Shader>).ToArray();
             foreach(var shader in shaders)if(ShaderUtil.ShaderHasError(shader))throw new InvalidOperationException("Shader error: "+shader.name);

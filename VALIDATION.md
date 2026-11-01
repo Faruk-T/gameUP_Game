@@ -5,7 +5,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Kontrol | Sonuç |
 |---|---|
 | Unity testleri | **47/47 geçti**, başarısız/atlanan yok |
-| Son kadraj düzeltmesi | **10/10 çevre/sinematik testi geçti**; gösteride kamera dönüşü sabit |
+| T cihazı temizliği | T kısayolu, tekrar rapor akışı, hedef/etiket, faks modeli ve FaxPresenter kaldırıldı; normal F analizi korunur |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
 | Söz ekranı | Tam metin ve atıf siyah fonda; 1080p ve 720p görüntüsü kontrol edildi |
@@ -17,11 +17,12 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Dinamik geçiş geometrisi | Kapalı yapraklar geçidi kapatır; açılan yapraklar kamera küre taramasına engel olmaz; statik batch kapalı |
 | Arka oda | Oranı korunan iki gerçek portre; iki arka köşede Türkiye/BM makam bayrakları, ağırlıklı taban ve dökümlü 3B kumaş |
 | Tek sinematik saati | Kamera / logo / parçacık Timeline'ı ile aktör pozları ve altyazılar aynı zamandan örneklenir |
-| Çevre modelleri | Esmanur'un 16/16 çevre mesh'i; faks/analiz sinyal ve kâğıt çocukları dahil |
-| Gerçek paket propları | Polygon Office tabela, afiş, tavan, ağaç, kaya, kutu ve düğmeleri; yazı yüksekliği kontrolü |
+| Çevre modelleri | 16/16 kaynak projede; 14 aktif, T faksı ve sinyali istek gereği kullanım dışı; xray parçaları korunur |
+| Gerçek paket propları | Dokuz Director/Out of Order tabela, temiz yazı alanı ve sahil direği; Polygon Office afiş/tavan/ağaç/kaya/kutu/düğmeleri |
 | Dağlar | 360° kayıtlı hacimli arazi; geçerli köşeler, zirve/vadiler, eğim/yükseklik rengi; runtime üretim yok |
-| Kullanıcı yerleşimleri | Faks, analiz, kitap ve bank düzeltmeleri kayıtlı; yeniden sahne üretiminde uygulanır |
+| Kullanıcı yerleşimleri | Mevcut sahneye hedefli değişiklik; gizlenen dekor ve son elle yapılan yerleşimler korunur |
 | Fiziksel belgeler | Kitapçık açıkken gerçek açık kitap; kapatınca kapalı kitap; gazete okunurken katlı kopya gizli |
+| Portre kadrajı | Yazı yok; görüntü oranı korunur, çerçeve tamamen dolar, taşan kenarlar maskelenir |
 | Kamera / ses devri | Açılıştan sonra tek etkin kamera ve AudioListener; gazete yalnız bitişten sonra açılır |
 | URP assetleri | Polygon Office materyalleri, gerçek Stylized Water mesh/dokuları, EPO Render Graph feature; derleme ve shader hatası yok |
 | Outline | Native çözünürlük; tek dilation; blur ve duvar arkasından görünüm yok |
@@ -46,7 +47,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/opening-polish-tests.xml` (47/47). Son kamera eğrisi düzeltmesinin çevre/sinematik kontrolleri: `Logs/opening-polish-final-assets.xml`. Sahne üretimi, mesh envanteri ve shader kontrolü: `Logs/opening-polish-final-art.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
+Ham rapor: `Logs/director-signs-tests.xml`. Hedefli sahne yenilemesi, mesh envanteri ve shader kontrolü: `Logs/director-signs-author.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 

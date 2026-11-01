@@ -8,7 +8,9 @@ Unity **6000.3.13f1**, Windows x64. Aktif dal: `feat/lead-coastal-cinematic`. Ay
 
 Yeni görevin başında 90 saniyelik atlanamayan açılış vardır: siyah fonda söz → carettaların kumdan denize geçip kavisli yüzmesi → ortalanmış COP31 logosunun yükselmesi → 24 renkli büyük havai fişek → yaklaşınca animasyonla açılan çift kapı → gıda güvenliği afişlerinin olduğu koridor → çalışma masası. Giriş boyunca kamera ve oynanış kilitlidir; gazete bitişten sonra açılır. Yeniden başlatma açılışı tekrarlamaz. Arka duvarda çerçeveli Atatürk/Cumhurbaşkanı portreleri, arka köşelerde ayaklı Türkiye/BM bayrakları bulunur.
 
-Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **T** son rapor; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+Fareyle bakış; **E/sol tık** inceleme; sürükleme döndürme; tekerlek yakınlık; **B** kitapçık; **F** analiz; **W** onay; **R** red. Ayrıştırma kutuları oyuncunun arkasındadır. Esc sıradan belgeyi kapatır veya duraklatır. Gazete ve acil faks açık onay gerektirir.
+
+T / Son rapor cihazı, kısayolu ve fiziksel faks sunumu kaldırıldı. Normal F analizi sonucu belge olarak açılır; Bakanlık acil faksı zorunlu belge ve tek seferlik ses bildirimiyle sürer. [Sanatçı kaynak eşleştirmesi](Docs/ARTIST_SYNC.md).
 
 ## Kampanya
 
@@ -36,7 +38,7 @@ Esmanur'un **31 mevcut modeli**, 31 denetim ürünü olarak kullanılır. Ürün
 | WorkstationInteractionController | Tek oynanış girdi sahibi |
 | NewspaperView / DocumentPresenter / ResultsPresenter | Kayıtlı UI sunumu |
 | FoodCondition shader | Aynı kaynak mesh üzerinde bozulma deseni ve şişme |
-| PauseMenu / SettingsPanel / FaxPresenter | Duraklatma, ayarlar, faks sunumu |
+| PauseMenu / SettingsPanel / DocumentPresenter | Duraklatma, ayarlar, belge ve acil bildirim sunumu |
 | IntroCinematic / OpeningTiming | Kayıtlı Timeline'ın tek saati, aktör/altyazı örnekleme ve kamera/HUD devri |
 | ShorelineTurtle | Kum, kavisli suya giriş, dönüşlü ve hafif dalışlı yüzme |
 | WorkstationDocuments | Belge olayından fiziksel gazete ve açık/kapalı kitap görünürlüğü |
@@ -54,6 +56,7 @@ GameUP32 menüsü:
 - **Render campaign press photographs:** mevcut modellerden üç haber fotoğrafını render eder; grafik aygıtı gerekir.
 - **Rebuild Game room and newspaper:** kampanya, varyantlar, ürün prefabları ve yalnız Game sahnesini yeniler.
 - **Rebuild coastal facility and opening:** yeni assetlerin URP ayarlarıyla kıyı, tesis ve Timeline açılışını Game sahnesine kaydeder.
+- **Refresh signs, portraits and artist props:** mevcut sahnenin yerleşimini korur; Director/Out of Order tabelaları ve çerçeveyi dolduran portreleri günceller, kullanım dışı cihazı temizler.
 - **Rebuild First, Menu and Game:** üç sahneyi yeniden yazar.
 - **Esmanur model inventory:** kaynak ve aktif ürün raporunu yeniler.
 - **Build / Windows:** Builds/Windows/AntalyaDenetimMasasi.exe üretir.
@@ -66,7 +69,7 @@ Bu komutlar importta veya oyun açılışında çalışmaz. Elle asset/sahne dü
 
 ## Doğrulama ve kaynaklar
 
-**47/47 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 sanatçı çevre parçası, gerçek paket tabela/afişleri, arka duvar portreleri ve ayaklı bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmaz.
+**47/47 test:** 90 saniyelik giriş kilidi, yüzme → ortalanmış logo → renkli havai fişek → kapı açılması → koridor sırası, kapanan efektler, duvar kesmeyen kamera rotası, animasyonlu beş caretta, 16/16 kaynak çevre parçası (14 aktif, 2 kullanım dışı), Director/Out of Order tabelalar, çerçeveyi dolduran portreler, bayraklar, hacimli arazi ve URP/outline bağlantıları; ardından normal F analizi, acil faks, 31/31 karar, 15/15 ayrıştırma, 340 puan. Tümüne onay 16/31, tümüne red 15/31 ile başarısızdır. Açılmamış kategori, balıklı aktif haber, yabancı ürün modeli, eksik varyant, shader hatası, boş/kesilen gazete metni, afiş taşması, acil faks sınırı, pause/restart ve menüye dönüş denetlenir. Bu çalışma için build alınmadı.
 
 [Doğrulama](VALIDATION.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Görsel kaynakları](Assets/Art/Menu/ART_DIRECTION.md) · [Gazete dokusu/fotoğraflar](Assets/Art/Documents/ART_DIRECTION.md).
 

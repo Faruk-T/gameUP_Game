@@ -57,7 +57,6 @@ namespace GameUP.Interaction
             if (keyboard != null)
             {
                 if (keyboard.bKey.wasPressedThisFrame) { session.OpenHandbook(); return; }
-                if (keyboard.tKey.wasPressedThisFrame) { session.ReopenReport(); return; }
                 if (keyboard.eKey.wasPressedThisFrame && (inspecting || hovered != null && hovered.Action == WorkstationAction.Product)) ToggleInspection();
                 if (keyboard.wKey.wasPressedThisFrame) Decide(PlayerDecision.Approve);
                 if (keyboard.rKey.wasPressedThisFrame) Decide(PlayerDecision.Reject);
@@ -114,7 +113,6 @@ namespace GameUP.Interaction
                 case WorkstationAction.Approve: Decide(PlayerDecision.Approve); break;
                 case WorkstationAction.Reject: Decide(PlayerDecision.Reject); break;
                 case WorkstationAction.Handbook: session.OpenHandbook(); break;
-                case WorkstationAction.Report: session.ReopenReport(); break;
                 default:
                     if (target.Action >= WorkstationAction.Paper && target.Action <= WorkstationAction.Contaminated)
                         session.SelectWaste((WasteCategory)((int)target.Action - (int)WorkstationAction.Paper));
