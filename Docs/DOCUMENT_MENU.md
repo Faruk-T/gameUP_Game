@@ -1,5 +1,7 @@
 # Evrak temalı ana menü
 
+**Güncel durum:** Arka plan gerçek tesis kamerasıdır; UI fontu Patrick Hand'dir. V2 kâğıtlar metinsizdir, rehber ve ekip metinleri Unity'de yazılır. Bu dosyanın aşağıdaki ilk sprite paketi tarihsel ilk tasarımı açıklar; güncel uygulama [FACILITY_POLISH.md](FACILITY_POLISH.md) içindedir.
+
 Menü, kullanıcının gönderdiği `Gemini_Generated_Image_s0la2ps0la2ps0la.jpg` referansındaki manila dosya, metal klipsli pano ve damgalı belge tasarımına göre yenilendi. Antalya limanı arka planı ve özgün COP31 logosu korunur.
 
 ## Teslim edilen görseller

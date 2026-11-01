@@ -4,15 +4,16 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **59/59 geçti**, başarısız/atlanan yok; tam koşu 143 saniye |
-| Evrak ana menüsü | Dört şeffaf 1024×1536 sprite; çalışan native düğme/slider/toggle; hassasiyet ve geri dönüş bağlantıları gerçek menüyle geçti; 4:3, 16:9 ve 21:9 görüntü kontrolü |
+| Unity testleri | **59/59 geçti**, başarısız/atlanan yok; tam koşu 149.35 saniye; son UI/asset temizliği sonrası sahne referans kontrolü ayrıca geçti |
+| Evrak ana menüsü / pause | Menü gerçek tesis kamerasını gösterir; ikinci oynanış sistemi veya AudioListener yoktur. Pause aynı pano/kâğıt düzenindedir; 4:3, 16:9 ve 21:9 menü görüntüsü kontrol edildi |
+| El yazısı fontu | Etkin üç sahnedeki tüm Text bileşenleri, ürün baskıları ve kitap metinleri Patrick Hand; Türkçe karakterler ve tabela/gazete taşmaları kontrol edildi |
 | Güncel kaynak entegrasyonu | Faruk `04a87a2/a9fee0f`, Esmanur `4b6292a`, Özgür `10bb33f`; mevcut sahne ve sinematik korunur |
-| Kitapçık doğrulaması | Üç günün haber/kuralları, duyuru onayından sonra etkinleşen kural, restart temizliği; kaydırma, başlık ve içerik yerleşimi geçti |
+| Kitapçık doğrulaması | Özgür b317b5f Book-Page Curl; gerçek sayfa çevirme, sürükleme ortasında kapatma/tekrar açma, gün 1–2–3 ve onaylanmış acil kural aktarımı geçti; metin gerçek HandbookContent/Flow kaynağından gelir |
 | Bakanlık faksı | Gerçek faks/siren, hata bildirimi, analiz ve vardiya baskısı; T / eski raporu açma eylemi yok; normal F analizi korunur |
 | Günlük yanlış sınırı | Yanlış karar ve yanlış ayrıştırma ayrı sayılır; üçüncü yanlışın bildirimi sonrası kayıp; her sabah/restart sıfır; eski callback ikinci kez sayılmaz |
-| Sağ bant | 32 metre, odanın dışından giriş/çıkış, duvar açıklıkları, masa ile boşluk; hareket süresi mesafeyle orantılı |
-| İnceleme | Fare girdisinde kamera/oyuncu sabit; yalnız ürün döner; inceleme bitince ürün banttaki pozuna döner |
-| Ürün baskıları | 31 üründe 62 kalıcı ön/arka texture; tam tür/SKT/içerik/kaynak/ambalaj; planar etiketler, BC7, mipmap, runtime Canvas/texture üretimi yok |
+| Sağ bant | Sağ duvar açıklığından kapalı servis kabul bölümü; 35.45 m rota ve kayıtlı köşe waypoint'i. Ürün oyuncunun doğrudan sağında x=2.1, z=-3.2 noktasında durur; masa ile boşluk korunur |
+| İnceleme | Kilitli imleçte gerçek fare deltası ürünü döndürür; ekran konumuna bağlı sürükleme eşiği yoktur. Kamera sabit; nesne merkezine göre döner, yaklaşık 0.86 m normalize boyut; bırakınca özgün poz/ölçek geri gelir |
+| Ürün baskıları | 31 üründe özgün albedo + ön/arka bilgiler tek UV atlasına işlenir. Kaynak modeller korunur; ayrı etiket mesh/Renderer yok; BC7/mipmap ve runtime texture üretimi yok. 198 kullanılmayan eski etiket asseti referans taramasından sonra çıkarıldı |
 | Ses | First'te tek AudioManager/AudioListener, beş kanal, tüm Özgür sesleri ve iki müzik; uzun kayıtlar Streaming; duraklatma/belge eşgüdümü |
 | Gazete referansı | Yıpranmış kâğıt, caretta halftone fotoğrafı, büyük başlık ve görev kutusu; üç günün metinleri kesilmez; faks/rapor aynı kâğıt dokusunda |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
@@ -59,7 +60,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Güncel tam koşu: `Logs/DocumentMenu/tests.xml` (59/59, 142.76 saniye), `tests.log` ve `author-final.log`. Önceki workstation kaynak/authoring/görsel kontrolleri `Logs/WorkstationUpgrade` içindeki `author.log`, `surfaces.log`, `newspaper.log` dosyalarındadır. Menü görüntüleri `Docs/Previews/Menu`; workstation görüntüleri `Docs/Previews/Workstation`; kıyı/sinematik görüntüleri `Docs/Previews/Coastal` altındadır. Gerçek oynanış, kitapçık, faks bildirimi, kayıp ve vardiya sonuçları `Logs/Visuals` içindedir. Yerel loglar Git'e eklenmez. [Workstation kapsamı](Docs/WORKSTATION_UPGRADE.md) · [Evrak menüsü](Docs/DOCUMENT_MENU.md).
+Güncel tam koşu: `Logs/FacilityPolish/tests-final.xml` (59/59, 149.35 saniye) ve `tests-final.log`. UI son düzenlemesi ve eski etiketlerin çıkarılmasından sonra `references-final.xml` kontrolü de geçti (1/1). Başarılı üretim kayıtları `author-pass2.log`, `scenes-final.log`, `ui-final.log` dosyalarıdır. Menü görüntüleri `Docs/Previews/Menu`; yeni kitap ve pause görüntüleri `Docs/Previews/Facility`; workstation görüntüleri `Docs/Previews/Workstation`; önceki kıyı/sinematik görüntüleri `Docs/Previews/Coastal` altındadır. Yerel loglar Git'e eklenmez. [Tesis/UV/kitap/font uygulaması](Docs/FACILITY_POLISH.md) · [Workstation kapsamı](Docs/WORKSTATION_UPGRADE.md).
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 

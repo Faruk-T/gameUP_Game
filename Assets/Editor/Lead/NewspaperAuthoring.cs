@@ -25,7 +25,7 @@ namespace GameUp.Editor
             Image("PhotoFrame",paper.transform,-370,-40,566,326,Print);
             var photo=Image("PressPhotograph",paper.transform,-370,-40,560,320,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(NewspaperV2Authoring.CarettaPath));
             photo.preserveAspect=true;
-            var caption=Text("PhotoCaption",paper.transform,"",-370,-240,600,40,17,Print);caption.fontStyle=FontStyle.Italic;Set(view,"caption",caption);
+            var caption=Text("PhotoCaption",paper.transform,"",-370,-240,600,44,17,Print);caption.fontStyle=FontStyle.Italic;Set(view,"caption",caption);
             var left=Text("ArticleColumnLeft",paper.transform,"",-370,-370,600,210,22,Print);
             var right=Text("ArticleColumnRight",paper.transform,"",355,15,630,265,24,Print);
             left.font=right.font=Title;left.lineSpacing=right.lineSpacing=1.04f;

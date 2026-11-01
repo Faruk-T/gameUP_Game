@@ -1,5 +1,25 @@
 # Kitap sistemi — geliştirici ve AI rehberi
 
+## Güncel üretim entegrasyonu
+
+Bu dalda kitap gerçek Game sahnesine entegredir. Aşağıdaki ilk paket notlarının manager psödo kodu ve sabit vardiya sprite akışı, üretim sahnesinde kullanılmaz.
+
+- Tek veri sahibi `GameSessionController.Flow` ve kampanya verisidir. `DocumentPresenter`, `GuideBookView.Show(document.Body, day)` çağırır. Gövde `HandbookContent.Build(Flow)` çıktısıdır; gün, tarih, açılmış ürün grupları ve aktif kurallar buradan gelir.
+- `GuideBookView` gerçek `DayDefinition.DayNumber` değerini `Book.TrySetDay` ile iletir. `RefreshDayFromManager` ve Inspector günüyle çalışan geçici yedek kaldırılmıştır. Bileşen oyun yöneticisi aramaz.
+- `Book.SetPageCount` görünür sayfa sayısını, `Book.CurrentDay` gerçek gün numarasını tutar. `currentPage` hâlâ sayfa indeksidir; gün ilerletmek için kullanılmaz.
+- On altı kayıtlı boş sayfa kapasitesi vardır; görünür sayı gerçek metnin sayfalamasından belirlenir. `PageDisplayed(Image, index)` olayı dört kayıtlı UI yüzeyinin metnini eşler. Böylece Patrick Hand metni çevirme sırasında kendi sayfasıyla birlikte döner ve maskelenir. Runtime texture veya UI nesnesi oluşturulmaz.
+- Günlük sprite slotları boş sayfa arka planı taşır; haber, SKT kuralları ve acil duyuru metni eski vardiya resimlerinden okunmaz. Yeni kural yalnız faks onaylandıktan sonra gerçek Flow.CurrentRules üzerinden görünür.
+- B / Esc tek `WorkstationInteractionController` üzerinden belge açar/kapatır. Üretim sahnesine `BookToggle`, ikinci Canvas/EventSystem veya bağımsız manager eklemeyin. Paketin demo prefablarını doğrudan Game'e sürüklemeyin.
+- `GuideBookAuthoring` gerçek temel Book prefabını, maskeleri ve pointer EventTrigger bağlantılarını kullanır; `DocumentPresenter.handbook` ve dört yazı yüzeyi Editor'da bağlanır.
+- `OnEnable` / `OnDisable` içinde parent veya sibling değiştirmeyen LateUpdate sıfırlaması korunur. Açılışta sayfa sıfırlanır; sürükleme ortasında kapanma iptal edilir. Animasyon tamamlanması unscaled zaman kullanır.
+- Sayfa çevirme sesi mevcut AudioManager'a bağlıdır. Tek oturum ve belge kuyruğu korunur; kitap açıkken ürün/kamera girdisi engellenir.
+
+Aktif bağlantı yolları: `Assets/Scripts/Gameplay/GuideBookView.cs`, `DocumentPresenter.cs`, `HandbookContent.cs`, `Assets/Editor/Lead/GuideBookAuthoring.cs`. Ana uygulama notu: `Docs/FACILITY_POLISH.md`. Unity entegrasyon testi gerçek sayfa çevirme, sürüklemede kapatma, tekrar açılış ve gün/aktif acil kural bilgisini kontrol eder. Windows build alınmaz.
+
+---
+
+## İlk paket sürümünün davranışı (tarihsel kaynak notları)
+
 Bu belge, bu projedeki Book-Page Curl paketinin **mevcut özelleştirilmiş uygulamasını** açıklar. Paketin orijinal sürümüyle bu projedeki günlük içerik, Input System ve açma-kapama davranışları aynı değildir. Değişiklik yapmadan önce bu belgeyle birlikte ilgili C# dosyasını ve kullanılan prefabın Inspector değerlerini kontrol edin.
 
 ## 1. Sistemin amacı ve temel kurallar

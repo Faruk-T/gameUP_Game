@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(Book))]
 public class AutoFlip : MonoBehaviour {
@@ -60,12 +60,12 @@ public class AutoFlip : MonoBehaviour {
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2)*0.9f;
         //float h =  ControledBook.Height * 0.5f;
         float h = Mathf.Abs(ControledBook.EndBottomRight.y)*0.9f;
-        //y=-(h/(xl)^2)*(x-xc)^2          
-        //               y         
-        //               |          
-        //               |          
-        //               |          
-        //_______________|_________________x         
+        //y=-(h/(xl)^2)*(x-xc)^2
+        //               y
+        //               |
+        //               |
+        //               |
+        //_______________|_________________x
         //              o|o             |
         //           o   |   o          |
         //         o     |     o        | h

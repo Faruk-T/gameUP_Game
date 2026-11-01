@@ -13,6 +13,7 @@ namespace GameUp.Gameplay
     {
         [SerializeField] private GameObject panel, documentPage;
         [SerializeField] private NewspaperView newspaper;
+        [SerializeField] private GuideBookView handbook;
         [SerializeField] private Text kind, title, body, confirmationLabel;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Button confirmButton;
@@ -34,10 +35,13 @@ namespace GameUp.Gameplay
                 if(document.Kind==DocumentKind.Newspaper)ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.Newspaper);
                 token = document.Token;
                 bool isNews = document.Kind == DocumentKind.Newspaper;
-                documentPage.SetActive(!isNews);
-                if (isNews) newspaper.Show(day, rules);
+                bool isBook = document.Kind == DocumentKind.Handbook;
+                documentPage.SetActive(!isNews && !isBook);
+                if (isBook) { newspaper.Hide(); handbook.Show(document.Body, day); }
+                else if (isNews) { handbook.Hide(); newspaper.Show(day, rules); }
                 else
                 {
+                    handbook.Hide();
                     newspaper.Hide();
                     kind.text = document.Kind switch
                     {
@@ -55,13 +59,17 @@ namespace GameUp.Gameplay
             }
             if (changed || opened)
             {
-                if (document.Kind == DocumentKind.Newspaper) newspaper.SelectConfirmation();
-                else confirmButton.Select();
+                if (document.Kind != DocumentKind.Handbook)
+                {
+                    if (document.Kind == DocumentKind.Newspaper) newspaper.SelectConfirmation();
+                    else confirmButton.Select();
+                }
             }
         }
         public void Hide()
         {
             if(panel.activeSelf&&visibleKind==DocumentKind.Handbook)ApplicationRoot.Require().Audio.PlayCue(GameAudioCue.BookClose);
+            handbook.Hide();
             panel.SetActive(false);
         }
         public void ScrollChanged(Vector2 position)

@@ -1,0 +1,21 @@
+{
+  "mode": "built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "name": "ClipboardPaperV2",
+      "source": "ClipboardMainMenu",
+      "prompt": "Edit target: supplied clipboard PNG. Keep exact clipboard shape, worn metal clip, brown hardboard, layered cream paper and paper patina, source image proportions 1024x1536, front-on alignment and existing genuine transparency. Remove ALL typography on paper, including T.C. ÇEVRE VE GIDA DENETİMİ and COP31 ANTALYA, replacing only the letters with matching empty aged paper. Retain the thin horizontal rule in its exact location and every other material detail. Make the entire paper completely text-free. No new marks, buttons or objects. Actual transparent alpha outside clipboard; preserve transparency. One individual blank UI sprite."
+    },
+    {
+      "name": "SettingsPaperV2",
+      "source": "SettingsPaper",
+      "prompt": "Edit target: supplied settings-folder PNG. Keep exact 1024x1536 source proportions and layout, the folder, clips, cords, wear and cream paper, all thin ink rules, small black speaker/mouse/monitor icons in their exact places, EMPTY square checkbox, decorative small blue circular emblem. Remove all readable text: AYARLAR, Ana ses, Fare hassasiyeti, Görüş açısı, Tam ekran. Replace only those letters with matching aged paper. No sliders, no button, no labels, no new elements. Preserve genuine alpha outside folder, transparent background. One separate flat blank settings UI sprite."
+    },
+    {
+      "name": "CreditsPaperV2",
+      "source": "CreditsDocument",
+      "prompt": "Edit target: supplied credits-document PNG. Preserve exact 1024x1536 canvas dimensions and the white paper document, paperclip, layered sheets, thin black section frames/lines, decorative blue emblem, red circular stamp rings and two blank bottom buttons. Remove ALL readable letters and numbers in every section, header, date, paragraphs, quote, attribution, team and credits. Also remove KAYIT and ONAY letters INSIDE stamp rings, keeping the empty circular stamp shapes. Replace letters cleanly with matching white aged paper. All text will be recreated in Unity using a handwriting font. No text of any kind, no new objects. Genuine transparent alpha outside sheets; preserve source transparency."
+    }
+  ]
+}

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using GameUp.App;
+using GameUp.Gameplay;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEditor.SceneManagement;
@@ -35,17 +36,16 @@ namespace GameUp.Editor
         internal static void CreateScene()
         {
             ImportArtwork();
+            var backdrop = MenuEnvironmentAuthoring.ReadSource();
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            MenuEnvironmentAuthoring.Place(backdrop);
             var canvas = Canvas("MenuCanvas");
             canvas.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-            var background = Image("Antalya", canvas.transform, 0, 0, 1920, 1080, Color.white,
-                AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/AntalyaHarbour.png"));
-            var fit = background.gameObject.AddComponent<AspectRatioFitter>();
-            fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent; fit.aspectRatio = 16f / 9;
             Overlay("Atmosphere", canvas.transform, new Color(.025f, .055f, .05f, .42f)).GetComponent<Image>().raycastTarget = false;
             var controller = new GameObject("MenuController").AddComponent<MenuController>();
             var home = Rect("Home", canvas.transform, 0, 0, 1920, 1080); Stretch(home);
-            Paper("Clipboard", home, "ClipboardMainMenu", -500, 0, 690, 1035);
+            var clipboard = Paper("Clipboard", home, "ClipboardPaperV2", -500, 0, 690, 1035);
+            DocumentText("Authority", clipboard, "T.C. ÇEVRE VE GIDA DENETİMİ\nCOP31 ANTALYA", 512, 397, 810, 155, 32, TextAnchor.MiddleCenter);
             Legible(Text("Title", home, "Antalya\nDenetim Masası", 430, 35, 780, 300, 68, PaperColor, TextAnchor.MiddleCenter, true));
             Legible(Text("Subtitle", home, "Bir doğru karar, daha temiz bir kıyı.", 430, -150, 760, 65, 29, PaperColor, TextAnchor.MiddleCenter, true));
             Legible(Text("Dates", home, "9–20 KASIM 2026  •  ANTALYA, TÜRKİYE", 430, -245, 760, 50, 23, PaperColor, TextAnchor.MiddleCenter));
@@ -63,17 +63,19 @@ namespace GameUp.Editor
             var settings = CreateSettings(canvas.transform);
 
             var help = Overlay("Help", canvas.transform, new Color(.015f, .025f, .02f, .82f));
-            var guide = Paper("Document", help.transform, "InspectorGuide", 0, 0, 700, 1050);
-            var helpBack = PrintedButton("Back", guide, "Menüye dön", 737, 1396, 335, 112, controller.ShowHome);
-            var note = At("ShiftRule", guide, 348, 1387, 370, 125);
-            var rule = note.gameObject.AddComponent<Text>();
-            rule.font = Title; rule.fontSize = 15; rule.color = DocumentInk; rule.raycastTarget = false;
-            rule.text = "Üç yanlış aynı gün vardiyayı bitirir.\nSayaç her sabah sıfırlanır.";
-            rule.alignment = TextAnchor.MiddleLeft;
+            var guide = Paper("Document", help.transform, "ClipboardPaperV2", 0, 0, 700, 1050);
+            DocumentText("GuideTitle", guide, "DENETÇİ REHBERİ", 512, 392, 810, 120, 43, TextAnchor.MiddleCenter);
+            var instructions = DocumentText("HelpBody", guide,
+                "Her sabah gazeteyi oku; o günün kurallarıyla çalış.\n\nE / Sol tık — Ürünü incele.\nFare hareketi — Yalnız ürünü döndür.\nTekerlek — Yaklaş / uzaklaş.\nE / Sağ tık — Ürünü bırak.\n\nB — El kitapçığı\nF — Laboratuvar analizi\nW — Onay: piyasaya gönder\nR — Red: gıdayı imha et\n\nRedden sonra ambalajı kâğıt, cam, plastik veya kontamine atık kutusuna gönder.\n\nAcil faksı onaylayınca yeni kural sonraki ürünlere uygulanır.\nAynı gün üç yanlış vardiyayı bitirir; sayaç her sabah sıfırlanır.\n\nEsc — Belgeyi kapat / Duraklat\nZorunlu gazete ve faksı devam düğmesiyle onayla.",
+                512, 906, 810, 880, 26, TextAnchor.UpperLeft);
+            instructions.resizeTextForBestFit = true; instructions.resizeTextMinSize = 20; instructions.resizeTextMaxSize = 26;
+            var backPoint = Position(guide, 512, 1398);
+            var helpBack = PaperButton("Back", guide, "Menüye dön", backPoint.x, backPoint.y, 350, 66, controller.ShowHome);
             Navigate(new Selectable[] { helpBack }); help.SetActive(false);
 
             var about = Overlay("About", canvas.transform, new Color(.015f, .025f, .02f, .82f));
-            var credits = Paper("Document", about.transform, "CreditsDocument", 0, 0, 700, 1050);
+            var credits = Paper("Document", about.transform, "CreditsPaperV2", 0, 0, 700, 1050);
+            Credits(credits);
             var site = PrintedButton("OfficialSite", credits, "COP31 resmî sitesi", 338, 1367, 467, 106, controller.OpenCOP31);
             var aboutBack = PrintedButton("Back", credits, "Menüye dön", 764, 1367, 326, 106, controller.ShowHome);
             NavigateHorizontal(site, aboutBack); about.SetActive(false);
@@ -98,7 +100,12 @@ namespace GameUp.Editor
         {
             var root = Overlay("Settings", parent, new Color(.015f, .025f, .02f, .82f));
             var panel = root.AddComponent<SettingsPanel>();
-            var document = Paper("Document", root.transform, "SettingsPaper", 0, 0, 680, 1020);
+            var document = Paper("Document", root.transform, "SettingsPaperV2", 0, 0, 680, 1020);
+            DocumentText("SettingsTitle", document, "AYARLAR", 520, 305, 650, 120, 52, TextAnchor.MiddleCenter);
+            DocumentText("VolumeLabel", document, "Ana ses", 450, 475, 460, 90, 34, TextAnchor.MiddleLeft);
+            DocumentText("SensitivityLabel", document, "Fare hassasiyeti", 480, 662, 520, 90, 34, TextAnchor.MiddleLeft);
+            DocumentText("FovLabel", document, "Görüş açısı", 450, 860, 460, 90, 34, TextAnchor.MiddleLeft);
+            DocumentText("FullscreenLabel", document, "Tam ekran", 510, 1040, 430, 90, 34, TextAnchor.MiddleLeft);
             var volume = DocumentSlider(document, "Volume", 565, 0, 1, out var volumeValue);
             var sensitivity = DocumentSlider(document, "Sensitivity", 755, .03f, .3f, out var sensitivityValue);
             var fov = DocumentSlider(document, "FieldOfView", 955, 45, 80, out var fovValue);
@@ -106,7 +113,7 @@ namespace GameUp.Editor
             var hitImage = hit.gameObject.AddComponent<Image>(); hitImage.color = Color.clear;
             var toggle = hit.gameObject.AddComponent<Toggle>();
             var square = Image("BoxInterior", hit, (251 - 500) * 680f / 1024, 0, 27, 27, new Color(.83f, .74f, .56f));
-            var check = Text("Check", square.transform, "✓", 0, 0, 35, 35, 30, DocumentInk, TextAnchor.MiddleCenter);
+            var check = Text("Check", square.transform, "×", 0, 0, 35, 35, 28, DocumentInk, TextAnchor.MiddleCenter);
             toggle.targetGraphic = square; toggle.graphic = check;
             var toggleColors = toggle.colors; toggleColors.highlightedColor = new Color(1, .86f, .45f);
             toggleColors.selectedColor = toggleColors.highlightedColor; toggle.colors = toggleColors;
@@ -157,7 +164,7 @@ namespace GameUp.Editor
             return Rect(name, document, p.x, p.y, w * document.sizeDelta.x / 1024, h * document.sizeDelta.y / 1536);
         }
 
-        private static Button PaperButton(string name, Transform parent, string label, float x, float y, float w, float h, UnityAction action)
+        internal static Button PaperButton(string name, Transform parent, string label, float x, float y, float w, float h, UnityAction action)
         {
             var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(ButtonPath);
             if (!sprite) throw new FileNotFoundException(ButtonPath);
@@ -196,10 +203,10 @@ namespace GameUp.Editor
             right.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnLeft = left, selectOnRight = left };
         }
 
-        private static void ImportArtwork()
+        internal static void ImportArtwork()
         {
             AssetDatabase.Refresh();
-            foreach (var name in new[] { "ClipboardMainMenu", "SettingsPaper", "InspectorGuide", "CreditsDocument" })
+            foreach (var name in new[] { "ClipboardPaperV2", "SettingsPaperV2", "CreditsPaperV2", "InspectorGuide" })
             {
                 string path = ArtPath + name + ".png";
                 var importer = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -224,6 +231,41 @@ namespace GameUp.Editor
             AssetDatabase.SaveAssets();
         }
 
+        private static Text DocumentText(string name, RectTransform document, string value, float x, float y, float w, float h, int size, TextAnchor alignment)
+        {
+            var rect = At(name, document, x, y, w, h);
+            var text = Text(name + "Ink", rect, value, 0, 0, rect.sizeDelta.x, rect.sizeDelta.y, size, DocumentInk, alignment, true);
+            text.resizeTextForBestFit = true; text.resizeTextMinSize = 18; text.resizeTextMaxSize = size;
+            return text;
+        }
+        private static void Credits(RectTransform document)
+        {
+            DocumentText("Heading", document, "ORTAK\nGELECEK İÇİN", 520, 235, 500, 210, 45, TextAnchor.MiddleCenter);
+            DocumentText("Conference", document, "COP31 • 9–20 Kasım 2026 • Antalya", 512, 397, 800, 65, 26, TextAnchor.MiddleCenter);
+            DocumentText("Mission", document, "Denizleri, caretta carettaların yaşam alanlarını ve gıda güvenliğini korumak; atığı kaynağında azaltmakla başlar. Bu oyunda COP31 hazırlıklarında görevli bir denetçisin.", 512, 566, 775, 205, 28, TextAnchor.MiddleLeft);
+            DocumentText("Quote", document, "“İklim krizi yalnızca çevresel değil, aynı zamanda ahlaki bir sorumluluk alanıdır.”\nEmine Erdoğan • cop31.tr", 512, 777, 775, 170, 27, TextAnchor.MiddleCenter);
+            DocumentText("Team", document, "Ekip: Esmanur: 3D Artist / Özgür: etkileşim / Faruk: veri ve kurallar / Hasan: akış ve entegrasyon", 512, 935, 775, 105, 27, TextAnchor.MiddleLeft);
+            DocumentText("Credits", document, "Görseller: yapay zekâ ile üretilmiştir.\nMenü öğeleri: Feathered Fortune proje arşivi.\nYazı tipi: Patrick Hand / SIL OFL.\nKitap animasyonu: Özgür / Book-Page Curl.\nOyundaki haberler ve ürün partileri kurmacadır.", 512, 1150, 775, 240, 25, TextAnchor.MiddleLeft);
+            DocumentText("Stamp1", document, "KAYIT", 848, 238, 200, 65, 31, TextAnchor.MiddleCenter).transform.localEulerAngles = new Vector3(0, 0, 14);
+            DocumentText("Stamp2", document, "ONAY", 885, 394, 150, 65, 29, TextAnchor.MiddleCenter).transform.localEulerAngles = new Vector3(0, 0, 14);
+        }
+        internal static void CreatePause(GameObject canvas, PauseMenu pause)
+        {
+            var old = canvas.transform.Find("PauseOverlay"); if (old) UnityEngine.Object.DestroyImmediate(old.gameObject);
+            var overlay = Overlay("PauseOverlay", canvas.transform, new Color(.01f, .025f, .02f, .76f));
+            var home = Rect("PauseHome", overlay.transform, 0, 0, 1920, 1080); Stretch(home);
+            var paper = Paper("Clipboard", home, "ClipboardPaperV2", 0, 0, 620, 930);
+            DocumentText("PauseTitle", paper, "VARDİYA MOLASI", 512, 395, 800, 135, 42, TextAnchor.MiddleCenter);
+            var resume = PaperButton("Resume", home, "Devam et", 0, 15, 430, 76, pause.Resume);
+            var settings = PaperButton("Settings", home, "Ayarlar", 0, -92, 430, 76, pause.ShowSettings);
+            var menu = PaperButton("Menu", home, "Ana menü", 0, -199, 430, 76, pause.ReturnToMenu);
+            Text("PauseHint", home, "Analiz ve ürün hareketi,\ndevam ettiğinde sürer.", 0, -320, 440, 95, 26, DocumentInk, TextAnchor.MiddleCenter, true);
+            Navigate(new[] { resume, settings, menu });
+            Set(pause, "overlay", overlay); Set(pause, "home", home.gameObject); Set(pause, "resume", resume);
+            Set(pause, "settings", CreateSettings(overlay.transform)); WorkstationUIAuthoring.AddButtonSounds(overlay);
+            overlay.SetActive(false);
+        }
+
         public static void Capture()
         {
             var scene = EditorSceneManager.OpenScene(ProductionProjectSetup.MenuPath);
@@ -242,11 +284,12 @@ namespace GameUp.Editor
                     document.Find("SensitivityValue").GetComponent<Text>().text = "0.15";
                     document.Find("FieldOfViewValue").GetComponent<Text>().text = "65°";
                 }
-                ProductionSnapshot.Capture(canvas, null, "Docs/Previews/Menu/" + name + ".png", 1920, 1080);
+                var camera = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<Camera>()).Single();
+                ProductionSnapshot.Capture(canvas, camera, "Docs/Previews/Menu/" + name + ".png", 1920, 1080);
                 if (name == "Home")
                 {
-                    ProductionSnapshot.Capture(canvas, null, "Docs/Previews/Menu/Home4x3.png", 1280, 960);
-                    ProductionSnapshot.Capture(canvas, null, "Docs/Previews/Menu/HomeUltrawide.png", 2560, 1080);
+                    ProductionSnapshot.Capture(canvas, camera, "Docs/Previews/Menu/Home4x3.png", 1280, 960);
+                    ProductionSnapshot.Capture(canvas, camera, "Docs/Previews/Menu/HomeUltrawide.png", 2560, 1080);
                 }
             }
             EditorSceneManager.OpenScene(ProductionProjectSetup.FirstPath);

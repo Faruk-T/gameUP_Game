@@ -1,5 +1,5 @@
-﻿//The implementation is based on this article:http://rbarraza.com/html5-canvas-pageflip/
-//As the rbarraza.com website is not live anymore you can get an archived version from web archive 
+//The implementation is based on this article:http://rbarraza.com/html5-canvas-pageflip/
+//As the rbarraza.com website is not live anymore you can get an archived version from web archive
 //or check an archived version that I uploaded on my website: https://dandarawy.com/html5-canvas-pageflip/
 
 using UnityEngine;
@@ -33,13 +33,26 @@ public class Book : MonoBehaviour {
     [SerializeField] DailyPages[] dailyPages = new DailyPages[0];
     public int CurrentDay { get { return currentDay; } }
     DailyPages pendingDay;
+    [SerializeField] private int pageCount = 4;
+    public event System.Action<Image, int> PageDisplayed;
+    public void SetPageCount(int count)
+    {
+        if (count < 1 || count > bookPages.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+        pageCount = count;
+    }
+    private void SetPage(Image image, int index)
+    {
+        bool valid = index >= 0 && index < pageCount;
+        image.sprite = valid ? bookPages[index] : background;
+        PageDisplayed?.Invoke(image, valid ? index : -1);
+    }
     public bool interactable=true;
     public bool enableShadowEffect=true;
     //represent the index of the sprite shown in the right page
     public int currentPage = 0;
     public int TotalPageCount
     {
-        get { return bookPages.Length; }
+        get { return pageCount; }
     }
     public Vector3 EndBottomLeft
     {
@@ -53,7 +66,7 @@ public class Book : MonoBehaviour {
     {
         get
         {
-            return BookPanel.rect.height ; 
+            return BookPanel.rect.height ;
         }
     }
     public Image ClippingPlane;
@@ -76,7 +89,7 @@ public class Book : MonoBehaviour {
     Vector3 ebr;
     //Edge Bottom Left
     Vector3 ebl;
-    //follow point 
+    //follow point
     Vector3 f;
     bool pageDragging = false;
     // Keep the initiating pointer so another finger/device cannot take over the curl.
@@ -134,26 +147,13 @@ public class Book : MonoBehaviour {
     {
         if (!Application.isPlaying) return;
         ResetBook();
-        RefreshDayFromManager();
+
     }
 
     void OnDisable()
     {
         if (!Application.isPlaying) return;
         ResetBook();
-    }
-
-    /// <summary>Read the latest game day whenever the book is opened.</summary>
-    void RefreshDayFromManager()
-    {
-        // PSEUDO KOD: Burayi oyunun gun manager'i hazir oldugunda bagla.
-        // int oyunGunu = GameManager.Instance.CurrentDay;
-        // SetDay(oyunGunu);
-        // return; // Asagidaki Inspector yedegini calistirma.
-
-        // Manager baglanana kadar Inspector'daki gunu kullan.
-        if (dailyPages != null && dailyPages.Length > 0)
-            SetDay(currentDay);
     }
 
     /// <summary>Cancel a flip and return to the first page without firing OnFlip.</summary>
@@ -201,8 +201,8 @@ public class Book : MonoBehaviour {
 
     void Start()
     {
-        if (!canvas) canvas=GetComponentInParent<Canvas>();
-        if (!canvas) Debug.LogError("Book should be a child to canvas");
+        if (!canvas) throw new System.InvalidOperationException("Assign the authored book Canvas.");
+
 
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
@@ -257,8 +257,7 @@ public class Book : MonoBehaviour {
         Camera eventCamera = null;
         if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             eventCamera = dragPointer != null ? dragPointer.pressEventCamera : canvas.worldCamera;
-        if (eventCamera == null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-            eventCamera = Camera.main;
+
 
         Vector2 localPos;
         return RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -300,7 +299,7 @@ public class Book : MonoBehaviour {
             }
         }
         if (day < 1 || selected == null || selected.element1 == null || selected.element2 == null ||
-            bookPages == null || bookPages.Length < 3)
+            bookPages == null || pageCount < 3)
         {
             Debug.LogWarning("Book: day " + day + " requires two sprites and at least three Book Pages.", this);
             return false;
@@ -331,7 +330,7 @@ public class Book : MonoBehaviour {
         else if (!TryGetPointerPosition(out screenPosition))
             return;
 
-        f = Vector3.Lerp(f, transformPoint(screenPosition), Time.deltaTime * 10);
+        f = Vector3.Lerp(f, transformPoint(screenPosition), Time.unscaledDeltaTime * 10);
         if (mode == FlipMode.RightToLeft)
             UpdateBookRTLToPoint(f);
         else
@@ -417,11 +416,11 @@ public class Book : MonoBehaviour {
         float T0_CORNER_dx = bookCorner.x - t0.x;
         float T0_CORNER_Angle = Mathf.Atan2(T0_CORNER_dy, T0_CORNER_dx);
         float T0_T1_Angle = 90 - T0_CORNER_Angle;
-        
+
         float T1_X = t0.x - T0_CORNER_dy * Mathf.Tan(T0_CORNER_Angle);
         T1_X = normalizeT1X(T1_X, bookCorner, sb);
         t1 = new Vector3(T1_X, sb.y, 0);
-        
+
         //clipping plane angle=T0_T1_Angle
         float T0_T1_dy = t1.y - t0.y;
         float T0_T1_dx = t1.x - t0.x;
@@ -462,7 +461,7 @@ public class Book : MonoBehaviour {
     }
     public void DragRightPageToPoint(Vector3 point)
     {
-        if (currentPage >= bookPages.Length) return;
+        if (currentPage >= pageCount) return;
         pageDragging = true;
         mode = FlipMode.RightToLeft;
         f = point;
@@ -475,15 +474,15 @@ public class Book : MonoBehaviour {
         Left.rectTransform.pivot = new Vector2(0, 0);
         Left.transform.position = RightNext.transform.position;
         Left.transform.eulerAngles = new Vector3(0, 0, 0);
-        Left.sprite = (currentPage < bookPages.Length) ? bookPages[currentPage] : background;
+        SetPage(Left, currentPage);
         Left.transform.SetAsFirstSibling();
-        
+
         Right.gameObject.SetActive(true);
         Right.transform.position = RightNext.transform.position;
         Right.transform.eulerAngles = new Vector3(0, 0, 0);
-        Right.sprite = (currentPage < bookPages.Length - 1) ? bookPages[currentPage + 1] : background;
+        SetPage(Right, currentPage + 1);
 
-        RightNext.sprite = (currentPage < bookPages.Length - 2) ? bookPages[currentPage + 2] : background;
+        SetPage(RightNext, currentPage + 2);
 
         LeftNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) Shadow.gameObject.SetActive(true);
@@ -494,7 +493,7 @@ public class Book : MonoBehaviour {
         Vector2 screenPosition;
         if (interactable && TryGetPointerPosition(out screenPosition))
             DragRightPageToPoint(transformPoint(screenPosition));
-        
+
     }
     public void DragLeftPageToPoint(Vector3 point)
     {
@@ -508,7 +507,7 @@ public class Book : MonoBehaviour {
 
         Right.gameObject.SetActive(true);
         Right.transform.position = LeftNext.transform.position;
-        Right.sprite = bookPages[currentPage - 1];
+        SetPage(Right, currentPage - 1);
         Right.transform.eulerAngles = new Vector3(0, 0, 0);
         Right.transform.SetAsFirstSibling();
 
@@ -516,9 +515,9 @@ public class Book : MonoBehaviour {
         Left.rectTransform.pivot = new Vector2(1, 0);
         Left.transform.position = LeftNext.transform.position;
         Left.transform.eulerAngles = new Vector3(0, 0, 0);
-        Left.sprite = (currentPage >= 2) ? bookPages[currentPage - 2] : background;
+        SetPage(Left, currentPage - 2);
 
-        LeftNext.sprite = (currentPage >= 3) ? bookPages[currentPage - 3] : background;
+        SetPage(LeftNext, currentPage - 3);
 
         RightNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
@@ -529,7 +528,7 @@ public class Book : MonoBehaviour {
         Vector2 screenPosition;
         if (interactable && TryGetPointerPosition(out screenPosition))
             DragLeftPageToPoint(transformPoint(screenPosition));
-        
+
     }
     public void OnMouseRelease()
     {
@@ -554,7 +553,7 @@ public class Book : MonoBehaviour {
         if (!interactable || pageDragging || pointer == null ||
             pointer.button != PointerEventData.InputButton.Left)
             return;
-        if (flipMode == FlipMode.RightToLeft ? currentPage >= bookPages.Length : currentPage <= 0)
+        if (flipMode == FlipMode.RightToLeft ? currentPage >= pageCount : currentPage <= 0)
             return;
 
         dragPointer = pointer;
@@ -606,8 +605,8 @@ public class Book : MonoBehaviour {
     Coroutine currentCoroutine;
     void UpdateSprites()
     {
-        LeftNext.sprite= (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage-1] : background;
-        RightNext.sprite=(currentPage>=0 &&currentPage<bookPages.Length) ? bookPages[currentPage] : background;
+        SetPage(LeftNext, currentPage - 1);
+        SetPage(RightNext, currentPage);
     }
     public void TweenForward()
     {
@@ -680,7 +679,7 @@ public class Book : MonoBehaviour {
             else
                 UpdateBookLTRToPoint(f + displacement);
 
-            yield return new WaitForSeconds(0.025f);
+            yield return new WaitForSecondsRealtime(0.025f);
         }
         if (onFinish != null)
             onFinish();

@@ -2,8 +2,8 @@ Shader "GameUP/FoodCondition"
 {
     Properties
     {
-        _BaseMap("Original texture",2D)="white"{}
-        _BaseColor("Original color",Color)=(1,1,1,1)
+        [MainTexture] _BaseMap("Original texture",2D)="white"{}
+        [MainColor] _BaseColor("Original color",Color)=(1,1,1,1)
         _Spoilage("Spoilage",Range(0,1))=1
         _SpoilTint("Mold and discoloration",Color)=(.25,.3,.1,1)
         _Swell("Swelling",Range(0,.3))=.03
