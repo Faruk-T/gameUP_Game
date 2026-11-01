@@ -95,13 +95,17 @@ namespace GameUp.Editor
             caretta.transform.localRotation=Quaternion.Euler(0,Vector3.SignedAngle(forward,Vector3.forward,Vector3.up),0);
             Label(carettaGroup,"caretta caretta / örnek poz",carettaPosition+new Vector3(0,.5f,1.18f),3.2f,.24f,32);
             Label(root,"ESMANUR  /  GAME KIT\n31 ürün  •  16 çevre parçası  •  4 yeni kutu  •  caretta",new Vector3(-3.5f,2.3f,13),13,1.6f,28);
+            Isolate(root);
+            Debug.Log("ARTIST_KIT_CONTENTS products="+count+" environment="+parts.Length+" caretta=1 position="+root.position);
+        }
+        internal static void Isolate(Transform root)
+        {
             foreach(var t in root.GetComponentsInChildren<Transform>(true))
             {
                 t.gameObject.tag="EditorOnly";t.gameObject.layer=30;
                 if(!t.GetComponentInParent<SkinnedMeshRenderer>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
             }
             foreach(var renderer in root.GetComponentsInChildren<Renderer>()){renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;}
-            Debug.Log("ARTIST_KIT_CONTENTS products="+count+" environment="+parts.Length+" caretta=1 position="+root.position);
         }
         private static void DisplayTable(Transform parent,string name,Vector3 position,Vector2 size)
         {

@@ -18,31 +18,22 @@ MonoBehaviour:
   prefab: {fileID: 1879304709147822832, guid: 15dc6deb7364f6e4d97c9b890aac9740, type: 3}
   modelSource: {fileID: 2886687472651308516, guid: 624e4c5d6b7385a4997b28f042abafa9, type: 3}
   condition: 1
+  laboratoryProfile: 3
+  productionPlace: Antalya / Akseki
   productIcon: {fileID: 0}
   expiryDate:
     Day: 28
     Month: 10
     Year: 2026
-  declaredProductType: "Do\u011Fal Fermente Yo\u011Furt"
-  listedProductType: "Do\u011Fal Fermente Yo\u011Furt"
-  ingredientsSummary: "Past\xF6rize tam ya\u011Fl\u0131 s\xFCt, canl\u0131 yo\u011Furt
-    k\xFClt\xFCr\xFC."
-  customFrontLabelNote:
-  customBackLabelNote:
+  declaredProductType: "Sade ke\xE7i s\xFCt\xFC yo\u011Furdu"
+  listedProductType: "Sade ke\xE7i s\xFCt\xFC yo\u011Furdu"
+  ingredientsSummary: "Ke\xE7i s\xFCt\xFC, yo\u011Furt k\xFClt\xFCr\xFC."
+  customFrontLabelNote: 
+  customBackLabelNote: 
   sourceRegion: 3
   habitat: 0
   isPolluted: 0
-  analysisFindingDetail: "\u2022 \xC7EVRESEL KALINTI TEST\u0130: NEGAT\u0130F (TEM\u0130Z)
-    \u2014 Toros Do\u011Fal Kase Yo\u011Furdu numunesinde pestisit, a\u011F\u0131r
-    metal veya mikroplastik kal\u0131nt\u0131s\u0131na rastlanmad\u0131.\r\n\u2022
-    M\u0130KROB\u0130YOLOJ\u0130K / F\u0130Z\u0130KSEL ANAL\u0130Z: UYGUNSUZ \u2014
-    Numunede ileri derecede k\xFCflenme, renk bozulmas\u0131 ve doku y\u0131k\u0131m\u0131
-    tespit edildi (RED).\r\n\u2022 \u0130\xC7ER\u0130K & T\xDCR DO\u011ERULAMASI:
-    DO\u011ERULANDI \u2014 \u0130\xE7erik (Past\xF6rize tam ya\u011Fl\u0131 s\xFCt,
-    canl\u0131 yo\u011Furt k\xFClt\xFCr\xFC.) ve yasal t\xFCr beyan\u0131 ('Do\u011Fal
-    Fermente Yo\u011Furt') birbiriyle uyumlu.\r\n\u2022 KAYNAK & SKT KAYDI: Kaynak
-    B\xF6lgesi: Antalya Yerel  |  Etiket SKT: 28.10.2026 (Vardiya tarihi ve y\xFCr\xFCrl\xFCkteki
-    faks duyurular\u0131yla kar\u015F\u0131la\u015Ft\u0131r\u0131n)."
+  analysisFindingDetail: 
   packagingMaterial: 2
   isPackagingContaminated: 0
   packagingLabelText: "Cam Yo\u011Furt Kavanozu \u2014 Cam At\u0131k"
@@ -52,6 +43,6 @@ MonoBehaviour:
   hasLengthData: 0
   actualLengthCm: 20
   hasIngredientPercentData: 0
-  trackedIngredientName:
+  trackedIngredientName: 
   declaredIngredientPercent: 10
   actualIngredientPercent: 10

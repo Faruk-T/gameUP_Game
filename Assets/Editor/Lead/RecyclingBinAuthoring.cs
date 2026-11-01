@@ -8,7 +8,7 @@ namespace GameUp.Editor
     internal static class RecyclingBinAuthoring
     {
         internal const string Source="Assets/Art/Environment/Mesh/Trashbin.fbx";
-        internal static readonly string[] Names={"trashbin-paper.002","trashbin-glass.001","trashbin-plastic.001","Trashbin"};
+        internal static readonly string[] Names={"trashbin-paper","trashbin-glass","trashbin-plastic","Trashbin"};
         internal static void Apply(Transform office)
         {
             RemapSource();
@@ -24,7 +24,7 @@ namespace GameUp.Editor
                     renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>CategoryMaterial(m,i,colors[i])).ToArray();
                 CoastalAssetSetup.Outline(model);
             }
-            Debug.Log("NEW_RECYCLING_BINS_OK / feature/Objects 4b6292a / 4 new meshes / preserved targets and labels");
+            Debug.Log("NEW_RECYCLING_BINS_OK / user 2026-11-01 FBX / 4 current meshes / preserved targets and labels");
         }
         internal static GameObject Place(int category,Transform parent,Vector3 center,Vector3 size)
             =>FacilityPropAuthoring.ArtistPart(Source,Names[category],parent,center,size);
@@ -35,16 +35,19 @@ namespace GameUp.Editor
             var material=AssetDatabase.LoadAssetAtPath<Material>(path);
             if(!material){material=new Material(Shader.Find("GameUP/Facility/RecyclingBin"));AssetDatabase.CreateAsset(material,path);}
             material.shader=Shader.Find("GameUP/Facility/RecyclingBin");material.SetTexture("_BaseMap",source.mainTexture);material.SetColor("_ContainerTint",color);
+            bool front=source.name=="Bin (front)";
+            material.SetTextureScale("_BaseMap",front?new Vector2(1,-1):Vector2.one);
+            material.SetTextureOffset("_BaseMap",front?new Vector2(0,1):Vector2.zero);
             EditorUtility.SetDirty(material);return material;
         }
         internal static void RemapSource()
         {
             var importer=(ModelImporter)AssetImporter.GetAtPath(Source);
-            foreach(var pair in new[]{("Bin (front)","Bin (front).mat"),("Bin (rear)","Bin (rear).mat"),("Bin (side)","Bin (side).mat"),("Bin (top) diffuse","Bin (top) diffuse 1.mat")})
+            foreach(var pair in new[]{("Bin (front).001","Bin (front).mat"),("Bin (rear).001","Bin (rear).mat"),("Bin (side).001","Bin (side).mat"),("Bin (top) diffuse.001","Bin (top) diffuse 1.mat")})
             {
                 var material=AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/Environment/Material/"+pair.Item2);
                 if(!material)throw new InvalidOperationException("Missing bin material: "+pair.Item2);
-                string file=pair.Item1=="Bin (front)"?"Bin (front) diffuse-Bin (front) opacity_3.png":pair.Item1=="Bin (rear)"?"Bin (rear) diffuse_0.jpeg":pair.Item1=="Bin (side)"?"Bin (side) diffuse_1.jpeg":"Bin (top) diffuse_2.jpeg";
+                string file=pair.Item1=="Bin (front).001"?"Bin (front) diffuse-Bin (front) opacity_3.png":pair.Item1=="Bin (rear).001"?"Bin (rear) diffuse_0.jpeg":pair.Item1=="Bin (side).001"?"Bin (side) diffuse_1.jpeg":"Bin (top) diffuse_2.jpeg";
                 var texture=AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Art/Environment/Textures/"+file);
                 if(!texture)throw new InvalidOperationException("Missing bin source texture: "+file);
                 material.SetTexture("_BaseMap",texture);material.SetTexture("_MainTex",texture);EditorUtility.SetDirty(material);

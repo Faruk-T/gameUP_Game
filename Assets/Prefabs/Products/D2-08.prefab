@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2043571170850259497
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 646801635713387524}
-  m_Layer: 8
-  m_Name: Model_cheese3_Fresh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &646801635713387524
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043571170850259497}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3025913670586105482}
-  m_Father: {fileID: 3966428421938073399}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3628234794745575777
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 646801635713387524}
+  - {fileID: 4680307906735174814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2214570853105815666
@@ -98,7 +66,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb914e422ee4d509710c319c1b74d2b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Interaction::GameUP.Interaction.WorkstationTarget
   action: 0
 --- !u!114 &9165558101240748252
@@ -111,38 +79,71 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f13d6c4e29a4715b02c94a81e73b644, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Rules.ProductWorldLabelBinder
   productDefinition: {fileID: 11400000, guid: 8fa80eaa17f19ba4eb65eb25d244f46f, type: 2}
   printedSurfaces:
-  - {fileID: 6024216972010281760}
+  - {fileID: 3351408869316140621}
   localBounds:
     m_Center: {x: -0.000000029802322, y: 0.179195, z: -0.000000014901161}
     m_Extent: {x: 0.325, y: 0.179195, z: 0.18802202}
   inspectionMultiplier: 1.323077
---- !u!1001 &4625375570794751918
+  printedLabelSignature: ec81a2076cd1f0e88cb33b5ae7b3e24f
+--- !u!1 &6850878362844307128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4680307906735174814}
+  m_Layer: 8
+  m_Name: Model_cheese3_Fresh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4680307906735174814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6850878362844307128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6117855890334530535}
+  m_Father: {fileID: 3966428421938073399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4406890314298450627
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 646801635713387524}
+    m_TransformParent: {fileID: 4680307906735174814}
     m_Modifications:
     - target: {fileID: 1417213280638794894, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 0ce0095d6d36ef74ba17146eea9c7f4e, type: 2}
     - target: {fileID: 1417213280638794894, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: cbe34371914879c439771ec6496b5c38, type: 2}
     - target: {fileID: 1417213280638794894, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 7c7ba3442a4ce254e8dc703312dd0b4b, type: 2}
     - target: {fileID: 1417213280638794894, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: a5dbeb85ffa357c4b8e2d8bf1b0c55ee, type: 2}
     - target: {fileID: 3694009293390296211, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: m_Name
@@ -158,7 +159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7618958373413117302, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: m_Mesh
-      value:
+      value: 
       objectReference: {fileID: 4300000, guid: f534ed3477928fa43b056be1ff3d1bba, type: 2}
     - target: {fileID: 7624197111654242596, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
       propertyPath: m_LocalScale.x
@@ -217,13 +218,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
---- !u!4 &3025913670586105482 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7624197111654242596, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
-  m_PrefabInstance: {fileID: 4625375570794751918}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &6024216972010281760 stripped
+--- !u!23 &3351408869316140621 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1417213280638794894, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
-  m_PrefabInstance: {fileID: 4625375570794751918}
+  m_PrefabInstance: {fileID: 4406890314298450627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6117855890334530535 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7624197111654242596, guid: 24e6709d859512e4eafd9cfef4355441, type: 3}
+  m_PrefabInstance: {fileID: 4406890314298450627}
   m_PrefabAsset: {fileID: 0}

@@ -365,6 +365,7 @@ namespace GameUp.Production.Tests
             var invalid=new HashSet<string>{"D1-02","D1-03","D1-06","D1-07","D2-02","D2-04","D2-06","D2-08","D2-10","D3-03","D3-04","D3-06","D3-08","D3-10","D3-12"};
             var targets=Object.FindObjectsByType<WorkstationTarget>(FindObjectsSortMode.None).Where(t=>t.Action!=WorkstationAction.Product).ToDictionary(t=>t.Action);
             var checkedGuides=new HashSet<string>();
+            var checkedReports=new HashSet<string>();
             float deadline=Time.realtimeSinceStartup+90;
             while(session.Flow.State!=FlowState.GameSummary&&session.Flow.State!=FlowState.GameOver)
             {
@@ -381,6 +382,16 @@ namespace GameUp.Production.Tests
                         Assert.That(Object.FindFirstObjectByType<FaxPresenter>().IsAlarming,Is.True);
                         long token=session.Documents.Current.Token;session.HandleEscape();Assert.That(session.Documents.Current.Token,Is.EqualTo(token));
                         Assert.That(ApplicationRoot.Require().Audio.IsBeltRunning,Is.False);Capture("ministry-warning",session.gameObject.scene);
+                    }
+                    if(session.Documents.Current.Kind==DocumentKind.Analysis)
+                    {
+                        var report=session.Flow.LastReport;
+                        Assert.That(report.Key,Is.EqualTo(session.Flow.Current.Key));
+                        Assert.That(session.Documents.Current.Body,Does.Contain(report.Text));
+                        var presenter=Object.FindFirstObjectByType<DocumentPresenter>();
+                        var shownBody=(Text)new SerializedObject(presenter).FindProperty("body").objectReferenceValue;
+                        Assert.That(shownBody.text,Is.EqualTo(session.Documents.Current.Body));
+                        Canvas.ForceUpdateCanvases();Assert.That(shownBody.cachedTextGenerator.characterCountVisible,Is.GreaterThan(0),"Fax text must actually render.");
                     }
                     ConfirmDocument(session);
                 }
@@ -403,8 +414,14 @@ namespace GameUp.Production.Tests
                         Capture("guide-"+id,session.gameObject.scene);session.HandleEscape();continue;
                     }
                     if(id=="D3-04")Assert.That(session.Flow.Current.Rules.Version,Is.EqualTo(2));
-                    if(session.Flow.DayIndex>=1&&session.Flow.LastReport==null)
+                    if(scenario=="correct"&&session.Flow.LastReport==null)
                     {input.Interact(targets[WorkstationAction.Analyzer]);yield return null;continue;}
+                    if(scenario=="correct")
+                    {
+                        Assert.That(session.Flow.LastReport.Key.ProductId,Is.EqualTo(id));
+                        Assert.That(session.Flow.LastReport.Text,Does.Contain("DENETİM SONUCU: "+(invalid.Contains(id)?"UYGUNSUZ / RED":"UYGUN / ONAY")));
+                        checkedReports.Add(id);
+                    }
                     if(id=="D3-01")Assert.That(session.Flow.Current.Rules.Version,Is.EqualTo(1));
                     if(scenario=="correct"&&(id=="D1-02"||id=="D2-02"||id=="D3-12"))
                     {input.ToggleInspection();Capture("spoiled-"+id,session.gameObject.scene);input.EndInspection();}
@@ -419,6 +436,7 @@ namespace GameUp.Production.Tests
                 }
                 yield return null;
             }
+            if(scenario=="correct")Assert.That(checkedReports.Count,Is.EqualTo(31),"Every product must pass through its own actual fax report.");
         }
         private static IEnumerator Wait(Func<bool> condition)
         {float deadline=Time.realtimeSinceStartup+25;while(!condition()){Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline),"Timed out waiting for production flow.");yield return null;}}

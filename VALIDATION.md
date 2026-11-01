@@ -4,7 +4,10 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **59/59 geçti**, başarısız/atlanan yok; tam koşu 149.35 saniye; son UI/asset temizliği sonrası sahne referans kontrolü ayrıca geçti |
+| Unity testleri | **99/99 geçti**, başarısız/atlanan yok; son tam koşu 148.48 saniye. Interaction 1, Lead 33, Production 64, Rules 1 |
+| Ürün / rapor / karar denetimi | **31 ürün, 1540 kontrol, 0 hata**. Gerçek faks kuyruğunda 31 ayrı rapor; doğru onay/red ve ayrıştırmada hata sayacı artmaz. Editor: GameUP32 → QA → Product inspection audit |
+| SKT / numune ayrımı | Yoğurtların eski 2021 kapak baskısı temizlendi. Günle eşit SKT geçerli ve açıkça belirtilir; geçmiş SKT / fiziksel bozulma / kalıntı / tür / geri çağırma ayrı gösterilir. Nihai rapor ve karar aynı snapshot'tan gelir |
+| Güncel yüklenen modeller | Kullanıcının 1 Kasım Trashbin.fbx ve buttons.fbx dosyaları birebir alındı; dört kutu, sergi kopyaları ve onay/red butonları güncellendi. Butonlar masa üzerinde, eski görsel kopyaları yok; EditorOnly sergi izolasyonu geçti |
 | Evrak ana menüsü / pause | Menü gerçek tesis kamerasını gösterir; ikinci oynanış sistemi veya AudioListener yoktur. Pause aynı pano/kâğıt düzenindedir; 4:3, 16:9 ve 21:9 menü görüntüsü kontrol edildi |
 | El yazısı fontu | Etkin üç sahnedeki tüm Text bileşenleri, ürün baskıları ve kitap metinleri Patrick Hand; Türkçe karakterler ve tabela/gazete taşmaları kontrol edildi |
 | Güncel kaynak entegrasyonu | Faruk `04a87a2/a9fee0f`, Esmanur `4b6292a`, Özgür `10bb33f`; mevcut sahne ve sinematik korunur |

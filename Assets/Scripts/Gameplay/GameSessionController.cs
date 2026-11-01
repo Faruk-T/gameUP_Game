@@ -196,7 +196,7 @@ namespace GameUp.Gameplay
                     if (!handbookRead) return "2 / B ile veya masadaki kitaba tıklayarak el kitapçığını ve günün özetini aç.";
                     return "3 / SKT, etiket ve bozulma izlerini kontrol et; W ile onay veya R ile red ver.";
                 }
-                return "Küf, renk değişimi ve şişmeyi incele. F ile analiz al; kaynağı güncel faksla karşılaştır.";
+                return "SKT, etiket ve görünümü kontrol et. F ile ürüne özgü analiz al; kaynağı güncel faksla karşılaştır.";
             }
         }
         private void OnSceneReady(string scene) { if (scene == ApplicationRoot.GameScene) Render(); }

@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5257641316133783256}
+  - {fileID: 7730126550218617594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5162299340843878866
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb914e422ee4d509710c319c1b74d2b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Interaction::GameUP.Interaction.WorkstationTarget
   action: 0
 --- !u!114 &2243787021779330887
@@ -79,16 +79,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f13d6c4e29a4715b02c94a81e73b644, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: GameUp.Rules::GameUP.Rules.ProductWorldLabelBinder
   productDefinition: {fileID: 11400000, guid: 12e3d2b5c6781c34aa08e0a33d0345e5, type: 2}
   printedSurfaces:
-  - {fileID: 106836761371439454}
+  - {fileID: 1473835640160532200}
   localBounds:
     m_Center: {x: 0, y: 0.32500002, z: 0}
     m_Extent: {x: 0.187157, y: 0.325, z: 0.18311007}
   inspectionMultiplier: 1.323077
---- !u!1 &5829058302273721271
+  printedLabelSignature: 50214ed47a8a3b748a3183bdccd63162
+--- !u!1 &6657613338151295754
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,7 +97,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5257641316133783256}
+  - component: {fileID: 7730126550218617594}
   m_Layer: 8
   m_Name: Model_Pineapple_Fresh
   m_TagString: Untagged
@@ -104,29 +105,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5257641316133783256
+--- !u!4 &7730126550218617594
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5829058302273721271}
+  m_GameObject: {fileID: 6657613338151295754}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8664429340875799562}
+  - {fileID: 7868261712732158908}
   m_Father: {fileID: 6701212814770315343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5403610958773494439
+--- !u!1001 &6913844885249418513
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5257641316133783256}
+    m_TransformParent: {fileID: 7730126550218617594}
     m_Modifications:
     - target: {fileID: 3191171360521460103, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
       propertyPath: m_Layer
@@ -194,24 +195,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442306573569709049, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: d544b8e38491b1b4e8bbf8d5f97b385b, type: 2}
     - target: {fileID: 8280983779142861608, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
       propertyPath: m_Mesh
-      value:
+      value: 
       objectReference: {fileID: 4300000, guid: 7965144e7c58771458662058e534f977, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
---- !u!23 &106836761371439454 stripped
+--- !u!23 &1473835640160532200 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5442306573569709049, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
-  m_PrefabInstance: {fileID: 5403610958773494439}
+  m_PrefabInstance: {fileID: 6913844885249418513}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8664429340875799562 stripped
+--- !u!4 &7868261712732158908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3657845515493940909, guid: fd8987f0979abaa4aaf5ac4a0a9ab33a, type: 3}
-  m_PrefabInstance: {fileID: 5403610958773494439}
+  m_PrefabInstance: {fileID: 6913844885249418513}
   m_PrefabAsset: {fileID: 0}

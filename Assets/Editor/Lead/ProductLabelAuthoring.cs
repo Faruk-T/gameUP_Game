@@ -19,20 +19,22 @@ namespace GameUp.Editor
         {
             Directory.CreateDirectory(Root); Directory.CreateDirectory("Logs/FacilityPolish/Prints"); AssetDatabase.Refresh();
             foreach (var definition in ProductionProjectSetup.Days().SelectMany(d => d.Products))
-            {
-                string path = AssetDatabase.GetAssetPath(definition.Prefab);
-                var prefab = PrefabUtility.LoadPrefabContents(path);
-                try
-                {
-                    var previous = prefab.transform.Cast<Transform>().Single(t => t.name.StartsWith("Model_", StringComparison.Ordinal));
-                    UnityEngine.Object.DestroyImmediate(previous.gameObject);
-                    var source = AssetDatabase.LoadAssetAtPath<GameObject>(ConditionVariantAuthoring.PathFor(definition.ModelSource.name, definition.Condition));
-                    var model = ProductAuthoring.PlaceModel(source, prefab.transform, Vector3.zero, .65f);
-                    Configure(prefab, model, definition); PrefabUtility.SaveAsPrefabAsset(prefab, path);
-                }
-                finally { PrefabUtility.UnloadPrefabContents(prefab); }
-            }
+                RefreshProduct(definition);
             AssetDatabase.SaveAssets(); Debug.Log("PRODUCT_UV_PRINTS_OK / 31 artist models / no separate label geometry");
+        }
+        internal static void RefreshProduct(ProductDefinition definition)
+        {
+            string path = AssetDatabase.GetAssetPath(definition.Prefab);
+            var prefab = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                var previous = prefab.transform.Cast<Transform>().Single(t => t.name.StartsWith("Model_", StringComparison.Ordinal));
+                UnityEngine.Object.DestroyImmediate(previous.gameObject);
+                var source = AssetDatabase.LoadAssetAtPath<GameObject>(ConditionVariantAuthoring.PathFor(definition.ModelSource.name, definition.Condition));
+                var model = ProductAuthoring.PlaceModel(source, prefab.transform, Vector3.zero, .65f);
+                Configure(prefab, model, definition); PrefabUtility.SaveAsPrefabAsset(prefab, path);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(prefab); }
         }
         internal static void Configure(GameObject root, GameObject model, ProductDefinition definition)
         {
@@ -51,6 +53,7 @@ namespace GameUp.Editor
             float width = bounds.size.x * .76f, height = (flat ? bounds.size.z : bounds.size.y) * .65f;
             var center = bounds.center;
             if (definition.Category == ProductCategory.Fruit) { center.y = bounds.min.y + bounds.size.y * .34f; height = bounds.size.y * .42f; }
+            if (definition.Category == ProductCategory.Eggs) { center.y = bounds.min.y + bounds.size.y * .72f; height = bounds.size.y * .45f; }
             var front = Print(definition, "Front", definition.GetFormattedFrontLabel(), width, height);
             var back = Print(definition, "Back", definition.GetFormattedBackLabel(), width, height);
             try { for (int i = 0; i < filters.Length; i++) BakeMesh(root, filters[i], definition, i, bounds, center, width, height, flat, front, back); }
@@ -100,9 +103,11 @@ namespace GameUp.Editor
                 baker.SetVector("_PrintCenter", center); baker.SetVector("_PrintSize", new Vector4(width, height, flat ? 1 : 0, 0));
                 baker.SetTexture("_FrontPrint", front); baker.SetTexture("_BackPrint", back);
                 baker.SetFloat("_Milk", definition.ModelSource.name.StartsWith("milk", StringComparison.Ordinal) ? 1 : 0); baker.SetFloat("_Top", bounds.max.y);
+                baker.SetFloat("_Yogurt", definition.LaboratoryProfile == LaboratoryProfile.Yogurt ? 1 : 0);
                 for (int sub = 0; sub < mesh.subMeshCount; sub++)
                 {
                     var original = originals[sub];
+                    baker.SetFloat("_PrintAllowed", definition.Category != ProductCategory.Eggs || original.name == "Paper" ? 1 : 0);
                     baker.SetTexture("_OriginalTex", original.mainTexture ? original.mainTexture : Texture2D.whiteTexture);
                     baker.SetColor("_OriginalColor", original.color);
                     baker.SetVector("_OriginalST", new Vector4(original.mainTextureScale.x, original.mainTextureScale.y, original.mainTextureOffset.x, original.mainTextureOffset.y));

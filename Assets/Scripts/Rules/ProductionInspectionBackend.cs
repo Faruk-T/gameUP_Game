@@ -105,12 +105,8 @@ namespace GameUP.Rules
             if (!reports.TryGetValue(session.Key, out var report))
             {
                 var item = GetProductDefinition(session.Product.Id);
-                string header = "ÜRÜN ADI: " + item.DisplayName + " (" + item.DefinitionId + ")\n" +
-                                "KATEGORİ: " + item.Category.ToTurkishText() + "  •  KAYNAK: " + item.SourceRegion.ToTurkishText() + "  •  SKT: " + item.ExpiryDate;
-                string packaging = item.IsPackagingContaminated
-                    ? "AMBALAJ YÖNLENDİRMESİ: Ambalaj kontamine (" + item.PackagingLabelText + " üzerinde toksik kalıntı saptandı)! Reddedildiğinde KIRMIZI (Kontamine Atık / Ayrı İmha) kutusuna gönderin."
-                    : "AMBALAJ YÖNLENDİRMESİ: Temiz Ambalaj (" + item.PackagingLabelText + ") — Reddedilirse arkadaki " + item.PackagingMaterial.ToTurkishText().ToUpperInvariant() + " kutusuna gönderin.";
-                report = new AnalysisReport(session.Key, "R-" + session.Key.ProductId, header + "\n\n" + item.AnalysisFindingDetail + "\n\n" + packaging);
+                var inspection = new ProductInspectionReport(item, SnapshotFor(session));
+                report = new AnalysisReport(session.Key, "COP31-" + session.DayId + "-" + session.Key.ProductId, inspection.Text);
                 reports.Add(session.Key, report);
             }
             completed(report);
@@ -119,6 +115,16 @@ namespace GameUP.Rules
         public DecisionEvaluation Evaluate(ProductSession session, PlayerDecision decision)
         {
             RequireActiveRun(session);
+            var evaluation = ProductRuleEvaluator.EvaluateDecision(session.Key.RunId.ToString("N"), session.Key.ProductId,
+                GetProductDefinition(session.Product.Id), SnapshotFor(session),
+                decision == PlayerDecision.Approve ? Data.ProductDecision.Approve : Data.ProductDecision.Reject);
+            string reason = evaluation.FailureReasons.Count == 0 ? "Ürün yürürlükteki kurallara uygun." : string.Join(" ", evaluation.FailureReasons);
+            return new DecisionEvaluation(session.Key, decision,
+                evaluation.ExpectedDecision == Data.ProductDecision.Approve ? PlayerDecision.Approve : PlayerDecision.Reject, reason, session.Rules.Version);
+        }
+
+        private Data.RuleSnapshot SnapshotFor(ProductSession session)
+        {
             var snapshotEntries = new List<Data.RuleSnapshotEntry>(session.Rules.Rules.Count);
             foreach (var info in session.Rules.Rules)
             {
@@ -126,13 +132,7 @@ namespace GameUP.Rules
                 snapshotEntries.Add(entry);
             }
             var date = session.Rules.GameDate;
-            var snapshot = new Data.RuleSnapshot(session.Rules.Version, new Data.GameDate(date.Day, date.Month, date.Year), snapshotEntries);
-            var evaluation = ProductRuleEvaluator.EvaluateDecision(session.Key.RunId.ToString("N"), session.Key.ProductId,
-                GetProductDefinition(session.Product.Id), snapshot,
-                decision == PlayerDecision.Approve ? Data.ProductDecision.Approve : Data.ProductDecision.Reject);
-            string reason = evaluation.FailureReasons.Count == 0 ? "Ürün yürürlükteki kurallara uygun." : string.Join(" ", evaluation.FailureReasons);
-            return new DecisionEvaluation(session.Key, decision,
-                evaluation.ExpectedDecision == Data.ProductDecision.Approve ? PlayerDecision.Approve : PlayerDecision.Reject, reason, session.Rules.Version);
+            return new Data.RuleSnapshot(session.Rules.Version, new Data.GameDate(date.Day, date.Month, date.Year), snapshotEntries);
         }
 
         public ProductOutcome CommitOutcome(ProductSession session, DecisionEvaluation decision, WasteCategory? waste)
@@ -189,7 +189,12 @@ namespace GameUP.Rules
             rules.Add(rule.RuleId, rule); ruleEntries.Add(rule.RuleId, rule.ToSnapshotEntry());
         }
         private void RequireActiveRun(ProductSession session)
-        { if (session == null || activeRun == Guid.Empty || session.Key.RunId != activeRun) throw new InvalidOperationException("Stale inspection session."); }
+        {
+            if (session == null || activeRun == Guid.Empty || session.Key.RunId != activeRun)
+                throw new InvalidOperationException("Stale inspection session.");
+            if (!string.Equals(session.Key.ProductId, session.Product.Id, StringComparison.Ordinal))
+                throw new InvalidOperationException("Mismatched product identity.");
+        }
         private static string LeadDayId(string id) => id.StartsWith("DAY_", StringComparison.Ordinal) && int.TryParse(id.Substring(4), out int number) ? "day-" + number : id;
         private static string DocumentText(Data.DocumentDefinition document) => document.Body + "\n\n" + document.TaskInstructionBox;
         private static InspectionSummary EmptySummary() => new InspectionSummary(0, 0, 0, 0, 0, 0, 0);
