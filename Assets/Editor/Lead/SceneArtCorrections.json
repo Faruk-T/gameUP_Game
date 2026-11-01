@@ -1,0 +1,84 @@
+{
+    "Items": [
+        {
+            "Hierarchy": "InspectionOffice/Room/PolygonOfficeArchitecture/Model_SM_Prop_Benchseat_01/SM_Prop_Benchseat_01",
+            "Source": "Assets/PolygonOffice/Prefabs/Props/Exterior/SM_Prop_Benchseat_01.prefab",
+            "Position": {
+                "x": 1.1519999504089356,
+                "y": -0.09799999743700028,
+                "z": 0.0
+            },
+            "Scale": {
+                "x": 1.0745981931686402,
+                "y": 1.0745981931686402,
+                "z": 1.0745981931686402
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.7071068286895752,
+                "z": 0.0,
+                "w": 0.7071068286895752
+            }
+        },
+        {
+            "Hierarchy": "InspectionOffice/Model_xray/xray",
+            "Source": "Assets/Prefabs/Environment/xray.prefab",
+            "Position": {
+                "x": -0.1940000057220459,
+                "y": -0.12600000202655793,
+                "z": -0.257999986410141
+            },
+            "Scale": {
+                "x": 3.403055429458618,
+                "y": 3.403055429458618,
+                "z": 3.403055429458618
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": 0.0
+            }
+        },
+        {
+            "Hierarchy": "InspectionOffice/Model_closedBook/closedBook",
+            "Source": "Assets/Prefabs/Environment/closedBook.prefab",
+            "Position": {
+                "x": -0.03400000184774399,
+                "y": 0.04039999842643738,
+                "z": 0.09200000017881394
+            },
+            "Scale": {
+                "x": 3.3427140712738039,
+                "y": 3.3427140712738039,
+                "z": 3.3427140712738039
+            },
+            "Rotation": {
+                "x": -0.14429225027561189,
+                "y": 0.0,
+                "z": 0.9895351529121399,
+                "w": 0.0
+            }
+        },
+        {
+            "Hierarchy": "InspectionOffice/Model_fax/fax",
+            "Source": "Assets/Prefabs/Environment/fax.prefab",
+            "Position": {
+                "x": 0.04086899757385254,
+                "y": -0.03099999949336052,
+                "z": 0.059184372425079349
+            },
+            "Scale": {
+                "x": 3.461538553237915,
+                "y": 3.461538553237915,
+                "z": 3.461538553237915
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": 0.9804061651229858,
+                "z": 0.0,
+                "w": 0.1969866305589676
+            }
+        }
+    ]
+}

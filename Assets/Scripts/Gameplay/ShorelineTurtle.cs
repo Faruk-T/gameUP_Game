@@ -6,28 +6,59 @@ namespace GameUp.Gameplay
     public sealed class ShorelineTurtle : MonoBehaviour
     {
         [SerializeField] private Vector3 beachStart, waterEntry, swimCenter;
-        [SerializeField] private float crawlSeconds = 26, phaseOffset, swimSpeed = .12f;
+        [SerializeField] private float crawlSeconds = 8.5f, phaseOffset, swimSpeed = .28f;
+        [SerializeField] private float entrySeconds=5, swimRadiusX=4.5f, swimRadiusZ=3;
+        [SerializeField] private float turnDirection=1;
+        [SerializeField] private Animator animator;
+        [SerializeField] private ParticleSystem wake;
         private float elapsed;
+        private bool directed, emitting;
         public bool IsSwimming => elapsed + phaseOffset >= crawlSeconds;
-        private void Update() => SamplePose(elapsed + Time.deltaTime);
+        public bool IsCruising => elapsed + phaseOffset >= crawlSeconds+entrySeconds;
+        private void Update(){if(!directed)SamplePose(elapsed+Time.deltaTime);}
+        public void SetDirected(bool value)=>directed=value;
 
         public void SamplePose(float seconds)
         {
             elapsed = seconds;
             float t = Mathf.Max(0, elapsed + phaseOffset);
+            bool swimming=t>=crawlSeconds;
+            if(emitting!=swimming)
+            {
+                emitting=swimming;var emission=wake.emission;emission.enabled=swimming;
+                if(swimming)wake.Play();else wake.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+            animator.speed=swimming?1.05f:.55f;
             if (t < crawlSeconds)
             {
-                transform.localPosition = Vector3.Lerp(beachStart, waterEntry, t / crawlSeconds);
-                transform.localRotation = Quaternion.LookRotation(waterEntry - beachStart);
+                float u=t/crawlSeconds;
+                float sway=Mathf.Sin(u*Mathf.PI)*Mathf.Sin(u*8+phaseOffset)*.19f;
+                ApplyPose(Vector3.Lerp(beachStart,waterEntry,u)+Vector3.right*sway,
+                    Quaternion.LookRotation(Vector3.ProjectOnPlane(waterEntry-beachStart,Vector3.up))*Quaternion.Euler(0,Mathf.Sin(u*8+phaseOffset)*3,Mathf.Sin(t*4)*1.3f));
                 return;
             }
-            float angle = (t - crawlSeconds) * swimSpeed;
-            // Circle starts at the entry point; its center is inland-independent and remains in deep water.
-            var radius = waterEntry - swimCenter;
-            var rotated = Quaternion.Euler(0, angle * Mathf.Rad2Deg, 0) * radius;
-            transform.localPosition = swimCenter + rotated + Vector3.up * (Mathf.Sin(t * 1.6f) * .035f);
-            var tangent = Vector3.Cross(Vector3.up, rotated);
-            transform.localRotation = Quaternion.LookRotation(tangent) * Quaternion.Euler(Mathf.Sin(t) * 2, 0, Mathf.Sin(t * .7f) * 3);
+            var loopStart=swimCenter+Vector3.left*(swimRadiusX*turnDirection);
+            float swimmingTime=t-crawlSeconds;
+            if(swimmingTime<entrySeconds)
+            {
+                float u=swimmingTime/entrySeconds;
+                var control=waterEntry+new Vector3(-1.3f*turnDirection,-.35f,3.2f);
+                var tangent=2*(1-u)*(control-waterEntry)+2*u*(loopStart-control);
+                ApplyPose((1-u)*(1-u)*waterEntry+2*(1-u)*u*control+u*u*loopStart,
+                    Quaternion.LookRotation(tangent)*Quaternion.Euler(4*Mathf.Sin(u*Mathf.PI),0,-5*Mathf.Sin(u*Mathf.PI)));
+                return;
+            }
+            float angle=(swimmingTime-entrySeconds)*swimSpeed;
+            float stroke=(swimmingTime-entrySeconds)*2+phaseOffset;
+            var offset=new Vector3(-Mathf.Cos(angle)*swimRadiusX*turnDirection,Mathf.Sin(stroke)*.075f-Mathf.Pow(Mathf.Max(0,Mathf.Sin(angle*.65f)),2)*.10f,Mathf.Sin(angle)*swimRadiusZ);
+            var direction=new Vector3(Mathf.Sin(angle)*swimRadiusX*turnDirection,Mathf.Cos(stroke)*.15f/swimSpeed,Mathf.Cos(angle)*swimRadiusZ);
+            ApplyPose(swimCenter+offset,Quaternion.LookRotation(direction)*Quaternion.Euler(0,0,-7*turnDirection*Mathf.Sin(angle)+2*Mathf.Sin(stroke)));
+        }
+        private void ApplyPose(Vector3 position,Quaternion rotation)
+        {
+            transform.localPosition=position;transform.localRotation=rotation;
+            var foam=position-Vector3.ProjectOnPlane(rotation*Vector3.forward,Vector3.up)*.4f;foam.y=-.55f;
+            wake.transform.position=transform.parent.TransformPoint(foam);wake.transform.rotation=transform.parent.rotation;
         }
     }
 }

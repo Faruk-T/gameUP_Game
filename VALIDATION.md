@@ -4,12 +4,19 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **41/41 geçti**, başarısız/atlanan yok |
+| Unity testleri | **44/44 geçti**, başarısız/atlanan yok |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
-| Atlanamayan açılış | 72 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
+| Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
 | Söz ekranı | Tam metin ve atıf siyah fonda; 1080p ve 720p görüntüsü kontrol edildi |
 | Kamera rotası | Kıyı → tesis → iki afiş → masa; küre taramasıyla duvar kesişmesi yok; son poz çalışma kamerasıyla aynı |
-| Carettalar | Esmanur'un 5 aktörü; doğru baş yönü ve dik duruş; döngülü klip gerçekten oynar ve yüzgeç kemiklerini hareket ettirir |
+| Carettalar | Esmanur'un 5 aktörü; doğru baş yönü; gerçek yüzgeç animasyonu; kavisli giriş, farklı dönüş yönleri, derinlik ve yatış; kıyıya dönmeyen yüzme |
+| Logo ve efekt sırası | Yüzme başladıktan sonra logo yükselir; 44. saniyeden sonra 5 havai fişek; 52. saniyede efektler kapanmış, ardından koridor yürüyüşü |
+| Tek sinematik saati | Kamera / logo / parçacık Timeline'ı ile aktör pozları ve altyazılar aynı zamandan örneklenir |
+| Çevre modelleri | Esmanur'un 16/16 çevre mesh'i; faks/analiz sinyal ve kâğıt çocukları dahil |
+| Gerçek paket propları | Polygon Office tabela, afiş, tavan, ağaç, kaya, kutu ve düğmeleri; yazı yüksekliği kontrolü |
+| Dağlar | 360° kayıtlı hacimli arazi; geçerli köşeler, zirve/vadiler, eğim/yükseklik rengi; runtime üretim yok |
+| Kullanıcı yerleşimleri | Faks, analiz, kitap ve bank düzeltmeleri kayıtlı; yeniden sahne üretiminde uygulanır |
+| Fiziksel belgeler | Kitapçık açıkken gerçek açık kitap; kapatınca kapalı kitap; gazete okunurken katlı kopya gizli |
 | Kamera / ses devri | Açılıştan sonra tek etkin kamera ve AudioListener; gazete yalnız bitişten sonra açılır |
 | URP assetleri | Polygon Office materyalleri, gerçek Stylized Water mesh/dokuları, EPO Render Graph feature; derleme ve shader hatası yok |
 | Outline | Native çözünürlük; tek dilation; blur ve duvar arkasından görünüm yok |
@@ -30,19 +37,21 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Oda | Teşhir dolapları kaldırıldı; dört arka kutu raycast ile erişilebilir |
 | Sol afiş | Başlık görünür ve kesilmiyor; başlık/fotoğraf yerleşimi ayrıldı, oyun görüntüsü kontrol edildi |
 | Pause / restart | Analiz donar; eski rapor/callback reddedilir, sonuç sıfırlanır |
-| Windows build | Kullanıcı isteğiyle durduruldu; bu dal için yeni Windows paketi doğrulanmadı |
+| Windows build | Kullanıcının isteğiyle alınmadı; doğrulama Editor kapsamındadır |
 
-Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i kullanıcı isteğiyle durduruldu.
+Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/coastal-tests.xml`. Build: `Logs/coastal-build.log`. Sinematik/çevre görüntüleri: `Logs/coastal-review.log` ve Docs/Previews/Coastal. Tam oynanış ekranları: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
+Ham rapor: `Logs/props-tests.xml` (44/44). Son arazi düzenlemesinden sonra çevre/sinematik testlerinin tekrarı: `Logs/props-final-art-tests.xml`. Sahne üretimi, mesh envanteri ve shader kontrolü: `Logs/props-final-art.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
 
-[Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md)
+[Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 
 [Sahil, tesis, asset uyarlaması ve açılış](Docs/COASTAL_CINEMATIC.md)
 
 ![Açılış sözü](Docs/Previews/Coastal/OpeningQuote720.png)
 
 ![Carettalar ve kıyı](Docs/Previews/Coastal/Swimming.png)
+
+![COP31 logosu ve havai fişekler](Docs/Previews/Coastal/LogoFireworks.png)
 
 ![Tesis koridoru](Docs/Previews/Coastal/CorridorColdChain.png)
 

@@ -43,8 +43,8 @@ namespace GameUp.Production.Tests
                 Assert.That(Vector3.Dot(turtle.transform.GetChild(0).up,turtle.transform.up),Is.GreaterThan(.99f),"Facing correction must not roll the animal upside down.");
                 Assert.That(turtle.GetComponentsInChildren<SkinnedMeshRenderer>().All(r=>!r.gameObject.isStatic),Is.True);
                 var so=new SerializedObject(turtle);
-                var entry=so.FindProperty("waterEntry").vector3Value;var center=so.FindProperty("swimCenter").vector3Value;
-                Assert.That(center.z-Vector3.Distance(entry,center),Is.GreaterThan(28),"Swim loop must stay seaward of the shoreline.");
+                var center=so.FindProperty("swimCenter").vector3Value;
+                Assert.That(center.z-so.FindProperty("swimRadiusZ").floatValue,Is.GreaterThan(28),"Swim loop must stay seaward of the shoreline.");
             }
         }
         [Test] public void SavedOpeningRouteAvoidsWallsAndEndsAtTheWorkstationCamera()
@@ -53,9 +53,9 @@ namespace GameUp.Production.Tests
             var cameraObject=(GameObject)so.FindProperty("cinematicCamera").objectReferenceValue;
             var gameplay=(GameObject)so.FindProperty("gameplayCamera").objectReferenceValue;
             var clip=AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Data/Cinematic/ArrivalCamera.anim");
-            Assert.That(intro.GetComponent<PlayableDirector>().playableAsset,Is.Not.Null);Assert.That(clip.length,Is.EqualTo(72).Within(.01));
+            Assert.That(intro.GetComponent<PlayableDirector>().playableAsset,Is.Not.Null);Assert.That(clip.length,Is.EqualTo(OpeningTiming.End).Within(.01));
             Vector3 previous=Vector3.zero;
-            for(float t=19;t<72;t+=.2f)
+            for(float t=19;t<OpeningTiming.End;t+=.2f)
             {
                 clip.SampleAnimation(cameraObject,t);Physics.SyncTransforms();
                 var hits=Physics.OverlapSphere(cameraObject.transform.position,.12f,1,QueryTriggerInteraction.Ignore);
@@ -69,7 +69,7 @@ namespace GameUp.Production.Tests
                 }
                 previous=position;
             }
-            clip.SampleAnimation(cameraObject,72);
+            clip.SampleAnimation(cameraObject,OpeningTiming.End);
             Assert.That(Vector3.Distance(cameraObject.transform.position,gameplay.transform.position),Is.LessThan(.005));
             Assert.That(Quaternion.Angle(cameraObject.transform.rotation,gameplay.transform.rotation),Is.LessThan(.1));
         }
@@ -104,6 +104,61 @@ namespace GameUp.Production.Tests
             Assert.That(AssetDatabase.GetAssetPath(sea.GetComponent<MeshFilter>().sharedMesh),Does.StartWith("Assets/StylizedWaterShader/"));
             Assert.That(AssetDatabase.GetAssetPath(material.GetTexture("_FoamTexture")),Does.StartWith("Assets/StylizedWaterShader/"));
             Assert.That(sea.GetComponents<MonoBehaviour>(),Is.Empty,"No legacy reflection camera or Built-in water component.");
+        }
+        [Test] public void ArtistEnvironmentAndPackageSignsAreActualSceneGeometry()
+        {
+            var meshes=all.Select(t=>t.GetComponent<MeshFilter>()).Where(f=>f).Select(f=>f.sharedMesh).ToArray();
+            var artist=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/Environment/Mesh/Environment.fbx").GetComponentsInChildren<MeshFilter>();
+            Assert.That(artist.Length,Is.EqualTo(16));
+            foreach(var part in artist)Assert.That(meshes,Does.Contain(part.sharedMesh),"Artist object absent: "+part.name);
+            foreach(var name in new[]{"HabitatSign","InspectionDirection","FacilityName","FacilityCOP31","BeltInstructions"})
+            {
+                var sign=all.Single(t=>t.name==name);
+                Assert.That(sign.GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).StartsWith("Assets/PolygonOffice/",StringComparison.Ordinal)),Is.True,name);
+                foreach(var text in sign.GetComponentsInChildren<Text>())Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),name+" lettering overflow");
+            }
+            foreach(var name in new[]{"FoodSecurityPoster","ClimateActionPoster","WasteSortingPoster","WaterFoodClimatePoster","ColdChainPoster"})
+                Assert.That(all.Single(t=>t.name==name).GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).Contains("SM_Prop_Poster_01")),Is.True,name+" must use the package poster prop");
+            Assert.That(all.Any(t=>t.name=="TaurusMountains"||t.name=="DistantTaurusRidge"),Is.False);
+            var terrain=all.Single(t=>t.name=="TaurusTerrain").GetComponent<MeshFilter>().sharedMesh;
+            Assert.That(terrain.vertexCount,Is.GreaterThan(2000));Assert.That(terrain.bounds.size.z,Is.GreaterThan(500));Assert.That(terrain.bounds.size.y,Is.GreaterThan(35));Assert.That(terrain.bounds.min.y,Is.LessThan(0));
+            Assert.That(terrain.vertices.All(v=>!float.IsNaN(v.y)&&!float.IsInfinity(v.y)),Is.True);
+        }
+        [Test] public void SwimmingIsCurvedAndVisibleBeforeLogoThenFireworksThenWalk()
+        {
+            var intro=all.Select(t=>t.GetComponent<IntroCinematic>()).Single(c=>c);
+            var source=new SerializedObject(intro);var cameraObject=(GameObject)source.FindProperty("cinematicCamera").objectReferenceValue;cameraObject.SetActive(true);
+            var director=intro.GetComponent<PlayableDirector>();director.RebuildGraph();director.Play();
+            var logo=all.Single(t=>t.name=="COP31RisingLogo");var group=logo.GetComponent<CanvasGroup>();
+            var turtles=all.Select(t=>t.GetComponent<ShorelineTurtle>()).Where(t=>t).ToArray();
+            intro.SampleAt(21);Assert.That(turtles.Any(t=>!t.IsSwimming),Is.True);
+            intro.SampleAt(OpeningTiming.SwimReveal);Assert.That(turtles.All(t=>t.IsSwimming),Is.True);Assert.That(group.alpha,Is.LessThan(.01));
+            intro.SampleAt(OpeningTiming.LogoStart);Assert.That(turtles.All(t=>t.IsCruising),Is.True);float initialY=logo.localPosition.y;
+            var direction=turtles[0].transform.forward;intro.SampleAt(OpeningTiming.LogoRaised);
+            Assert.That(Vector3.Angle(direction,turtles[0].transform.forward),Is.GreaterThan(35));
+            Assert.That(logo.localPosition.y-initialY,Is.GreaterThan(15));Assert.That(group.alpha,Is.GreaterThan(.99));
+            var viewport=cameraObject.GetComponent<Camera>().WorldToViewportPoint(logo.position);Assert.That(viewport.z,Is.GreaterThan(0));Assert.That(viewport.x,Is.InRange(.1f,.9f));Assert.That(viewport.y,Is.InRange(.1f,.9f));
+            intro.SampleAt(46);
+            var fireworks=all.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
+            Assert.That(fireworks.Length,Is.EqualTo(5));Assert.That(fireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));
+            intro.SampleAt(OpeningTiming.WalkStart+.2f);Assert.That(group.alpha,Is.LessThan(.01));Assert.That(fireworks.All(p=>!p.gameObject.activeInHierarchy),Is.True,"No frozen fireworks after the celebration.");
+            Assert.That(cameraObject.transform.position.z,Is.GreaterThan(20),"Corridor walk must follow the logo reveal.");
+            intro.SampleAt(76);Assert.That(cameraObject.transform.position.x,Is.LessThan(-12));Assert.That(cameraObject.transform.position.z,Is.InRange(-5,-3));
+            director.Stop();
+        }
+        [Test] public void SwimLoopHasDepthBankingAndCannotReturnOntoTheBeach()
+        {
+            foreach(var turtle in all.Select(t=>t.GetComponent<ShorelineTurtle>()).Where(t=>t))
+            {
+                float low=100,high=-100;Vector3 first=Vector3.zero;float maxTurn=0;
+                for(int i=0;i<81;i++)
+                {
+                    turtle.SamplePose(40+i*.25f);var p=turtle.transform.localPosition;
+                    Assert.That(p.z,Is.GreaterThan(28));low=Mathf.Min(low,p.y);high=Mathf.Max(high,p.y);
+                    if(i==0)first=turtle.transform.forward;else maxTurn=Mathf.Max(maxTurn,Vector3.Angle(first,turtle.transform.forward));
+                }
+                Assert.That(high-low,Is.GreaterThan(.1));Assert.That(maxTurn,Is.GreaterThan(90));
+            }
         }
     }
 }

@@ -181,14 +181,41 @@ namespace GameUp.Production.Tests
             var openingFins=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None).SelectMany(t=>t.GetComponentsInChildren<Transform>()).Where(t=>t.name.StartsWith("frontLeg",StringComparison.Ordinal)).ToArray();
             var finRotations=openingFins.Select(t=>t.localRotation).ToArray();
             var finPositions=openingFins.Select(t=>t.localPosition).ToArray();
-            float introDeadline=Time.realtimeSinceStartup+85;
+            float introDeadline=Time.realtimeSinceStartup+OpeningTiming.End+15;
+            var introduction=Object.FindFirstObjectByType<IntroCinematic>();
+            var openingActors=Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None);
+            var openingScene=session.gameObject.scene;
+            var openingTransforms=openingScene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+            var openingLogo=openingTransforms.Single(t=>t.name=="COP31RisingLogo").GetComponent<CanvasGroup>();
+            var openingFireworks=openingTransforms.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
+            var openingCamera=Object.FindFirstObjectByType<Camera>();
+            var openingCanvas=GameObject.Find("OpeningCanvas").GetComponent<Canvas>();
+            bool swimmingSeen=false,logoSeen=false,fireworksSeen=false,walkSeen=false;
             while(session.IsIntroducing)
             {
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(introDeadline),"Opening must finish naturally.");
                 Assert.That(session.WorldInputAllowed,Is.False);
                 Assert.That(session.Flow.State,Is.EqualTo(FlowState.Boot));
+                if(!swimmingSeen&&introduction.Elapsed>=OpeningTiming.SwimReveal)
+                {
+                    Assert.That(openingActors.All(t=>t.IsSwimming),Is.True);Assert.That(openingLogo.alpha,Is.LessThan(.01));swimmingSeen=true;
+                }
+                if(!logoSeen&&introduction.Elapsed>=OpeningTiming.LogoRaised+.2f)
+                {
+                    Assert.That(swimmingSeen,Is.True);Assert.That(openingLogo.alpha,Is.GreaterThan(.99));Assert.That(openingActors.All(t=>t.IsCruising),Is.True);logoSeen=true;
+                }
+                if(!fireworksSeen&&introduction.Elapsed>=46)
+                {
+                    Assert.That(logoSeen,Is.True);Assert.That(openingFireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));fireworksSeen=true;
+                    ProductionSnapshot.Capture(openingCanvas,openingCamera,"Logs/Visuals/cinematic-logo-fireworks.png",1920,1080);
+                }
+                if(!walkSeen&&introduction.Elapsed>=OpeningTiming.WalkStart+.3f)
+                {
+                    Assert.That(fireworksSeen,Is.True);Assert.That(openingLogo.alpha,Is.LessThan(.01));Assert.That(openingFireworks.All(p=>!p.gameObject.activeInHierarchy),Is.True);walkSeen=true;
+                }
                 yield return null;
             }
+            Assert.That(swimmingSeen&&logoSeen&&fireworksSeen&&walkSeen,Is.True,"Opening stages must play in narrative order.");
             foreach(var turtle in Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None))
             {
                 var animator=turtle.GetComponentInChildren<Animator>();
@@ -224,7 +251,10 @@ namespace GameUp.Production.Tests
             Assert.That(posterTitle.cachedTextGenerator.characterCountVisible,Is.GreaterThan(0));
             player.localRotation=savedYaw;camera.transform.localRotation=savedPitch;
             input.ToggleInspection();Assert.That(input.IsInspecting,Is.True);Assert.That(session.ProductInspected,Is.True);Capture("inspection",session.gameObject.scene);input.EndInspection();
-            session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);Capture("handbook",session.gameObject.scene);document.Confirm();
+            session.OpenHandbook();Assert.That(session.Flow.CanDecide,Is.False);
+            Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Null);
+            Capture("handbook",session.gameObject.scene);document.Confirm();
+            Assert.That(GameObject.Find("InspectionOffice/Model_closedBook"),Is.Not.Null);Assert.That(GameObject.Find("InspectionOffice/Model_openBook"),Is.Null);
             session.Analyze();Assert.That(session.Flow.Phase,Is.EqualTo(ProductPhase.Analyzing));
             pause.Open();var position=product.ActiveProduct.transform.position;
             yield return new WaitForSecondsRealtime(.25f);

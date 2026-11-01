@@ -33,10 +33,10 @@ namespace GameUp.Editor
         internal static void Create(GameSessionController session,Camera gameplayCamera,Canvas gameplayInterface)
         {
             Directory.CreateDirectory(Data);AssetDatabase.Refresh();
-            gameplayCamera.farClipPlane=260;gameplayCamera.clearFlags=CameraClearFlags.Skybox;
+            gameplayCamera.farClipPlane=650;gameplayCamera.clearFlags=CameraClearFlags.Skybox;
             CoastalAssetSetup.ConfigureCamera(gameplayCamera);
             var cameraObject=new GameObject("OpeningCamera",typeof(Camera),typeof(AudioListener),typeof(Animator));
-            var camera=cameraObject.GetComponent<Camera>();camera.nearClipPlane=.08f;camera.farClipPlane=260;camera.fieldOfView=60;camera.clearFlags=CameraClearFlags.Skybox;
+            var camera=cameraObject.GetComponent<Camera>();camera.nearClipPlane=.08f;camera.farClipPlane=650;camera.fieldOfView=60;camera.clearFlags=CameraClearFlags.Skybox;
             cameraObject.GetComponent<Animator>().applyRootMotion=false;
             CoastalAssetSetup.ConfigureCamera(camera);
             var root=new GameObject("OpeningSequence");var director=root.AddComponent<PlayableDirector>();director.playOnAwake=false;
@@ -53,29 +53,38 @@ namespace GameUp.Editor
             Text("AttributionRole",quote.transform,"Türkiye Cumhuriyeti Cumhurbaşkanı Eşi\nBirleşmiş Milletler (BM) Sıfır Atık Yüksek Düzeyli Şahsiyetler Danışma Kurulu Başkanı",0,-358,1400,110,21,new Color(.68f,.7f,.72f),TextAnchor.MiddleCenter);
             Image("TopLetterbox",canvas.transform,0,500,1920,80,Color.black);
             Image("BottomLetterbox",canvas.transform,0,-500,1920,80,Color.black);
+            var subtitlePanel=Image("SubtitlePanel",canvas.transform,0,-434,1600,100,new Color(.015f,.045f,.055f,.83f)).gameObject.AddComponent<CanvasGroup>();subtitlePanel.alpha=0;Set(intro,"captionBackdrop",subtitlePanel);
             Set(intro,"caption",Text("SceneCaption",canvas.transform,"",0,-438,1500,80,25,Color.white,TextAnchor.MiddleCenter));
-            var so=new SerializedObject(intro);var captions=so.FindProperty("captions");captions.arraySize=4;
+            var so=new SerializedObject(intro);var captions=so.FindProperty("captions");captions.arraySize=6;
             Caption(captions,0,20.5f,28,"ANTALYA  /  AKDENİZ KIYISI\nBir kıyıyı korumak, bir yaşamı korumaktır.");
-            Caption(captions,1,30,40,"Temiz su, sağlıklı ekosistemler ve güvenli gıda aynı geleceğe bağlı.");
-            Caption(captions,2,44,56,"COP31 hazırlıklarında görevli bir ürün denetçisisin.\nBugünün kararları, yarının sofrasını korur.");
-            Caption(captions,3,60,70,"Kaynağı izle. Riski belirle. İsrafı azalt.\nAntalya Gıda Güvenliği Tesisi — ilk vardiya.");
+            Caption(captions,1,OpeningTiming.SwimReveal,OpeningTiming.LogoStart,"Temiz su, sağlıklı ekosistemler ve güvenli gıda aynı geleceğe bağlı.");
+            Caption(captions,2,OpeningTiming.LogoStart,OpeningTiming.FireworksEnd,"COP31  /  ANTALYA\nGıda güvenliği için ortak gelecek.");
+            Caption(captions,3,54,66,"COP31 hazırlıklarında görevli bir ürün denetçisisin.\nBugünün kararları, yarının sofrasını korur.");
+            Caption(captions,4,72,79,"Gıda • Su • İklim\nBirlikte korunan bir gelecek.");
+            Caption(captions,5,80,88,"Kaynağı izle. Riski belirle. İsrafı azalt.\nAntalya Gıda Güvenliği Tesisi — ilk vardiya.");
+            var turtles=UnityEngine.Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None);var actors=so.FindProperty("turtles");actors.arraySize=turtles.Length;
+            for(int i=0;i<turtles.Length;i++)actors.GetArrayElementAtIndex(i).objectReferenceValue=turtles[i];
             so.ApplyModifiedPropertiesWithoutUndo();
             var poses=new[]{
                 new Pose(0,new Vector3(-16,1.65f,22),new Vector3(-10,-.15f,28)),
-                new Pose(19,new Vector3(-16,1.65f,22),new Vector3(-10,-.15f,28)),
-                new Pose(25,new Vector3(-13.8f,1.45f,23.2f),new Vector3(-10,-.35f,29)),
-                new Pose(31,new Vector3(-12.6f,1.55f,23.5f),new Vector3(-8,-.45f,32)),
-                new Pose(33,new Vector3(-12.8f,1.55f,23.5f),new Vector3(-8,-.45f,32)),
-                new Pose(36,new Vector3(-20,1.7f,21),new Vector3(-23,1.8f,10)),
-                new Pose(41,new Vector3(-23,1.7f,13),new Vector3(-20,2.1f,-4)),
-                new Pose(47,new Vector3(-23,1.7f,2),new Vector3(-20,2.1f,-4)),
-                new Pose(49,new Vector3(-23,1.7f,-4),new Vector3(-14,1.9f,-4)),
-                new Pose(51,new Vector3(-19.3f,1.7f,-4),new Vector3(-11,1.8f,-4)),
-                new Pose(56,new Vector3(-15.7f,1.7f,-4),new Vector3(-15.3f,1.95f,-2.1f)),
-                new Pose(60,new Vector3(-13.2f,1.7f,-4),new Vector3(-11.1f,1.95f,-5.87f)),
-                new Pose(65,new Vector3(-9.2f,1.7f,-4),new Vector3(0,1.5f,.25f)),
-                new Pose(69,new Vector3(-3.8f,1.9f,-3.7f),new Vector3(0,1.2f,.25f)),
-                new Pose(72,gameplayCamera.transform.position,gameplayCamera.transform.position+gameplayCamera.transform.forward*5)
+                new Pose(19,new Vector3(-16,1.45f,21),new Vector3(-10,-.15f,23.5f)),
+                new Pose(24,new Vector3(-14.5f,1.3f,22),new Vector3(-10,-.3f,25.5f)),
+                new Pose(29,new Vector3(-13.5f,1.35f,25),new Vector3(-10,-.5f,30)),
+                new Pose(34,new Vector3(-13.8f,1.4f,26),new Vector3(-10,-.5f,34)),
+                new Pose(38,new Vector3(-13,1.6f,26),new Vector3(-9.5f,-.4f,35)),
+                new Pose(41,new Vector3(-13,2.3f,26),new Vector3(-8,3,50)),
+                new Pose(44,new Vector3(-13,2.3f,26),new Vector3(-8,12,50)),
+                new Pose(OpeningTiming.WalkStart,new Vector3(-13,2.3f,26),new Vector3(-8,12,50)),
+                new Pose(56,new Vector3(-20,1.7f,21),new Vector3(-23,1.8f,10)),
+                new Pose(61,new Vector3(-23,1.7f,13),new Vector3(-20,2.1f,-4)),
+                new Pose(67,new Vector3(-23,1.7f,2),new Vector3(-20,2.1f,-4)),
+                new Pose(69,new Vector3(-23,1.7f,-4),new Vector3(-14,1.9f,-4)),
+                new Pose(71,new Vector3(-19.3f,1.7f,-4),new Vector3(-11,1.8f,-4)),
+                new Pose(76,new Vector3(-15.7f,1.7f,-4),new Vector3(-15.3f,1.95f,-2.1f)),
+                new Pose(80,new Vector3(-13.2f,1.7f,-4),new Vector3(-11.1f,1.95f,-5.87f)),
+                new Pose(85,new Vector3(-9.2f,1.7f,-4),new Vector3(0,1.5f,.25f)),
+                new Pose(88,new Vector3(-3.8f,1.9f,-3.7f),new Vector3(0,1.2f,.25f)),
+                new Pose(OpeningTiming.End,gameplayCamera.transform.position,gameplayCamera.transform.position+gameplayCamera.transform.forward*5)
             };
             var clip=new AnimationClip{name="Beach to inspection desk",frameRate=30};
             var positions=new[]{new AnimationCurve(),new AnimationCurve(),new AnimationCurve()};
@@ -98,9 +107,10 @@ namespace GameUp.Editor
             if(!timeline){timeline=ScriptableObject.CreateInstance<TimelineAsset>();AssetDatabase.CreateAsset(timeline,timelinePath);}
             foreach(var track in System.Linq.Enumerable.ToArray(timeline.GetRootTracks()))timeline.DeleteTrack(track);
             var cameraTrack=timeline.CreateTrack<AnimationTrack>(null,"Coast -> corridor -> workstation");cameraTrack.trackOffset=TrackOffset.ApplyTransformOffsets;
-            var cameraClip=cameraTrack.CreateClip<AnimationPlayableAsset>();cameraClip.start=0;cameraClip.duration=72;cameraClip.displayName="Unskippable arrival";
+            var cameraClip=cameraTrack.CreateClip<AnimationPlayableAsset>();cameraClip.start=0;cameraClip.duration=OpeningTiming.End;cameraClip.displayName="Unskippable arrival";
             var playable=(AnimationPlayableAsset)cameraClip.asset;playable.clip=savedClip;playable.removeStartOffset=false;
             director.playableAsset=timeline;director.SetGenericBinding(cameraTrack,cameraObject.GetComponent<Animator>());
+            OpeningEffectsAuthoring.Create(timeline,director);
             cameraObject.transform.position=poses[0].Position;cameraObject.transform.rotation=Quaternion.LookRotation(poses[0].Look-poses[0].Position);
             cameraObject.SetActive(false);canvas.gameObject.SetActive(false);
             EditorUtility.SetDirty(timeline);AssetDatabase.SaveAssets();

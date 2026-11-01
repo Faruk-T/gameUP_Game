@@ -34,13 +34,13 @@ namespace GameUp.Editor
             cameraObject.SetActive(true);
             var director=intro.GetComponent<PlayableDirector>();director.RebuildGraph();director.Play();
             Directory.CreateDirectory("Docs/Previews/Coastal");
-            black.alpha=1;quote.alpha=1;
+            intro.SampleAt(5);
             ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),null,"Docs/Previews/Coastal/OpeningQuote.png",1920,1080);
             ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),null,"Docs/Previews/Coastal/OpeningQuote720.png",1280,720);
             black.alpha=0;quote.alpha=0;
-            foreach(var item in new[]{(time:24d,name:"Beach"),(time:32d,name:"Swimming"),(time:44d,name:"Entrance"),(time:56d,name:"CorridorWater"),(time:60d,name:"CorridorColdChain"),(time:71.9d,name:"Workstation")})
+            foreach(var item in new[]{(time:23d,name:"Beach"),(time:37d,name:"Swimming"),(time:42d,name:"LogoRising"),(time:46d,name:"LogoFireworks"),(time:64d,name:"Entrance"),(time:76d,name:"CorridorWater"),(time:80d,name:"CorridorColdChain"),(time:88.5d,name:"Workstation")})
             {
-                director.time=item.time;director.Evaluate();
+                intro.SampleAt(item.time);
                 Debug.Log("CAMERA_POSE "+item.name+" "+camera.transform.position+" forward="+camera.transform.forward);
                 PoseTurtles((float)item.time);
                 ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/"+item.name+".png",1920,1080);
@@ -56,7 +56,6 @@ namespace GameUp.Editor
             var animation=AssetDatabase.LoadAllAssetsAtPath("Assets/Art/Outside/Mesh/caretta caretta.fbx").OfType<AnimationClip>().Single(c=>!c.name.StartsWith("__preview__"));
             foreach(var turtle in UnityEngine.Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None))
             {
-                turtle.SamplePose(t);
                 var animator=turtle.GetComponentInChildren<Animator>();animation.SampleAnimation(animator.gameObject,t%animation.length);
             }
         }

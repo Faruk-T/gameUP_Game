@@ -59,7 +59,7 @@ Shader "GameUP/COP31/StylizedWaterURP"
                 half ripple = pow(saturate(sin(uv.x*1.8+distortion.x*4+_Time.y)*sin(uv.y*1.3-_Time.y*.6)), 14)*.07;
                 half3 color = lerp(tint,refracted,.06*(1-saturate(depth*.5)))+ripple;
                 color = lerp(color,_FoamColor.rgb,foam*.8);
-                return half4(MixFog(color,input.fog),.95);
+                return half4(MixFog(color,input.fog),lerp(.4,.96,saturate(depth*1.4)));
             }
             ENDHLSL
         }

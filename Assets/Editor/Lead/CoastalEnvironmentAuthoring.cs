@@ -26,8 +26,8 @@ namespace GameUp.Editor
             for(int i=0;i<3;i++) Wall(office,new Vector3(-8,2.6f,-.25f+i*3.5f),3.5f,5.2f,90);
             Wall(office,new Vector3(-8,4.5f,-4),4,1.4f,90);
             // The portal stays open along the cinematic route; no camera passes through a closed door.
-            var ceiling = Material("FacilityCeiling",new Color(.88f,.9f,.87f));
-            Shape("FacilityCeiling",office,PrimitiveType.Cube,new Vector3(0,5.25f,.25f),new Vector3(16,.15f,16.5f),ceiling);
+            for(int x=0;x<4;x++)for(int z=0;z<4;z++)
+                FacilityPropAuthoring.Pack("SM_Bld_Ceiling_Panel_01",office,new Vector3(-6+x*4,5.25f,-5.9375f+z*4.125f),new Vector3(4,.15f,4.125f));
             Corridor(office);
             foreach(float x in new[]{-5f,0,5f})
             {
@@ -48,11 +48,11 @@ namespace GameUp.Editor
                 Wall(corridor,new Vector3(-18+i*4,1.9f,-2),4,3.8f,0);
                 Wall(corridor,new Vector3(-18+i*4,1.9f,-6),4,3.8f,180);
             }
-            Shape("CorridorCeiling",corridor,PrimitiveType.Cube,new Vector3(-14,3.85f,-4),new Vector3(12,.12f,4),Material("FacilityCeiling",new Color(.88f,.9f,.87f)));
+            for(int i=0;i<3;i++)FacilityPropAuthoring.Pack("SM_Bld_Ceiling_Panel_01",corridor,new Vector3(-18+i*4,3.85f,-4),new Vector3(4,.12f,4));
             RoomAuthoring.Poster(corridor,"WaterFoodClimatePoster",new Vector3(-15.3f,1.95f,-2.13f),0,"SUYU KORU\nGIDAYI KORU","Gıda • Su • İklim\nAynı geleceğin parçaları.","Assets/Art/Documents/Day2Products.png");
             RoomAuthoring.Poster(corridor,"ColdChainPoster",new Vector3(-11.1f,1.95f,-5.87f),180,"SOĞUK ZİNCİR\nGÜVENLİ SOFRA","Kaynağı izle. Etiketi oku.\nRiskli ürünü ayır.","Assets/Art/Documents/Day1Products.png");
-            corridor.Find("WaterFoodClimatePoster").localScale=Vector3.one*.72f;
-            corridor.Find("ColdChainPoster").localScale=Vector3.one*.72f;
+            corridor.Find("WaterFoodClimatePoster").localScale=Vector3.one*.64f;
+            corridor.Find("ColdChainPoster").localScale=Vector3.one*.64f;
             foreach(float x in new[]{-18f,-13f,-9f})
             {
                 Prop("SM_Prop_Light_Fluorescent_01",corridor,new Vector3(x,3.5f,-4),1.3f);
@@ -75,10 +75,10 @@ namespace GameUp.Editor
             var sand=Material("AntalyaSand",new Color(.78f,.68f,.47f));
             var stone=Material("AntalyaLimestone",new Color(.77f,.75f,.65f));
             var timber=Material("PromenadeTimber",new Color(.36f,.26f,.17f));
-            Shape("CoastalGround",coast,PrimitiveType.Cube,new Vector3(-10,-.65f,4.5f),new Vector3(100,1,33),sand);
+            Shape("CoastalGround",coast,PrimitiveType.Cube,new Vector3(0,-.65f,-129.5f),new Vector3(600,1,301),sand);
             // A sloped, saved mesh gives water depth and an actual shoreline instead of intersecting cubes.
             var shoreMesh=new Mesh{name="AntalyaShoreSlope"};
-            shoreMesh.vertices=new[]{new Vector3(-70,-.15f,21),new Vector3(70,-.15f,21),new Vector3(-70,-1.6f,36),new Vector3(70,-1.6f,36),new Vector3(-70,-4,180),new Vector3(70,-4,180)};
+            shoreMesh.vertices=new[]{new Vector3(-400,-.15f,21),new Vector3(400,-.15f,21),new Vector3(-400,-1.6f,36),new Vector3(400,-1.6f,36),new Vector3(-400,-4,510),new Vector3(400,-4,510)};
             shoreMesh.triangles=new[]{0,2,1,1,2,3,2,4,3,3,4,5};shoreMesh.RecalculateNormals();shoreMesh.RecalculateBounds();
             SaveMesh(shoreMesh,CoastalAssetSetup.Root+"/ShoreSlope.asset");
             var slope=new GameObject("BeachSlope",typeof(MeshFilter),typeof(MeshRenderer));slope.transform.SetParent(coast,false);
@@ -86,8 +86,8 @@ namespace GameUp.Editor
             var waterSource=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/StylizedWaterShader/WaterPlane.prefab");
             var sea=new GameObject("MediterraneanSea",typeof(MeshFilter),typeof(MeshRenderer));sea.transform.SetParent(coast,false);
             var mesh=waterSource.GetComponent<MeshFilter>().sharedMesh; sea.GetComponent<MeshFilter>().sharedMesh=mesh;
-            var b=mesh.bounds;sea.transform.localScale=new Vector3(260/b.size.x,1,210/b.size.z);
-            sea.transform.localPosition=new Vector3(-b.center.x*sea.transform.localScale.x,-.58f-b.center.y,125-b.center.z*sea.transform.localScale.z);
+            var b=mesh.bounds;sea.transform.localScale=new Vector3(800/b.size.x,1,490/b.size.z);
+            sea.transform.localPosition=new Vector3(-b.center.x*sea.transform.localScale.x,-.58f-b.center.y,265-b.center.z*sea.transform.localScale.z);
             sea.GetComponent<MeshRenderer>().sharedMaterial=AssetDatabase.LoadAssetAtPath<Material>(CoastalAssetSetup.Root+"/MediterraneanWater.mat");
             sea.GetComponent<MeshRenderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
             Shape("PromenadeFoundation",coast,PrimitiveType.Cube,new Vector3(-23,-.15f,8),new Vector3(5,.25f,29),stone);
@@ -100,13 +100,12 @@ namespace GameUp.Editor
                 Shape("PromenadeRail",coast,PrimitiveType.Cube,new Vector3(-25.4f,.95f,z+2.8f),new Vector3(.1f,.12f,5.6f),timber);
             }
             Prop("SM_Prop_Outdoor_Seat_01",coast,new Vector3(-23.7f,0,13),2.2f,90);
-            for(int i=0;i<4;i++) Palm(coast,new Vector3(-27-i%2*3,0,-2+i*7),i*41);
+            for(int i=0;i<4;i++)Prop("SM_Generic_Tree_03",coast,new Vector3(-29-i%2*3,0,-2+i*7),5.5f+i*.25f,i*41);
             for(int i=0;i<8;i++)
             {
-                var rock=Shape("LimestoneRock",coast,PrimitiveType.Sphere,new Vector3(10+i*3,-.1f,23+Mathf.Sin(i)*2),new Vector3(2.8f,1.2f,2.2f),stone);
-                rock.transform.localRotation=Quaternion.Euler(i*23,i*47,0);
+                Prop("SM_Generic_Small_Rocks_0"+(i%5+1),coast,new Vector3(10+i*3,-.12f,23+Mathf.Sin(i)*2),3.5f,i*47);
             }
-            Sign(coast,"HabitatSign",new Vector3(-15.6f,1.15f,23.1f),0,2.7f,1,"YAŞAM ALANINI KORU\nMesafeni koru • Işık tutma\nAtığını kıyıda bırakma");
+            Sign(coast,"HabitatSign",new Vector3(-17.3f,.9f,22.5f),0,2.5f,1,"YAŞAM ALANINI KORU\nMesafeni koru • Işık tutma\nAtığını kıyıda bırakma");
             Turtles(coast);
         }
         private static void Turtles(Transform parent)
@@ -132,25 +131,18 @@ namespace GameUp.Editor
                 var animator=visual.transform.GetChild(0).gameObject.AddComponent<Animator>();
                 animator.runtimeAnimatorController=controller;animator.applyRootMotion=false;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;animator.speed=.8f+i*.09f;
                 var mover=turtle.AddComponent<ShorelineTurtle>();var so=new SerializedObject(mover);
-                var start=new Vector3(-13.2f+i*1.25f,-.15f,20+i%2*.6f);
-                var entry=new Vector3(start.x+.6f,-.82f,32.6f+i%2*.6f);
+                var start=new Vector3(-12.8f+i*1.1f,-.18f,21.3f+i%2*.3f);
+                var entry=new Vector3(start.x+.5f,-.59f,25.7f+i%2*.25f);
                 turtle.transform.localPosition=start;
                 so.FindProperty("beachStart").vector3Value=start;so.FindProperty("waterEntry").vector3Value=entry;
-                so.FindProperty("swimCenter").vector3Value=entry+new Vector3(3.5f+i*.25f,0,0);
-                so.FindProperty("phaseOffset").floatValue=i*3-18;
-                so.FindProperty("crawlSeconds").floatValue=26;so.FindProperty("swimSpeed").floatValue=.08f+i*.008f;
+                float turn=i%2==0?1:-1;
+                so.FindProperty("swimCenter").vector3Value=new Vector3(entry.x+turn*4.5f,-.75f,33.8f+i*.2f);
+                so.FindProperty("turnDirection").floatValue=turn;
+                so.FindProperty("phaseOffset").floatValue=-20-i*.5f;
+                so.FindProperty("crawlSeconds").floatValue=8;so.FindProperty("swimSpeed").floatValue=.28f+i*.014f;
+                so.FindProperty("animator").objectReferenceValue=animator;
+                so.FindProperty("wake").objectReferenceValue=OpeningEffectsAuthoring.Wake(turtle.transform);
                 so.ApplyModifiedPropertiesWithoutUndo();CoastalAssetSetup.Outline(turtle);
-            }
-        }
-        private static void Palm(Transform parent,Vector3 position,float yaw)
-        {
-            var palm=new GameObject("MediterraneanPalm").transform;palm.SetParent(parent,false);palm.localPosition=position;palm.localRotation=Quaternion.Euler(0,yaw,0);
-            var bark=Material("PalmBark",new Color(.4f,.32f,.2f));var leaf=Material("PalmLeaves",new Color(.17f,.36f,.19f));
-            Shape("Trunk",palm,PrimitiveType.Cylinder,new Vector3(0,2.3f,0),new Vector3(.3f,2.3f,.3f),bark);
-            for(int i=0;i<7;i++)
-            {
-                float angle=i*Mathf.PI*2/7;var frond=Shape("Frond",palm,PrimitiveType.Sphere,new Vector3(Mathf.Sin(angle)*1.05f,4.35f,Mathf.Cos(angle)*1.05f),new Vector3(.52f,.14f,2.6f),leaf);
-                frond.transform.localRotation=Quaternion.Euler(18,i*360f/7,0);
             }
         }
         internal static GameObject Prop(string name,Transform parent,Vector3 position,float size,float yaw=0)
@@ -182,11 +174,7 @@ namespace GameUp.Editor
         }
         internal static void Sign(Transform parent,string name,Vector3 position,float yaw,float width,float height,string message)
         {
-            var panel=new GameObject(name,typeof(RectTransform),typeof(Canvas)).GetComponent<RectTransform>();panel.SetParent(parent,false);
-            panel.localPosition=position;panel.localRotation=Quaternion.Euler(0,yaw,0);panel.localScale=Vector3.one*(width/1200);panel.sizeDelta=new Vector2(1200,height/width*1200);
-            panel.GetComponent<Canvas>().renderMode=RenderMode.WorldSpace;
-            UIAuthoring.Image("Panel",panel,0,0,1200,panel.sizeDelta.y,new Color(.025f,.17f,.2f));
-            UIAuthoring.Text("Message",panel,message,0,0,1120,panel.sizeDelta.y-20,42,UIAuthoring.Paper,TextAnchor.MiddleCenter);
+            FacilityPropAuthoring.Sign(parent,name,position,yaw,width,height,message);
         }
         private static void SaveMesh(Mesh mesh,string path)
         {

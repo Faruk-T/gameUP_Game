@@ -35,45 +35,23 @@ namespace GameUp.Editor
         private static void Coast(Transform parent)
         {
             CoastalEnvironmentAuthoring.Outside(parent);
-            var shore=Material("DistantCoast",new Color(.36f,.49f,.53f));
-            var mesh=new Mesh{name="TaurusSilhouette"};
-            float[] peaks={2,7,4,11,6,13,8,5,9,3,7,2};
-            var vertices=new Vector3[peaks.Length*2];var indices=new int[(peaks.Length-1)*6];
-            for(int i=0;i<peaks.Length;i++)
-            {
-                vertices[i*2]=new Vector3(-55+i*10,0,0);vertices[i*2+1]=new Vector3(-55+i*10,peaks[i],0);
-                if(i==peaks.Length-1)continue;int p=i*6,n=i*2;
-                indices[p]=n;indices[p+1]=n+1;indices[p+2]=n+3;indices[p+3]=n;indices[p+4]=n+3;indices[p+5]=n+2;
-            }
-            mesh.vertices=vertices;mesh.triangles=indices;mesh.RecalculateNormals();
-            string path=ProductionProjectSetup.Art+"/TaurusSilhouette.asset";var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if(existing){EditorUtility.CopySerialized(mesh,existing);UnityEngine.Object.DestroyImmediate(mesh);mesh=existing;}else AssetDatabase.CreateAsset(mesh,path);
-            var mountains=new GameObject("TaurusMountains",typeof(MeshFilter),typeof(MeshRenderer));mountains.transform.SetParent(parent,false);mountains.transform.localPosition=new Vector3(0,-.4f,49);
-            mountains.GetComponent<MeshFilter>().sharedMesh=mesh;mountains.GetComponent<MeshRenderer>().sharedMaterial=shore;
-            mountains.transform.localPosition=new Vector3(0,-2,145);mountains.transform.localScale=new Vector3(3,2,1);
-            var distant=new GameObject("DistantTaurusRidge",typeof(MeshFilter),typeof(MeshRenderer));distant.transform.SetParent(parent,false);
-            distant.transform.localPosition=new Vector3(35,-3,210);distant.transform.localScale=new Vector3(4,2.8f,1);
-            distant.GetComponent<MeshFilter>().sharedMesh=mesh;distant.GetComponent<MeshRenderer>().sharedMaterial=Material("DistantTaurus",new Color(.48f,.64f,.67f));
+            FacilityPropAuthoring.Mountains(parent);
         }
         internal static Transform[] RecyclingStation(Transform parent)
         {
             var station=new GameObject("RecyclingStation").transform;station.SetParent(parent,false);
             string[] names={"KÂĞIT","CAM","PLASTİK","KONTAMİNE"};
             var colors=new[]{new Color(.16f,.37f,.7f),new Color(.14f,.5f,.35f),new Color(.8f,.63f,.12f),new Color(.65f,.18f,.16f)};
-            var points=new Transform[4];var metal=Material("BinRim",new Color(.19f,.23f,.22f),.4f);
+            var points=new Transform[4];
             for(int i=0;i<4;i++)
             {
                 var bin=new GameObject("Waste_"+i).transform;bin.SetParent(station,false);bin.localPosition=new Vector3(-2.4f+i*1.6f,.64f,-7);bin.localRotation=Quaternion.Euler(0,180,0);
-                var color=Material("Waste_"+i,colors[i]);
-                Shape("Front",bin,PrimitiveType.Cube,new Vector3(0,0,-.44f),new Vector3(1.12f,1.2f,.08f),color);
-                Shape("Back",bin,PrimitiveType.Cube,new Vector3(0,0,.44f),new Vector3(1.12f,1.2f,.08f),color);
-                foreach(float x in new[]{-.52f,.52f})Shape("Side",bin,PrimitiveType.Cube,new Vector3(x,0,0),new Vector3(.08f,1.2f,.86f),color);
-                Shape("Base",bin,PrimitiveType.Cube,new Vector3(0,-.56f,0),new Vector3(1.04f,.08f,.86f),metal);
-                foreach(float x in new[]{-.56f,.56f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(x,.6f,0),new Vector3(.08f,.08f,1),metal);
-                foreach(float z in new[]{-.48f,.48f})Shape("Rim",bin,PrimitiveType.Cube,new Vector3(0,.6f,z),new Vector3(1.2f,.08f,.08f),metal);
+                string[] sources={"trashbin-paper","trashbin-glass","trashbin-plastic","trashbin-general"};
+                FacilityPropAuthoring.Esma(sources[i],bin,Vector3.zero,new Vector3(1.1f,1.2f,.88f));
                 var collider=bin.gameObject.AddComponent<BoxCollider>();collider.size=new Vector3(1.2f,1.3f,1);
                 SetAction(bin.gameObject.AddComponent<GameUP.Interaction.WorkstationTarget>(),(GameUP.Interaction.WorkstationAction)((int)GameUP.Interaction.WorkstationAction.Paper+i));
                 var label=WorldCanvas("BinLabel",bin,new Vector3(0,.08f,-.49f),0,.98f,.55f);
+                Image("CategoryBand",label,0,0,890,460,colors[i]);
                 Text("Category",label,names[i],0,55,820,180,86,Paper,TextAnchor.MiddleCenter);
                 Text("Instruction",label,i==3?"AYRI İMHA":"TEMİZ AMBALAJ",0,-140,820,120,48,Paper,TextAnchor.MiddleCenter);
                 CoastalAssetSetup.Outline(bin.gameObject);
@@ -84,7 +62,7 @@ namespace GameUp.Editor
         internal static void Poster(Transform parent,string name,Vector3 position,float yaw,string headline,string message,string photograph)
         {
             var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=position;root.localRotation=Quaternion.Euler(0,yaw,0);
-            Shape("Frame",root,PrimitiveType.Cube,Vector3.zero,new Vector3(1.92f,2.76f,.07f),Material("PosterFrame",new Color(.21f,.27f,.25f)));
+            FacilityPropAuthoring.PosterBacking(root);
             var canvas=WorldCanvas("Print",root,new Vector3(0,0,-.05f),0,1.8f,2.64f);
             Image("Paper",canvas,0,0,900,1320,Paper);
             var logo=Image("COP31Official",canvas,0,445,840,472,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/COP31Horizontal.png"));logo.preserveAspect=true;

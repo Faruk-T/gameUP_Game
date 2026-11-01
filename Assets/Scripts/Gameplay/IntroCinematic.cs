@@ -19,18 +19,22 @@ namespace GameUp.Gameplay
         [SerializeField] private GameObject cinematicCamera, gameplayCamera, gameplayInterface;
         [SerializeField] private CanvasGroup overlay, quote, blackout;
         [SerializeField] private Text caption;
+        [SerializeField] private CanvasGroup captionBackdrop;
         [SerializeField] private Caption[] captions;
+        [SerializeField] private ShorelineTurtle[] turtles;
         [SerializeField] private float quoteEnd = 19, fadeDuration = 1.2f;
         private int captionIndex = -2;
         public bool IsPlaying { get; private set; } = true;
         public double Duration => director.duration;
         public double Elapsed => director.time;
+        public void SampleAt(double time){director.time=time;EvaluatePresentation();}
 
         public IEnumerator Play()
         {
-            if (!director || !cinematicCamera || !gameplayCamera || !gameplayInterface || !overlay || !quote || !blackout || !caption)
+            if (!director || !cinematicCamera || !gameplayCamera || !gameplayInterface || !overlay || !quote || !blackout || !caption || !captionBackdrop || turtles==null || turtles.Length==0)
                 throw new InvalidOperationException("Opening cinematic requires its saved Timeline, cameras and UI.");
             IsPlaying = true;
+            foreach(var turtle in turtles)turtle.SetDirected(true);
             gameplayInterface.SetActive(false);
             gameplayCamera.SetActive(false);
             cinematicCamera.SetActive(true);
@@ -53,12 +57,14 @@ namespace GameUp.Gameplay
             overlay.gameObject.SetActive(false);
             gameplayCamera.SetActive(true);
             gameplayInterface.SetActive(true);
+            foreach(var turtle in turtles)turtle.SetDirected(false);
             IsPlaying = false;
         }
         private void EvaluatePresentation()
         {
             director.Evaluate();
             float t = (float)director.time;
+            foreach(var turtle in turtles)turtle.SamplePose(t);
             quote.alpha = Mathf.Min(Mathf.Clamp01(t / fadeDuration), Mathf.Clamp01((quoteEnd - t) / fadeDuration));
             blackout.alpha = t <= quoteEnd ? 1 : Mathf.Clamp01(1 - (t - quoteEnd) / fadeDuration);
             blackout.alpha = Mathf.Max(blackout.alpha, Mathf.Clamp01((t - (float)director.duration + fadeDuration) / fadeDuration));
@@ -68,6 +74,7 @@ namespace GameUp.Gameplay
             if (next == captionIndex) return;
             captionIndex = next;
             caption.text = next < 0 ? "" : captions[next].Text;
+            captionBackdrop.alpha=next<0?0:1;
         }
     }
 }

@@ -39,6 +39,8 @@ namespace GameUp.Editor
         {
             Directory.CreateDirectory(Root);
             AssetDatabase.Refresh();
+            var logoImporter=(TextureImporter)AssetImporter.GetAtPath("Assets/Art/Menu/COP31Horizontal.png");
+            if(logoImporter.maxTextureSize!=2048){logoImporter.maxTextureSize=2048;logoImporter.SaveAndReimport();}
             var lit = Shader.Find("Universal Render Pipeline/Lit");
             foreach (var folder in new[]{"Assets/PolygonOffice", "Assets/Art/Outside", "Assets/Art/Environment"})
             foreach (var guid in AssetDatabase.FindAssets("t:Material", new[]{folder}))
@@ -76,6 +78,9 @@ namespace GameUp.Editor
             water.SetTexture("_DistortionTexture", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/StylizedWaterShader/Textures/T_WaterDistortion.png"));
             water.SetTexture("_FoamTexture", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/StylizedWaterShader/Textures/T_FoamTexture.png"));
             water.enableInstancing = true; EditorUtility.SetDirty(water);
+            var newspaper=AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/Environment/Material/Newspaper_Texture.mat");
+            newspaper.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Art/Documents/Newsprint.png"));
+            newspaper.SetColor("_BaseColor",new Color(.92f,.89f,.79f));newspaper.SetFloat("_Smoothness",.06f);newspaper.SetFloat("_BumpScale",.14f);EditorUtility.SetDirty(newspaper);
             AssetDatabase.SaveAssets();
         }
         internal static void ConfigureCamera(Camera camera)
