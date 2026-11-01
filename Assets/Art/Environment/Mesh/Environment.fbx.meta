@@ -58,17 +58,17 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Gemini_Generated_Image_8saccu8saccu8sac
-    second: {fileID: 2800000, guid: 4d652ae90370a4347a4dd52fe728dc3e, type: 3}
+    second: {fileID: 2800000, guid: 19effb113a7fc6448ae621fbfbc5ebc6, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: NewspaperClosedNormal
-    second: {fileID: 2800000, guid: 001aa3c6941072148a15a6bf7d1a5bbb, type: 3}
+    second: {fileID: 2800000, guid: 66aa9b651a454d645a59bdfd3cb11773, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: TexturesCom_BleachedOakVeneer_M
-    second: {fileID: 2800000, guid: 63599e53209def340b18f549779f644e, type: 3}
+    second: {fileID: 2800000, guid: 705739191e03b1e4e973ec165fa9dbe2, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
