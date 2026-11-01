@@ -29,8 +29,26 @@ namespace GameUp.Editor
         }
 
         [InitializeOnLoadMethod]
-        private static void ConfigureEditorStart() => EditorApplication.delayCall += () =>
-            EditorSceneManager.playModeStartScene=AssetDatabase.LoadAssetAtPath<SceneAsset>(FirstPath);
+        private static void ConfigureEditorStart()
+        {
+            EditorApplication.delayCall += () =>
+            {
+                if (!EditorApplication.isPlayingOrWillChangePlaymode && !SessionState.GetBool("GameUP32_EnvModels_v4", false))
+                {
+                    SessionState.SetBool("GameUP32_EnvModels_v4", true);
+                    AuthorGame();
+                }
+                EditorSceneManager.playModeStartScene=AssetDatabase.LoadAssetAtPath<SceneAsset>(FirstPath);
+            };
+            EditorApplication.playModeStateChanged += state =>
+            {
+                if (state == PlayModeStateChange.EnteredEditMode && !SessionState.GetBool("GameUP32_EnvModels_v4", false))
+                {
+                    SessionState.SetBool("GameUP32_EnvModels_v4", true);
+                    AuthorGame();
+                }
+            };
+        }
 
         [MenuItem("GameUP32/Authoring/Rebuild First, Menu and Game")]
         public static void Author()
@@ -56,6 +74,7 @@ namespace GameUp.Editor
         public static void AuthorGame()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop play mode before authoring.");
+            AssetDatabase.Refresh();
             ImportSprite("Assets/Art/Documents/Newsprint.png",2048);
             CampaignAuthoring.Create();ProductAuthoring.Create(Days());
             WorkstationAuthoring.Game();AssetDatabase.SaveAssets();ArtistModelAudit.Generate();

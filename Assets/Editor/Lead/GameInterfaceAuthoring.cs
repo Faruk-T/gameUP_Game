@@ -19,7 +19,7 @@ namespace GameUp.Editor
             Image("InstructionBar",canvas.transform,0,-462,1920,156,new Color(.025f,.08f,.09f,.92f));
             Set(hud,"tutorial",Text("Tutorial",canvas.transform,"",0,-418,1760,60,27,Paper,TextAnchor.MiddleLeft));
             Text("Controls",canvas.transform,"E / İncele     B / Kitapçık     F / Analiz     T / Rapor     W / Onay     R / Red     Sol tık / Etkileşim",0,-494,1760,55,24,new Color(.65f,.81f,.77f),TextAnchor.MiddleLeft);
-            Set(hud,"feedback",Text("Feedback",canvas.transform,"",-525,-275,800,140,24,Paper));
+            Set(hud,"feedback",Text("Feedback",canvas.transform,"",-530,395,820,88,24,Paper));
             var card=Image("ProductCard",canvas.transform,670,60,500,730,new Color(.97f,.95f,.88f,.98f));
             Set(hud,"productCard",card.gameObject);
             Set(hud,"productTitle",Text("ProductTitle",card.transform,"",0,285,430,120,32,Ink,TextAnchor.UpperLeft,true));
@@ -34,9 +34,9 @@ namespace GameUp.Editor
             Set(presenter,"kind",Text("DocumentKind",page.transform,"",0,410,1200,50,24,new Color(.13f,.45f,.4f)));
             Set(presenter,"title",Text("DocumentTitle",page.transform,"",0,320,1200,120,48,Ink,TextAnchor.UpperLeft,true));
             var scroll=Scroll("DocumentScroll",page.transform,0,-15,1220,560,out var content);Set(presenter,"scroll",scroll);
-            var body=Text("DocumentBody",content,"",0,0,1160,100,29,Ink);body.gameObject.AddComponent<LayoutElement>();Set(presenter,"body",body);
+            var body=Text("DocumentBody",content,"",0,0,1160,100,26,Ink);body.verticalOverflow=VerticalWrapMode.Overflow;body.lineSpacing=1.15f;body.gameObject.AddComponent<LayoutElement>();Set(presenter,"body",body);
             var confirm=Button("Confirm",page.transform,"Devam",0,-390,760,presenter.Confirm);Set(presenter,"confirmButton",confirm);
-            Text("ScrollHint",page.transform,"Fare tekerleği ile kaydır",0,-315,1100,38,21,Ink,TextAnchor.MiddleRight);
+            Text("ScrollHint",page.transform,"Fare tekerleği ile aşağı/yukarı kaydır",0,-315,1100,38,21,Ink,TextAnchor.MiddleRight);
             Set(presenter,"confirmationLabel",confirm.GetComponentInChildren<Text>());
             Set(presenter,"newspaper",NewspaperAuthoring.Create(overlay.transform,presenter));overlay.SetActive(false);
 
