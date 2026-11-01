@@ -102,7 +102,7 @@ namespace GameUP.Interaction
         {
             if (movement != null) StopCoroutine(movement);
             movement = null;
-            if (active != null) active.Visual.SetActive(false);
+            if (active != null && active.Visual) active.Visual.SetActive(false);
             if (packagingVisual) packagingVisual.SetActive(false);
             active = null; CurrentSession = null;
         }
