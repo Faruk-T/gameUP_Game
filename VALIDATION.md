@@ -5,6 +5,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 | Kontrol | Sonuç |
 |---|---|
 | Unity testleri | **59/59 geçti**, başarısız/atlanan yok; tam koşu 143 saniye |
+| Evrak ana menüsü | Dört şeffaf 1024×1536 sprite; çalışan native düğme/slider/toggle; hassasiyet ve geri dönüş bağlantıları gerçek menüyle geçti; 4:3, 16:9 ve 21:9 görüntü kontrolü |
 | Güncel kaynak entegrasyonu | Faruk `04a87a2/a9fee0f`, Esmanur `4b6292a`, Özgür `10bb33f`; mevcut sahne ve sinematik korunur |
 | Kitapçık doğrulaması | Üç günün haber/kuralları, duyuru onayından sonra etkinleşen kural, restart temizliği; kaydırma, başlık ve içerik yerleşimi geçti |
 | Bakanlık faksı | Gerçek faks/siren, hata bildirimi, analiz ve vardiya baskısı; T / eski raporu açma eylemi yok; normal F analizi korunur |
@@ -58,7 +59,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/WorkstationUpgrade/tests.xml` (59/59). Kaynak/authoring/görsel kontroller: aynı klasördeki `author.log`, `surfaces.log`, `newspaper.log`. Güncel görüntüler `Docs/Previews/Workstation`; önceki kıyı/sinematik görüntüleri `Docs/Previews/Coastal`. Gerçek oynanış, kitapçık, faks bildirimi, kayıp ve vardiya sonuçları `Logs/Visuals` içindedir. Yerel loglar Git'e eklenmez. [Entegrasyon kapsamı](Docs/WORKSTATION_UPGRADE.md).
+Güncel tam koşu: `Logs/DocumentMenu/tests.xml` (59/59, 142.76 saniye), `tests.log` ve `author-final.log`. Önceki workstation kaynak/authoring/görsel kontrolleri `Logs/WorkstationUpgrade` içindeki `author.log`, `surfaces.log`, `newspaper.log` dosyalarındadır. Menü görüntüleri `Docs/Previews/Menu`; workstation görüntüleri `Docs/Previews/Workstation`; kıyı/sinematik görüntüleri `Docs/Previews/Coastal` altındadır. Gerçek oynanış, kitapçık, faks bildirimi, kayıp ve vardiya sonuçları `Logs/Visuals` içindedir. Yerel loglar Git'e eklenmez. [Workstation kapsamı](Docs/WORKSTATION_UPGRADE.md) · [Evrak menüsü](Docs/DOCUMENT_MENU.md).
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 

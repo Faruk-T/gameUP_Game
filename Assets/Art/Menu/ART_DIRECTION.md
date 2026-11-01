@@ -1,5 +1,7 @@
 # Antalya COP31 görsel paketi
 
+Ana menünün güncel arayüzü, `Documents` altındaki dört ayrı şeffaf evrak sprite'ını kullanır. Kullanıcı referansı, üretim promptları, Unity kontrol yerleşimi ve import kararları [evrak menü uygulaması](../../../../Docs/DOCUMENT_MENU.md) içinde açıklanır. Liman arka planı ve özgün COP31 logosu korunur.
+
 Ana palet: koyu Akdeniz yeşili, sıcak keten, turkuaz, sınırlı terrakota. Menüde sol alan okunabilirlik için sakin; odağın sağında Antalya limanı, Toroslar ve denetim masası bulunur.
 
 | Dosya | Kullanım | Kaynak |

@@ -40,11 +40,8 @@ namespace GameUp.Editor
             Number(session.Backend,"analysisSeconds",AudioAuthoring.Clip("analyzer_full.mp3").length);
             WorkstationUIAuthoring.Apply(roots.Single(g=>g.name=="GameCanvas"));
             FacilityPropAuthoring.Inventory();EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
-            var menu=EditorSceneManager.OpenScene(ProductionProjectSetup.MenuPath);
-            foreach(var root in menu.GetRootGameObjects())WorkstationUIAuthoring.AddButtonSounds(root);
-            var help=menu.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Text>(true)).Single(t=>t.name=="HelpBody");
-            if(!help.text.Contains("Üç yanlış"))help.text+="\n\nÜç yanlış işlem aynı gün vardiyayı bitirir. Sayaç her sabah sıfırlanır. İncelemede kamera sabittir; ürünün ön ve arka etiketini çevirerek okuyun.";
-            EditorSceneManager.MarkSceneDirty(menu);EditorSceneManager.SaveScene(menu);AssetDatabase.SaveAssets();
+            DocumentMenuAuthoring.CreateScene();
+            AssetDatabase.SaveAssets();
             ArtistGameKitAuthoring.Refresh();
             EditorSceneManager.OpenScene(ProductionProjectSetup.FirstPath);
             Debug.Log("WORKSTATION_UPGRADE_OK / physical ministry fax / daily 3 mistakes / right-hand 32m conveyor / 31 baked labels / authored AudioManager");

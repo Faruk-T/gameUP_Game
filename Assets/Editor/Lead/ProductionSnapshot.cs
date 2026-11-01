@@ -34,8 +34,14 @@ namespace GameUp.Editor
             {
                 float uiScale = 1;
                 if (scaler && scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize)
-                    uiScale = Mathf.Pow(2, Mathf.Lerp(Mathf.Log(width / scaler.referenceResolution.x, 2),
-                        Mathf.Log(height / scaler.referenceResolution.y, 2), scaler.matchWidthOrHeight));
+                {
+                    float widthRatio = width / scaler.referenceResolution.x, heightRatio = height / scaler.referenceResolution.y;
+                    uiScale = scaler.screenMatchMode switch {
+                        CanvasScaler.ScreenMatchMode.Expand => Mathf.Min(widthRatio, heightRatio),
+                        CanvasScaler.ScreenMatchMode.Shrink => Mathf.Max(widthRatio, heightRatio),
+                        _ => Mathf.Pow(2, Mathf.Lerp(Mathf.Log(widthRatio, 2), Mathf.Log(heightRatio, 2), scaler.matchWidthOrHeight))
+                    };
+                }
                 if (scaler) scaler.enabled = false;
                 canvas.renderMode = RenderMode.WorldSpace; canvas.worldCamera = captureCamera;
                 canvas.scaleFactor = 1;

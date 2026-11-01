@@ -35,10 +35,6 @@ namespace GameUp.Editor
             foreach(var text in scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Text>(true)))
                 if(text.name=="Controls")text.text=text.text.Replace("     T / Rapor","");
             FacilityPropAuthoring.Inventory();EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
-            var menu=EditorSceneManager.OpenScene(ProductionProjectSetup.MenuPath);
-            var help=menu.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Text>(true)).Single(t=>t.name=="HelpBody");
-            help.text=help.text.Replace("       T  —  Son rapor","");
-            EditorSceneManager.MarkSceneDirty(menu);EditorSceneManager.SaveScene(menu);
             AssetDatabase.SaveAssets();EditorSceneManager.OpenScene(ProductionProjectSetup.FirstPath);
             Debug.Log("FACILITY_DETAILS_OK / signs="+signs.Length+" / F analysis retained / T device removed / portraits filled");
         }

@@ -82,41 +82,7 @@ namespace GameUp.Editor
             Text("LoadingLabel",loading.transform,"COP31  •  Görev hazırlanıyor…",0,-150,1000,90,30,Paper,TextAnchor.MiddleCenter);
             Set(app,"defaults",defaults);Set(app,"loadingScreen",group);AudioAuthoring.Configure(root.transform); EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),FirstPath);
         }
-        private static void Menu()
-        {
-            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-            var canvas=Canvas("MenuCanvas");
-            var bg=Image("Antalya",canvas.transform,0,0,1920,1080,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/AntalyaHarbour.png"));
-            var fit=bg.gameObject.AddComponent<AspectRatioFitter>();fit.aspectMode=AspectRatioFitter.AspectMode.EnvelopeParent;fit.aspectRatio=16f/9;
-            var shade=Image("MenuShade",canvas.transform,-570,0,780,1080,new Color(.025f,.09f,.1f,.88f));
-            var controller=new GameObject("MenuController").AddComponent<MenuController>();
-            var home=Rect("Home",canvas.transform,0,0,1920,1080);Stretch(home);
-            Text("Eyebrow",home,"COP31 / ANTALYA",-570,425,600,60,26,new Color(.45f,.83f,.73f));
-            Text("Title",home,"Antalya\nDenetim Masası",-570,285,600,220,70,Paper,TextAnchor.UpperLeft,true);
-            Text("Subtitle",home,"Bir doğru karar, daha temiz bir kıyı.",-570,135,600,70,27,Paper);
-            var start=Button("Start",home,"Göreve başla",-570,20,550,controller.StartGame);
-            Button("Settings",home,"Ayarlar",-570,-64,550,controller.ShowSettings);
-            Button("Help",home,"Nasıl oynanır?",-570,-148,550,controller.ShowHelp);
-            Button("About",home,"COP31 & ekip",-570,-232,550,controller.ShowAbout);
-            Button("Quit",home,"Çıkış",-570,-316,550,controller.Quit);
-            Text("Dates",home,"9–20 KASIM 2026  •  ANTALYA, TÜRKİYE",-570,-460,600,50,23,Paper);
-            // The original official logo keeps its aspect ratio and colors, including its white clear space.
-            Image("LogoPaper",home,650,350,330,150,Color.white);
-            var logo=Image("OfficialCOP31",home,650,350,570,321,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Menu/COP31Horizontal.png"));logo.preserveAspect=true;
-            var settings=Settings(canvas.transform);
-            var help=Overlay("Help",canvas.transform,new Color(.025f,.08f,.09f,.97f));
-            Text("HelpTitle",help.transform,"Denetçi rehberi",0,380,1250,100,64,Paper,TextAnchor.MiddleLeft,true);
-            Text("HelpBody",help.transform,"Her sabah gazeteyi oku; o günün kurallarıyla çalış.\n\nE / Sol tık  —  Ürünü incele. Sürükleyerek döndür; tekerlekle yaklaş.\nB  —  El kitapçığı       F  —  Laboratuvar analizi\nW  —  Onay: ürün piyasaya gider       R  —  Red: gıda imha edilir\n\nRedden sonra ambalajı uygun hedefe gönder: kâğıt, cam, plastik veya kontamine atık.\nBakanlık acil faksını onayladığında yeni kural yalnızca sonraki ürünlere uygulanır.\n\nEsc  —  Belgeyi kapat / Duraklat       Fare  —  Etrafa bak\nZorunlu gazete ve acil faksı, devam düğmesiyle onayla.",0,40,1250,520,30,Paper);
-            var helpBack=Button("Back",help.transform,"Menüye dön",0,-380,440,controller.ShowHome);help.SetActive(false);
-            var about=Overlay("About",canvas.transform,new Color(.025f,.08f,.09f,.97f));
-            Text("AboutTitle",about.transform,"Ortak gelecek için",0,380,1250,100,64,Paper,TextAnchor.MiddleLeft,true);
-            Text("AboutBody",about.transform,"COP31 • 9–20 Kasım 2026 • Antalya\n\nDenizleri, caretta carettaların yaşam alanlarını ve gıda güvenliğini korumak; atığı kaynağında azaltmakla başlar. Bu oyunda COP31 hazırlıklarında görevli bir denetçisin.\n\n“İklim krizi yalnızca çevresel değil, aynı zamanda ahlaki bir sorumluluk alanıdır.”\nEmine Erdoğan • cop31.tr\n\nEkip: 3D sanat / Özgür: etkileşim / Faruk: veri ve kurallar / Hasan: akış ve entegrasyon\nGörseller: yapay zekâ ile üretilmiş illüstrasyonlar. Logo: COP31 resmî kurumsal kimliği.\nMenü öğeleri: Feathered Fortune proje arşivi. Yazı tipi: Kurale / SIL OFL.\nOyundaki haberler ve ürün partileri kurmacadır.",0,30,1250,540,28,Paper);
-            Button("OfficialSite",about.transform,"COP31 resmî sitesi",-250,-380,440,controller.OpenCOP31);
-            var aboutBack=Button("Back",about.transform,"Menüye dön",250,-380,440,controller.ShowHome);about.SetActive(false);
-            Set(controller,"home",home.gameObject);Set(controller,"help",help);Set(controller,"about",about);Set(controller,"settings",settings);
-            Set(controller,"startButton",start);Set(controller,"helpBack",helpBack);Set(controller,"aboutBack",aboutBack);
-            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),MenuPath);
-        }
+        private static void Menu() => DocumentMenuAuthoring.CreateScene();
         private static void CreateNotification()
         {
             string path="Assets/Audio/FaxSignal.wav";const int sampleRate=22050,count=5512;
