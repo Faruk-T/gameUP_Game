@@ -20,8 +20,8 @@ namespace GameUp.Editor
                 importer.textureCompression=TextureImporterCompression.Compressed;importer.SaveAndReimport();
             }
             var root=new GameObject("OfficeIdentity").transform;root.SetParent(room,false);
-            Portrait(root,"AtaturkPortrait",-2.35f,"Ataturk.jpg","Mustafa Kemal ATATÜRK");
-            Portrait(root,"PresidentPortrait",2.35f,"President.jpg","Recep Tayyip ERDOĞAN\nTürkiye Cumhuriyeti Cumhurbaşkanı");
+            Portrait(root,"AtaturkPortrait",-2.35f,"Ataturk.jpg");
+            Portrait(root,"PresidentPortrait",2.35f,"President.jpg");
             Flag(root,"TurkiyeStandingFlag",new Vector3(-6.45f,0,-7),25,"Turkiye.png");
             Flag(root,"UNStandingFlag",new Vector3(6.15f,0,-7),-25,"UnitedNations.png");
         }
@@ -33,15 +33,14 @@ namespace GameUp.Editor
             material.SetFloat("_Cull",0);material.SetTexture("_BaseMap",texture);material.enableInstancing=true;
             EditorUtility.SetDirty(material);return material;
         }
-        private static void Portrait(Transform parent,string name,float x,string file,string label)
+        private static void Portrait(Transform parent,string name,float x,string file)
         {
             var root=new GameObject(name).transform;root.SetParent(parent,false);root.localPosition=new Vector3(x,3.2f,-7.78f);root.localRotation=Quaternion.Euler(0,180,0);
             FacilityPropAuthoring.Pack("SM_Prop_Poster_01",root,Vector3.zero,new Vector3(1.5f,2.08f,.08f),0,Surface("PortraitFrame",new Color(.13f,.16f,.16f),.35f));
             var canvas=Rect("PortraitPrint",root,0,0,900,1260);canvas.localPosition=new Vector3(0,0,-.052f);canvas.localScale=Vector3.one*(1.4f/900);
             canvas.gameObject.AddComponent<Canvas>().renderMode=RenderMode.WorldSpace;
             Image("Mat",canvas,0,0,900,1260,Paper);
-            var picture=Image("Photograph",canvas,0,60,820,1080,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(Root+file));picture.preserveAspect=true;
-            Text("Attribution",canvas,label,0,-560,840,110,31,Ink,TextAnchor.MiddleCenter);
+            var picture=Image("Photograph",canvas,0,0,820,1160,Color.white,AssetDatabase.LoadAssetAtPath<Sprite>(Root+file));picture.preserveAspect=true;
         }
         private static void Flag(Transform parent,string name,Vector3 position,float yaw,string texture)
         {

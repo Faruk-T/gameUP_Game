@@ -1,6 +1,6 @@
 # Makam odası görselleri
 
-Dosyalar kaynaklarından değiştirilmeden alınmıştır. Gerçek fotoğraflardır; yapay zekâ portresi kullanılmaz.
+Dosyalar kaynaklarından değiştirilmeden alınmıştır. Gerçek fotoğraflardır; yapay zekâ portresi kullanılmaz. Çerçevelerde yalnızca fotoğraf görünür; isim veya unvan yazısı bulunmaz.
 
 | Dosya | Kaynak |
 |---|---|
