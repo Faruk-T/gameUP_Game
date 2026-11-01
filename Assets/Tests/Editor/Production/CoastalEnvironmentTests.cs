@@ -26,6 +26,13 @@ namespace GameUp.Production.Tests
             all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
         }
         [TearDown] public void Close(){if(scene.IsValid())EditorSceneManager.CloseScene(scene,true);}
+        private IntroCinematic BeginOpening()
+        {
+            var intro=all.Select(t=>t.GetComponent<IntroCinematic>()).Single(c=>c);var source=new SerializedObject(intro);
+            ((GameObject)source.FindProperty("cinematicCamera").objectReferenceValue).SetActive(true);
+            ((CanvasGroup)source.FindProperty("overlay").objectReferenceValue).gameObject.SetActive(true);
+            var director=intro.GetComponent<PlayableDirector>();director.RebuildGraph();director.Play();return intro;
+        }
 
         [Test] public void FiveArtistTurtlesHaveSavedAnimationAndFaceTheirTravelDirection()
         {
@@ -49,7 +56,7 @@ namespace GameUp.Production.Tests
         }
         [Test] public void SavedOpeningRouteAvoidsWallsAndEndsAtTheWorkstationCamera()
         {
-            var intro=all.Select(t=>t.GetComponent<IntroCinematic>()).Single(c=>c);var so=new SerializedObject(intro);
+            var intro=BeginOpening();var so=new SerializedObject(intro);
             var cameraObject=(GameObject)so.FindProperty("cinematicCamera").objectReferenceValue;
             var gameplay=(GameObject)so.FindProperty("gameplayCamera").objectReferenceValue;
             var clip=AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Data/Cinematic/ArrivalCamera.anim");
@@ -57,7 +64,7 @@ namespace GameUp.Production.Tests
             Vector3 previous=Vector3.zero;
             for(float t=19;t<OpeningTiming.End;t+=.2f)
             {
-                clip.SampleAnimation(cameraObject,t);Physics.SyncTransforms();
+                intro.SampleAt(t);Physics.SyncTransforms();
                 var hits=Physics.OverlapSphere(cameraObject.transform.position,.12f,1,QueryTriggerInteraction.Ignore);
                 Assert.That(hits,Is.Empty,"Camera intersects geometry at "+t+": "+string.Join(",",hits.Select(h=>h.name)));
                 var position=cameraObject.transform.position;
@@ -69,9 +76,10 @@ namespace GameUp.Production.Tests
                 }
                 previous=position;
             }
-            clip.SampleAnimation(cameraObject,OpeningTiming.End);
+            intro.SampleAt(OpeningTiming.End);
             Assert.That(Vector3.Distance(cameraObject.transform.position,gameplay.transform.position),Is.LessThan(.005));
             Assert.That(Quaternion.Angle(cameraObject.transform.rotation,gameplay.transform.rotation),Is.LessThan(.1));
+            intro.GetComponent<PlayableDirector>().Stop();
         }
         [Test] public void ThinContoursAreVisibleOnlyAndEveryInteractionProductIsConfigured()
         {
@@ -126,9 +134,9 @@ namespace GameUp.Production.Tests
         }
         [Test] public void SwimmingIsCurvedAndVisibleBeforeLogoThenFireworksThenWalk()
         {
-            var intro=all.Select(t=>t.GetComponent<IntroCinematic>()).Single(c=>c);
+            var intro=BeginOpening();
             var source=new SerializedObject(intro);var cameraObject=(GameObject)source.FindProperty("cinematicCamera").objectReferenceValue;cameraObject.SetActive(true);
-            var director=intro.GetComponent<PlayableDirector>();director.RebuildGraph();director.Play();
+            var director=intro.GetComponent<PlayableDirector>();
             var logo=all.Single(t=>t.name=="COP31RisingLogo");var group=logo.GetComponent<CanvasGroup>();
             var turtles=all.Select(t=>t.GetComponent<ShorelineTurtle>()).Where(t=>t).ToArray();
             intro.SampleAt(21);Assert.That(turtles.Any(t=>!t.IsSwimming),Is.True);
@@ -137,14 +145,72 @@ namespace GameUp.Production.Tests
             var direction=turtles[0].transform.forward;intro.SampleAt(OpeningTiming.LogoRaised);
             Assert.That(Vector3.Angle(direction,turtles[0].transform.forward),Is.GreaterThan(35));
             Assert.That(logo.localPosition.y-initialY,Is.GreaterThan(15));Assert.That(group.alpha,Is.GreaterThan(.99));
-            var viewport=cameraObject.GetComponent<Camera>().WorldToViewportPoint(logo.position);Assert.That(viewport.z,Is.GreaterThan(0));Assert.That(viewport.x,Is.InRange(.1f,.9f));Assert.That(viewport.y,Is.InRange(.1f,.9f));
+            Assert.That(logo.GetComponent<RectTransform>().anchoredPosition.x,Is.EqualTo(0).Within(.01));
             intro.SampleAt(46);
             var fireworks=all.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
-            Assert.That(fireworks.Length,Is.EqualTo(5));Assert.That(fireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));
+            Assert.That(fireworks.Length,Is.GreaterThanOrEqualTo(20));Assert.That(fireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));
             intro.SampleAt(OpeningTiming.WalkStart+.2f);Assert.That(group.alpha,Is.LessThan(.01));Assert.That(fireworks.All(p=>!p.gameObject.activeInHierarchy),Is.True,"No frozen fireworks after the celebration.");
             Assert.That(cameraObject.transform.position.z,Is.GreaterThan(20),"Corridor walk must follow the logo reveal.");
             intro.SampleAt(76);Assert.That(cameraObject.transform.position.x,Is.LessThan(-12));Assert.That(cameraObject.transform.position.z,Is.InRange(-5,-3));
             director.Stop();
+        }
+        [Test] public void LogoRemainsCenteredThroughoutTheRiseAndTheShowHasLargeDistinctColors()
+        {
+            var intro=BeginOpening();var logo=all.Single(t=>t.name=="COP31RisingLogo").GetComponent<RectTransform>();
+            var canvas=logo.GetComponentInParent<Canvas>();Assert.That(canvas.renderMode,Is.EqualTo(RenderMode.ScreenSpaceOverlay));
+            var canvasRect=(RectTransform)canvas.transform;
+            var camera=(GameObject)new SerializedObject(intro).FindProperty("cinematicCamera").objectReferenceValue;
+            intro.SampleAt(OpeningTiming.LogoRaised);var heldRotation=camera.transform.rotation;
+            for(float time=OpeningTiming.LogoStart;time<OpeningTiming.WalkStart;time+=.2f)
+            {
+                intro.SampleAt(time);Canvas.ForceUpdateCanvases();
+                var center=RectTransformUtility.CalculateRelativeRectTransformBounds(canvasRect,logo).center;
+                Assert.That(center.x,Is.EqualTo(0).Within(.1),"Visible logo must not drift left when the camera tilts at "+time);
+                Assert.That(Quaternion.Angle(logo.localRotation,Quaternion.identity),Is.LessThan(.01));
+                if(time>=OpeningTiming.LogoRaised)Assert.That(Quaternion.Angle(camera.transform.rotation,heldRotation),Is.LessThan(.1),"Firework framing must stay still until the walk begins.");
+            }
+            var fireworks=all.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
+            Assert.That(fireworks.Length,Is.GreaterThanOrEqualTo(20));
+            foreach(var firework in fireworks){Assert.That(firework.main.startSize.constantMin,Is.GreaterThan(.22));Assert.That(firework.emission.GetBurst(0).count.constant,Is.GreaterThan(100));}
+            var colors=fireworks.Select(p=>p.colorOverLifetime.color.gradient.colorKeys[1].color).Distinct().ToArray();
+            Assert.That(colors.Length,Is.GreaterThanOrEqualTo(6));
+            foreach(var color in colors){Color.RGBToHSV(color,out _,out float saturation,out _);Assert.That(saturation,Is.GreaterThan(.65));}
+            intro.GetComponent<PlayableDirector>().Stop();
+        }
+        [Test] public void EntranceDoorsCloseThePortalThenOpenOnTheirHingesBeforeTheCameraCrosses()
+        {
+            var intro=BeginOpening();var root=all.Single(t=>t.name=="FacilityEntranceDoors");
+            var north=root.Find("NorthHinge");var south=root.Find("SouthHinge");
+            foreach(var renderer in root.GetComponentsInChildren<Renderer>())Assert.That(renderer.gameObject.isStatic,Is.False,"Animated doors cannot be statically batched.");
+            intro.SampleAt(68);Physics.SyncTransforms();
+            Assert.That(Mathf.DeltaAngle(north.localEulerAngles.y,90),Is.EqualTo(0).Within(.1));
+            Assert.That(Physics.SphereCast(new Vector3(-23,1.7f,-4),.12f,Vector3.right,out var hit,4,1,QueryTriggerInteraction.Ignore),Is.True,"Closed entrance must fill the actual portal.");
+            Assert.That(hit.collider.transform.IsChildOf(root),Is.True);
+            intro.SampleAt((OpeningTiming.DoorsOpenStart+OpeningTiming.DoorsOpenEnd)*.5f);
+            Assert.That(Mathf.DeltaAngle(north.localEulerAngles.y,90),Is.InRange(20,70));
+            intro.SampleAt(OpeningTiming.DoorsOpenEnd);Physics.SyncTransforms();
+            Assert.That(Mathf.DeltaAngle(north.localEulerAngles.y,0),Is.EqualTo(0).Within(.1));
+            Assert.That(Mathf.DeltaAngle(south.localEulerAngles.y,180),Is.EqualTo(0).Within(.1));
+            Assert.That(Physics.SphereCast(new Vector3(-23,1.7f,-4),.12f,Vector3.right,out _,4,1,QueryTriggerInteraction.Ignore),Is.False,"Opened leaves must clear the camera path.");
+            intro.GetComponent<PlayableDirector>().Stop();
+        }
+        [Test] public void RearWallHasRealPortraitsAndBothCornersHaveThreeDimensionalStandingFlags()
+        {
+            foreach(var name in new[]{"AtaturkPortrait","PresidentPortrait"})
+            {
+                var root=all.Single(t=>t.name==name);var image=root.GetComponentsInChildren<Image>().Single(i=>i.name=="Photograph");
+                Assert.That(image.sprite,Is.Not.Null);Assert.That(AssetDatabase.GetAssetPath(image.sprite),Does.StartWith("Assets/Art/OfficeIdentity/"));
+                Assert.That(root.position.z,Is.LessThan(-7.5));Assert.That(root.position.y,Is.GreaterThan(2));Assert.That(image.preserveAspect,Is.True);
+            }
+            foreach(var name in new[]{"TurkiyeStandingFlag","UNStandingFlag"})
+            {
+                var root=all.Single(t=>t.name==name);Assert.That(Mathf.Abs(root.position.x),Is.GreaterThan(5.5));Assert.That(root.position.z,Is.LessThan(-6.5));
+                var cloth=root.Find("DrapedCloth").GetComponent<MeshFilter>().sharedMesh;
+                Assert.That(cloth.vertexCount,Is.GreaterThan(500));Assert.That(cloth.bounds.size.z,Is.GreaterThan(.1));
+                Assert.That(root.Find("WeightedBase").GetComponent<MeshFilter>().sharedMesh.bounds.min.y,Is.EqualTo(0).Within(.001));
+                Assert.That(root.Find("CrescentFinial"),Is.Not.Null);
+                Assert.That(root.GetComponentsInChildren<MeshFilter>().Any(f=>AssetDatabase.GetAssetPath(f.sharedMesh).StartsWith("Assets/PolygonOffice/",StringComparison.Ordinal)),Is.True);
+            }
         }
         [Test] public void SwimLoopHasDepthBankingAndCannotReturnOntoTheBeach()
         {

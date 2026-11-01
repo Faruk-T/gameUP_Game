@@ -59,6 +59,7 @@ Material:
     - _DstBlendAlpha: 10
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
+    - _Intensity: 1
     - _Mode: 0
     - _QueueOffset: 0
     - _SoftParticlesEnabled: 0

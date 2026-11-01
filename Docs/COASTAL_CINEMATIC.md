@@ -4,7 +4,7 @@ Unity **6000.3.13f1 / URP 17.3**, dal `feat/lead-coastal-cinematic`. Sahne sayı
 
 ## Oynanış akışı
 
-Menüde “Göreve başla” seçildiğinde 90 saniyelik açılış oynar. İlk 19 saniyede, kullanıcının paylaştığı görseldeki Emine Erdoğan sözü siyah fonda tam metin ve atıfla görünür. Ardından kamera Antalya kıyısında carettaları izler. Yüzme başladıktan sonra resmî COP31 logosu denizin üzerinde yükselir; logo yükselince beş havai fişek sırayla patlar. Kamera bu bölüm tamamlandıktan sonra tesisin açık girişine ilerler, koridordaki gıda/su/iklim ve soğuk zincir afişlerine bakar ve denetim masasına ulaşır.
+Menüde “Göreve başla” seçildiğinde 90 saniyelik açılış oynar. İlk 19 saniyede, kullanıcının paylaştığı görseldeki Emine Erdoğan sözü siyah fonda tam metin ve atıfla görünür. Ardından kamera Antalya kıyısında carettaları izler. Yüzme başladıktan sonra resmî COP31 logosu ekranın yatay merkezinde yükselir; kamera dağlara dönerken logo yana kaymaz ve perspektifle eğilmez. Ardından sekiz renkte 24 büyük havai fişek logonun iki yanına yayılır. Kamera bu bölüm tamamlandıktan sonra tesisin kapalı girişine yaklaşır. Çift kanatlı kapılar menteşelerinden içeri açılır, kamera koridordaki afişlere bakıp denetim masasına ulaşır.
 
 | Zaman | Görüntü / davranış |
 |---|---|
@@ -12,12 +12,17 @@ Menüde “Göreve başla” seçildiğinde 90 saniyelik açılış oynar. İlk 
 | 20–33 sn | Kum üzerinde ilerleme ve kavisli suya giriş |
 | 33–39 sn | Beş caretta denizde; dönüş, yüzgeç hareketi ve hafif dalış görünür |
 | 39–44 sn | COP31 logosu yukarı yükselir |
-| 44–50.4 sn | Beş zamanlanmış havai fişek; logo 50–52 arasında söner |
-| 52–71 sn | Yürüyüş yolu ve tesis girişi |
-| 71–88 sn | Koridor, yön tabelası ve iki gıda güvenliği afişi |
+| 44–51.84 sn | 24 zamanlanmış, büyük ve renkli havai fişek; logo 50–52 arasında söner |
+| 52–68.5 sn | Yürüyüş yolu ve kapalı tesis girişine yaklaşma |
+| 68.5–70.5 sn | İki kapı kanadının yumuşakça içeri açılması |
+| 72.8–88 sn | Açık eşikten koridora geçiş, yön tabelası ve iki afiş |
 | 88–90 sn | Masaya varış, kararma ve oynanışa devir |
 
 `OpeningTiming` bölüm sınırlarını tutar. Kamera, logo ve efektler aynı Timeline'a bağlıdır. `IntroCinematic`, caretta pozlarını ve altyazıları da bu saatten örnekler; ayrı sayaçların zamanla kayması önlenir. Altyazılar yalnız ilgili bölümde, koyu bir bant üzerinde görünür. Havai fişekler bölüm sonunda pasifleşir; koridorda donmuş parçacık kalmaz.
+
+Logo sinematik Canvas'ına merkez çapalıdır; özgün PNG'nin simetrik şeffaf kenarları ve en/boy oranı korunur. Havai fişekler sahnede önceden kayıtlı 24 ParticleSystem'dir: patlama başına 150 kıvılcım, daha büyük çap, doygun renkli çekirdek ve ışıklı iz. Karşılıklı patlama sırası kadrajı dengeler. Yeni kamera takibi veya runtime efekt/obje üretimi yoktur.
+
+Giriş, paketin gerçek büyük kapı çerçevesine oturur. İki yaprak gerçek menteşe noktasından döner; kanatlar ve collider'ları statik batch'e alınmaz. Kamera kapılar açılana kadar eşik dışında kalır. Açılış sonunda manuel Timeline son karede duraklatılır; kapılar açık kalır ve Timeline yeniden değerlendirilmez.
 
 Sinematikte oynanış kamerası ve HUD kapalıdır. Esc, karar verme ve yeniden başlatma girişi atlatmaz. Gün akışı Boot durumunda kalır; henüz ürün, analiz veya gazete başlamaz. Timeline tamamlanınca tek etkin kamera ve AudioListener çalışma masasına geçer, birinci günün zorunlu gazetesi açılır. Oyun içi yeniden başlatma aynı açılışı tekrarlamaz; menüden yeni göreve başlamak tekrar oynatır. Pencere odağı kaybolursa sinematik zamanı ilerlemez.
 
@@ -27,7 +32,7 @@ Beş caretta sahneye önceden yerleştirilmiştir. Sanatçının döngülü anim
 
 | Asset | Aktif kullanım | URP hazırlığı |
 |---|---|---|
-| Polygon Office | Tesis duvarları, zemin/tavan, koridor, açık kapılar, aydınlatma, bitkiler, ağaç/kayalar, tabela ve afiş propları | Materyaller URP/Lit'e çevrildi. Duvarlar için aynı atlası kullanan çift yüzlü tesis materyali kayıtlı; kapalı koridor içeriden ve dışarıdan görünür. |
+| Polygon Office | Tesis duvarları, zemin/tavan, koridor, animasyonlu çift kapı, aydınlatma, bitkiler, ağaç/kayalar, tabela, afiş/portre çerçeveleri ve bayrak direkleri | Materyaller URP/Lit'e çevrildi. Duvarlar için aynı atlası kullanan çift yüzlü tesis materyali kayıtlı; kapalı koridor içeriden ve dışarıdan görünür. |
 | Stylized Water | İçe aktarılan deniz mesh'i, distortion ve foam dokuları | `GameUP/COP31/StylizedWaterURP`: dalga, kıyı köpüğü, derinlik ve turkuazdan koyu maviye geçiş. Built-in GrabPass veya ilave yansıma kamerası kullanılmaz. |
 | Easy Performant Outline | Ürünler, denetim hedefleri, tesis objeleri ve carettalar | Unity 6 Render Graph köprüsü. Native çözünürlük, tek dilation, blur yok; ince siyah çizgi yalnız görünür yüzeylerde. Deniz/zemin/duvarlar outline'a alınmaz. |
 
@@ -46,6 +51,7 @@ Mevcut oda, arka geri dönüşüm alanı, oyuncu masası ve etkileşim konumlar�
 - Masa, bant ve dört atık kutusu Esmanur'un mesh'lerini kullanır. Faks/analiz cihazının kâğıt ve sinyal parçaları kendi prefab çocuklarıdır; kopya parça eklenmez.
 - Katlı gazete ve açık/kapalı kitap fiziksel objelerdir. Kitapçık açılınca fiziksel kitap da açılır; gazete okunurken masadaki katlı kopya gizlenir. `WorkstationDocuments` yalnız belge değişimi olayında görünürlüğü günceller.
 - Basit ambalaj küpü gerçek `SM_Prop_CardboardBox_01`, karar düğmeleri `SM_Prop_Elevator_Button_01`, sahil kayaları ve ağaçları Polygon Office proplarıyla değiştirilir.
+- Oyuncunun arkasındaki duvarda çerçeveli Atatürk ve Cumhurbaşkanı portreleri bulunur. Atık afişi ve dört kutu korunur. İki arka köşede ağırlıklı taban, metal direk, ay-yıldız başlık ve dökümlü kumaştan oluşan Türkiye/BM makam bayrakları vardır. Kumaşlar ortak kayıtlı mesh'i, ayrı gerçek bayrak dokularını kullanır; kumaş simülasyonu çalışmaz. Portreler oran korunarak gösterilir. [Görsel kaynakları](../Assets/Art/OfficeIdentity/SOURCES.md).
 
 İçe aktarılan paketlerde ayrı bir dağ modeli bulunmadı. Fotoğraf/tek düzlem arka plan kaldırıldı; çevreyi 360° saran, zirve ve vadileri olan **7.453 köşeli kayıtlı 3B arazi mesh'i** kullanılır. Arazi rengi eğim/yükseklikten gelir; düşük bitki tonları ve kireç taşı sırtları URP ışığı ve sisle görünür. Arazi yalnız Editor'de üretilir, runtime'da değişmez. Deniz ve kıyı tabanı ufukta boşluk bırakmayacak şekilde genişletildi.
 
@@ -55,6 +61,8 @@ GameUP32 → Authoring → **Rebuild coastal facility and opening**, Game sahnes
 
 - `CinematicAuthoring`: kamera animasyon eğrileri, Timeline, söz ve açıklama UI'ı.
 - `OpeningEffectsAuthoring`: kayıtlı logo yükselişi, Timeline ControlTrack havai fişekleri ve caretta su izleri.
+- `EntranceDoorAuthoring`: gerçek çerçeveye oturan menteşeli kapı yaprakları ve kayıtlı açılma klibi.
+- `OfficeIdentityAuthoring`: arka duvar portreleri, ayaklı bayrakların kayıtlı mesh/materyalleri ve import ayarları.
 - `CoastalEnvironmentAuthoring`: Polygon Office mimarisi, sahil ve beş caretta.
 - `FacilityPropAuthoring`: gerçek paket/sanatçı propları, dağ mesh'i ve çevre envanteri.
 - `SceneArtCorrections`: kaydedilmiş kullanıcı yerleşimlerini koruma.
@@ -62,14 +70,14 @@ GameUP32 → Authoring → **Rebuild coastal facility and opening**, Game sahnes
 - `IntroCinematic`: yalnız açılışın oynatılması ve kamera/HUD devri; açıklama metni sadece sahne değişince güncellenir.
 - `ShorelineTurtle`: önceden kayıtlı aktörlerin kıyı ve yüzme hareketi.
 
-`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder. [Unity doğrulama raporu](../VALIDATION.md) ve yerel `Logs/props-tests.xml`, `Logs/props-tests.log`, `Logs/props-final-art.log`, `Logs/props-final-art-tests.xml` test kanıtlarıdır.
+`GameUp.Editor.CoastalReview.Capture` gerçek URP görüntülerini [önizleme klasörüne](Previews/Coastal) kaydeder; 1080p/720p logo, kapalı/açılan/açık kapılar ve arka oda dahil. [Unity doğrulama raporu](../VALIDATION.md), yerel `Logs/opening-polish-tests.xml`, `Logs/opening-polish-tests.log` ve `Logs/opening-polish-final-art.log` test kanıtlarıdır.
 
-Kontroller: sanatçı aktörlerinin animasyonu/baş yönü; yüzmenin yön ve derinlik değiştirmesi; suya giriş → logo yükselişi → gerçek parçacıklar → koridor sırası; efektlerin kapanması; 16 sanatçı parçasının kullanılması; gerçek tabela/afiş geometrisi ve yazı taşması; geçerli hacimli dağ mesh'i; kamera yolunun duvar kesmemesi ve son pozun eşleşmesi; outline, söz yerleşimi ve su kaynakları. Üretim testi 90 saniyelik girişi doğal süresinde tamamlar, atlama girdilerini reddeder, fiziksel kitabı açıp kapatır ve ardından üç günlük kampanyayı yürütür.
+Kontroller: sanatçı aktörlerinin animasyonu/baş yönü; yüzmenin yön ve derinlik değiştirmesi; suya giriş → ortalanmış logo → gerçek parçacıklar → kapı açılması → koridor sırası; doygun renk ve kıvılcım boyutu; efektlerin kapanması; kapalı kapının geçidi örtmesi ve açılan kapıların kameraya yol vermesi; kapılar hareket ederken kamera küre taraması; arka duvar portreleri ve hacimli bayraklar; 16 sanatçı parçasının kullanılması; gerçek tabela/afiş geometrisi ve yazı taşması; geçerli arazi; son kamera pozunun eşleşmesi; outline, söz ve su kaynakları. Üretim testi 90 saniyelik girişi doğal süresinde tamamlar, kapıların bitişte açık kaldığını doğrular, atlama girdilerini reddeder ve üç günlük kampanyayı yürütür.
 
 ## Görsel ve içerik kaynağı
 
-Gıda–su–iklim ilişkisi, kaynak izleme, soğuk zincir ve atık azaltımı oyunun gıda güvenliği odağını destekler. Tematik referans: [COP31 Gıda Güvenliği](https://cop31.tr/tr/cop31-aksiyon-ajandasi/gida-guvenligi). Açılış alıntısının metni kullanıcının paylaştığı görselden alınmıştır. Logo mevcut resmî COP31 görselidir; özgün renk ve oran korunur. Yeni fotoğraf, dış model veya yapay zekâ görseli eklenmedi.
+Gıda–su–iklim ilişkisi, kaynak izleme, soğuk zincir ve atık azaltımı oyunun gıda güvenliği odağını destekler. Tematik referans: [COP31 Gıda Güvenliği](https://cop31.tr/tr/cop31-aksiyon-ajandasi/gida-guvenligi). Açılış alıntısının metni kullanıcının paylaştığı görselden alınmıştır. Logo mevcut resmî COP31 görselidir; özgün renk ve oran korunur. Portreler ATAM ve COP31 kaynaklarından alınan gerçek fotoğraflardır; yeni yapay zekâ görseli kullanılmaz.
 
 Bu dal yerel çalışma içindir. Son adımda pull, push, PR veya main merge işlemi yapılmaz.
 
-1 Kasım doğrulaması: **44/44 test geçti**. Tam sinematik ve kampanya Editor PlayMode'da çalıştırıldı. Son arazi düzenlemesinin ardından **7/7 çevre/sinematik testi** ayrıca geçti. Kullanıcının isteğiyle build alınmadı.
+1 Kasım doğrulaması: **47/47 test geçti**. Tam sinematik, açıldıktan sonra açık kalan kapılar ve kampanya Editor PlayMode'da çalıştırıldı. Son kamera eğrisi düzeltmesinin ardından **10/10 çevre/sinematik testi** ayrıca geçti (`Logs/opening-polish-final-assets.xml`). Kullanıcının isteğiyle build alınmadı.

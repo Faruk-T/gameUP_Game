@@ -38,13 +38,18 @@ namespace GameUp.Editor
             ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),null,"Docs/Previews/Coastal/OpeningQuote.png",1920,1080);
             ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),null,"Docs/Previews/Coastal/OpeningQuote720.png",1280,720);
             black.alpha=0;quote.alpha=0;
-            foreach(var item in new[]{(time:23d,name:"Beach"),(time:37d,name:"Swimming"),(time:42d,name:"LogoRising"),(time:46d,name:"LogoFireworks"),(time:64d,name:"Entrance"),(time:76d,name:"CorridorWater"),(time:80d,name:"CorridorColdChain"),(time:88.5d,name:"Workstation")})
+            foreach(var item in new[]{(time:23d,name:"Beach"),(time:37d,name:"Swimming"),(time:42d,name:"LogoRising"),(time:46d,name:"LogoFireworks"),(time:48d,name:"LogoFinale"),(time:64d,name:"Entrance"),(time:68d,name:"DoorsClosed"),(time:69.5d,name:"DoorsOpening"),(time:71d,name:"DoorsOpen"),(time:76d,name:"CorridorWater"),(time:80d,name:"CorridorColdChain"),(time:88.5d,name:"Workstation")})
             {
                 intro.SampleAt(item.time);
                 Debug.Log("CAMERA_POSE "+item.name+" "+camera.transform.position+" forward="+camera.transform.forward);
                 PoseTurtles((float)item.time);
                 ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/"+item.name+".png",1920,1080);
+                if(item.name=="LogoFireworks")ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/LogoFireworks720.png",1280,720);
             }
+            intro.SampleAt(76);camera.transform.SetPositionAndRotation(new Vector3(0,2.7f,1),Quaternion.LookRotation(new Vector3(0,2.15f,-7.8f)-new Vector3(0,2.7f,1)));camera.fieldOfView=75;
+            ((UnityEngine.UI.Text)so.FindProperty("caption").objectReferenceValue).text="";
+            ((CanvasGroup)so.FindProperty("captionBackdrop").objectReferenceValue).alpha=0;
+            ProductionSnapshot.Capture(overlay.GetComponent<Canvas>(),camera,"Docs/Previews/Coastal/RearOffice.png",1920,1080);
             director.Stop();
             var shaders=AssetDatabase.GetDependencies(ProductionProjectSetup.GamePath,true).Where(p=>p.EndsWith(".shader")).Select(AssetDatabase.LoadAssetAtPath<Shader>).ToArray();
             foreach(var shader in shaders)if(ShaderUtil.ShaderHasError(shader))throw new InvalidOperationException("Shader error: "+shader.name);

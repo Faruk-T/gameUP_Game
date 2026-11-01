@@ -61,13 +61,11 @@ namespace GameUp.Editor
             }
             Sign(corridor,"InspectionDirection",new Vector3(-8.2f,3.25f,-4),90,2.8f,.5f,"ÜRÜN KONTROL  →");
             Prop("SM_Prop_Plant_04",corridor,new Vector3(-18.5f,0,-5.25f),1.2f);
-            // Two open Polygon Office doors frame the entrance from the promenade.
             var entrance = new GameObject("FacilityEntrance").transform;entrance.SetParent(parent,false);
-            Wall(entrance,new Vector3(-20,3.6f,-4),4,.6f,90);
-            Fitted(Buildings+"SM_Bld_Door_Large_01_L.prefab",entrance,new Vector3(-20.15f,1.5f,-1.25f),new Vector3(1.6f,3,.12f),0);
-            Fitted(Buildings+"SM_Bld_Door_Large_01_R.prefab",entrance,new Vector3(-20.15f,1.5f,-6.75f),new Vector3(1.6f,3,.12f),0);
-            Sign(entrance,"FacilityName",new Vector3(-20.22f,3.65f,-4),90,5.2f,.7f,"ANTALYA  /  GIDA GÜVENLİĞİ TESİSİ");
-            Sign(entrance,"FacilityCOP31",new Vector3(-20.25f,4.3f,-4),90,4.6f,.45f,"COP31  •  KIYIDAN SOFRAYA");
+            Fitted(Buildings+"SM_Bld_Wall_Blank_Door_Large_01.prefab",entrance,new Vector3(-20,2.025f,-4),new Vector3(10.25f,4.05f,.18f),90);
+            EntranceDoorAuthoring.Create(entrance);
+            Sign(entrance,"FacilityName",new Vector3(-20.22f,3.64f,-4),90,5.2f,.47f,"ANTALYA  /  GIDA GÜVENLİĞİ TESİSİ");
+            Sign(entrance,"FacilityCOP31",new Vector3(-20.25f,3.99f,-4),90,4.6f,.23f,"COP31  •  KIYIDAN SOFRAYA");
         }
         internal static void Outside(Transform parent)
         {
@@ -153,7 +151,7 @@ namespace GameUp.Editor
         }
         private static void Wall(Transform parent,Vector3 center,float width,float height,float yaw)
             =>Fitted(Buildings+"SM_Bld_Wall_Blank_01.prefab",parent,center,new Vector3(width,height,.18f),yaw);
-        private static GameObject Fitted(string path,Transform parent,Vector3 center,Vector3 size,float yaw=0)
+        internal static GameObject Fitted(string path,Transform parent,Vector3 center,Vector3 size,float yaw=0)
         {
             var root=new GameObject(Path.GetFileNameWithoutExtension(path));root.transform.SetParent(parent,false);root.transform.localPosition=center;root.transform.localRotation=Quaternion.Euler(0,yaw,0);
             var source=AssetDatabase.LoadAssetAtPath<GameObject>(path);if(!source)throw new FileNotFoundException(path);

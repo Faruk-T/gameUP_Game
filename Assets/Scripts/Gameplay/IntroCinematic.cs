@@ -52,7 +52,8 @@ namespace GameUp.Gameplay
                 director.time = Math.Min(director.duration, director.time + Time.unscaledDeltaTime);
                 EvaluatePresentation();
             }
-            director.Stop();
+            // Keep the authored final door pose. Manual, paused Timeline performs no further evaluation.
+            director.Pause();
             cinematicCamera.SetActive(false);
             overlay.gameObject.SetActive(false);
             gameplayCamera.SetActive(true);

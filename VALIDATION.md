@@ -4,13 +4,18 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 | Kontrol | Sonuç |
 |---|---|
-| Unity testleri | **44/44 geçti**, başarısız/atlanan yok |
+| Unity testleri | **47/47 geçti**, başarısız/atlanan yok |
+| Son kadraj düzeltmesi | **10/10 çevre/sinematik testi geçti**; gösteride kamera dönüşü sabit |
 | Gerçek sahneler | First → Menu → Game; tek ApplicationRoot ve EventSystem |
 | Atlanamayan açılış | 90 saniye; Esc / restart / karar girdileri atlatmaz; gün Boot durumunda kalır |
 | Söz ekranı | Tam metin ve atıf siyah fonda; 1080p ve 720p görüntüsü kontrol edildi |
 | Kamera rotası | Kıyı → tesis → iki afiş → masa; küre taramasıyla duvar kesişmesi yok; son poz çalışma kamerasıyla aynı |
 | Carettalar | Esmanur'un 5 aktörü; doğru baş yönü; gerçek yüzgeç animasyonu; kavisli giriş, farklı dönüş yönleri, derinlik ve yatış; kıyıya dönmeyen yüzme |
-| Logo ve efekt sırası | Yüzme başladıktan sonra logo yükselir; 44. saniyeden sonra 5 havai fişek; 52. saniyede efektler kapanmış, ardından koridor yürüyüşü |
+| Logo ve efekt sırası | Yüzmeden sonra yatay merkezde yükselen logo; 44. saniyeden sonra sekiz renkte 24 büyük patlama; 52'de efektler kapanır |
+| Logo kadrajı | Yükseliş ve kamera eğimi boyunca yatay merkez değişmez; orijinal renk ve oran; 1080p ve 720p görüntüsü |
+| Giriş kapıları | Gerçek çerçevede kapalı çift kanat; 68.5–70.5 sn menteşeden açılma; kamera 72.8'de geçer; bitişte açık kalırlar |
+| Dinamik geçiş geometrisi | Kapalı yapraklar geçidi kapatır; açılan yapraklar kamera küre taramasına engel olmaz; statik batch kapalı |
+| Arka oda | Oranı korunan iki gerçek portre; iki arka köşede Türkiye/BM makam bayrakları, ağırlıklı taban ve dökümlü 3B kumaş |
 | Tek sinematik saati | Kamera / logo / parçacık Timeline'ı ile aktör pozları ve altyazılar aynı zamandan örneklenir |
 | Çevre modelleri | Esmanur'un 16/16 çevre mesh'i; faks/analiz sinyal ve kâğıt çocukları dahil |
 | Gerçek paket propları | Polygon Office tabela, afiş, tavan, ağaç, kaya, kutu ve düğmeleri; yazı yüksekliği kontrolü |
@@ -41,7 +46,7 @@ Unity **6000.3.13f1**, Windows x64, D3D11 / RTX 3060 Laptop. Dal: `feat/lead-coa
 
 Tam kampanyalar Editor PlayMode'da gerçek assetler ve üretim portlarıyla yürütüldü. Bu dalın doğrulaması Editor PlayMode ve D3D11/URP görüntü kontrollerini kapsar. Yeni Windows build'i alınmadı.
 
-Ham rapor: `Logs/props-tests.xml` (44/44). Son arazi düzenlemesinden sonra çevre/sinematik testlerinin tekrarı: `Logs/props-final-art-tests.xml`. Sahne üretimi, mesh envanteri ve shader kontrolü: `Logs/props-final-art.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
+Ham rapor: `Logs/opening-polish-tests.xml` (47/47). Son kamera eğrisi düzeltmesinin çevre/sinematik kontrolleri: `Logs/opening-polish-final-assets.xml`. Sahne üretimi, mesh envanteri ve shader kontrolü: `Logs/opening-polish-final-art.log`; görüntüler: Docs/Previews/Coastal. Tam oynanış ve çalışma zamanı logo/efekt ekranı: `Logs/Visuals`. Yerel loglar Git'e eklenmez. Yeniden çalıştırma script'i sonuçları `Logs/production-tests.xml` adıyla yazar.
 
 [Aktif plan](Docs/ACTIVE_CAMPAIGN.md) · [Ürün matrisi](Docs/CAMPAIGN_MATRIX.md) · [Model envanteri](Docs/MODEL_INVENTORY.md) · [Çevre envanteri](Docs/ENVIRONMENT_INVENTORY.md)
 
@@ -52,6 +57,10 @@ Ham rapor: `Logs/props-tests.xml` (44/44). Son arazi düzenlemesinden sonra çev
 ![Carettalar ve kıyı](Docs/Previews/Coastal/Swimming.png)
 
 ![COP31 logosu ve havai fişekler](Docs/Previews/Coastal/LogoFireworks.png)
+
+![Animasyonlu giriş kapıları](Docs/Previews/Coastal/DoorsOpening.png)
+
+![Arka duvar portreleri ve makam bayrakları](Docs/Previews/Coastal/RearOffice.png)
 
 ![Tesis koridoru](Docs/Previews/Coastal/CorridorColdChain.png)
 

@@ -51,7 +51,9 @@ namespace GameUp.Editor
             Pack(habitat?"SM_Prop_Sign_Wetfloor_01":"SM_Prop_Sign_Exit_01",root,Vector3.zero,habitat?new Vector3(width+.1f,1.8f,1):new Vector3(width+.16f,height+.12f,.09f),0,paint);
             var canvas=WorldCanvas("Lettering",root,new Vector3(0,habitat?.08f:0,habitat?-.28f:-.057f),width,height);
             if(habitat)canvas.localRotation=Quaternion.Euler(16,0,0);
-            Text("Message",canvas,message,0,0,1120,canvas.sizeDelta.y-24,habitat?37:width<=1.25f?130:42,Paper,TextAnchor.MiddleCenter);
+            var text=Text("Message",canvas,message,0,0,1120,canvas.sizeDelta.y-24,habitat?37:width<=1.25f?130:42,Paper,TextAnchor.MiddleCenter);
+            if(text.preferredHeight>text.rectTransform.rect.height)
+                text.fontSize=Mathf.FloorToInt(text.fontSize*text.rectTransform.rect.height/text.preferredHeight);
         }
         internal static void PosterBacking(Transform parent)
         {

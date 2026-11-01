@@ -190,6 +190,8 @@ namespace GameUp.Production.Tests
             var openingFireworks=openingTransforms.Where(t=>t.name.StartsWith("COP31Firework_",StringComparison.Ordinal)).Select(t=>t.GetComponent<ParticleSystem>()).ToArray();
             var openingCamera=Object.FindFirstObjectByType<Camera>();
             var openingCanvas=GameObject.Find("OpeningCanvas").GetComponent<Canvas>();
+            var openingNorth=openingTransforms.Single(t=>t.name=="NorthHinge");
+            var openingSouth=openingTransforms.Single(t=>t.name=="SouthHinge");
             bool swimmingSeen=false,logoSeen=false,fireworksSeen=false,walkSeen=false;
             while(session.IsIntroducing)
             {
@@ -204,6 +206,12 @@ namespace GameUp.Production.Tests
                 {
                     Assert.That(swimmingSeen,Is.True);Assert.That(openingLogo.alpha,Is.GreaterThan(.99));Assert.That(openingActors.All(t=>t.IsCruising),Is.True);logoSeen=true;
                 }
+                if(introduction.Elapsed>=OpeningTiming.LogoStart&&introduction.Elapsed<OpeningTiming.WalkStart)
+                    Assert.That(openingLogo.GetComponent<RectTransform>().anchoredPosition.x,Is.EqualTo(0).Within(.1));
+                if(introduction.Elapsed<OpeningTiming.DoorsOpenStart)
+                    Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,90),Is.EqualTo(0).Within(.1));
+                if(introduction.Elapsed>=OpeningTiming.DoorsOpenEnd)
+                    Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,0),Is.EqualTo(0).Within(.1));
                 if(!fireworksSeen&&introduction.Elapsed>=46)
                 {
                     Assert.That(logoSeen,Is.True);Assert.That(openingFireworks.Where(p=>p.gameObject.activeInHierarchy).Sum(p=>p.particleCount),Is.GreaterThan(0));fireworksSeen=true;
@@ -216,6 +224,9 @@ namespace GameUp.Production.Tests
                 yield return null;
             }
             Assert.That(swimmingSeen&&logoSeen&&fireworksSeen&&walkSeen,Is.True,"Opening stages must play in narrative order.");
+            yield return null;
+            Assert.That(Mathf.DeltaAngle(openingNorth.localEulerAngles.y,0),Is.EqualTo(0).Within(.1),"North door stays open after the cinematic.");
+            Assert.That(Mathf.DeltaAngle(openingSouth.localEulerAngles.y,180),Is.EqualTo(0).Within(.1),"South door stays open after the cinematic.");
             foreach(var turtle in Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None))
             {
                 var animator=turtle.GetComponentInChildren<Animator>();

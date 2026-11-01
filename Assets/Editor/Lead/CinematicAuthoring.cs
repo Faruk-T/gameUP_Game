@@ -65,6 +65,7 @@ namespace GameUp.Editor
             var turtles=UnityEngine.Object.FindObjectsByType<ShorelineTurtle>(FindObjectsSortMode.None);var actors=so.FindProperty("turtles");actors.arraySize=turtles.Length;
             for(int i=0;i<turtles.Length;i++)actors.GetArrayElementAtIndex(i).objectReferenceValue=turtles[i];
             so.ApplyModifiedPropertiesWithoutUndo();
+            var celebration=new Pose(OpeningTiming.LogoRaised,new Vector3(-13,2.3f,26),new Vector3(-8,12,50));
             var poses=new[]{
                 new Pose(0,new Vector3(-16,1.65f,22),new Vector3(-10,-.15f,28)),
                 new Pose(19,new Vector3(-16,1.45f,21),new Vector3(-10,-.15f,23.5f)),
@@ -73,13 +74,14 @@ namespace GameUp.Editor
                 new Pose(34,new Vector3(-13.8f,1.4f,26),new Vector3(-10,-.5f,34)),
                 new Pose(38,new Vector3(-13,1.6f,26),new Vector3(-9.5f,-.4f,35)),
                 new Pose(41,new Vector3(-13,2.3f,26),new Vector3(-8,3,50)),
-                new Pose(44,new Vector3(-13,2.3f,26),new Vector3(-8,12,50)),
-                new Pose(OpeningTiming.WalkStart,new Vector3(-13,2.3f,26),new Vector3(-8,12,50)),
+                celebration,
+                new Pose(OpeningTiming.WalkStart,celebration.Position,celebration.Look),
                 new Pose(56,new Vector3(-20,1.7f,21),new Vector3(-23,1.8f,10)),
                 new Pose(61,new Vector3(-23,1.7f,13),new Vector3(-20,2.1f,-4)),
                 new Pose(67,new Vector3(-23,1.7f,2),new Vector3(-20,2.1f,-4)),
                 new Pose(69,new Vector3(-23,1.7f,-4),new Vector3(-14,1.9f,-4)),
-                new Pose(71,new Vector3(-19.3f,1.7f,-4),new Vector3(-11,1.8f,-4)),
+                new Pose(71,new Vector3(-22.6f,1.7f,-4),new Vector3(-14,1.8f,-4)),
+                new Pose(OpeningTiming.CorridorEntry,new Vector3(-19.3f,1.7f,-4),new Vector3(-11,1.8f,-4)),
                 new Pose(76,new Vector3(-15.7f,1.7f,-4),new Vector3(-15.3f,1.95f,-2.1f)),
                 new Pose(80,new Vector3(-13.2f,1.7f,-4),new Vector3(-11.1f,1.95f,-5.87f)),
                 new Pose(85,new Vector3(-9.2f,1.7f,-4),new Vector3(0,1.5f,.25f)),
@@ -88,21 +90,21 @@ namespace GameUp.Editor
             };
             var clip=new AnimationClip{name="Beach to inspection desk",frameRate=30};
             var positions=new[]{new AnimationCurve(),new AnimationCurve(),new AnimationCurve()};
-            var rotations=new[]{new AnimationCurve(),new AnimationCurve(),new AnimationCurve(),new AnimationCurve()};
-            Quaternion previous=Quaternion.identity;
+            var rotations=new[]{new AnimationCurve(),new AnimationCurve(),new AnimationCurve()};
+            Vector3 previous=Vector3.zero;
             for(int i=0;i<poses.Length;i++)
             {
-                var pose=poses[i];var rotation=Quaternion.LookRotation(pose.Look-pose.Position);
-                if(i>0&&Quaternion.Dot(previous,rotation)<0)rotation=new Quaternion(-rotation.x,-rotation.y,-rotation.z,-rotation.w);
+                var pose=poses[i];var rotation=Quaternion.LookRotation(pose.Look-pose.Position).eulerAngles;
+                if(i>0)for(int axis=0;axis<3;axis++)rotation[axis]=previous[axis]+Mathf.DeltaAngle(previous[axis],rotation[axis]);
                 previous=rotation;
                 for(int axis=0;axis<3;axis++)positions[axis].AddKey(pose.Time,pose.Position[axis]);
-                for(int axis=0;axis<4;axis++)rotations[axis].AddKey(pose.Time,rotation[axis]);
+                for(int axis=0;axis<3;axis++)rotations[axis].AddKey(pose.Time,rotation[axis]);
             }
             for(int i=0;i<3;i++){Smooth(positions[i]);clip.SetCurve("",typeof(Transform),"localPosition."+"xyz"[i],positions[i]);}
-            for(int i=0;i<4;i++){Smooth(rotations[i]);clip.SetCurve("",typeof(Transform),"localRotation."+"xyzw"[i],rotations[i]);}
-            clip.EnsureQuaternionContinuity();
-            string clipPath=Data+"/ArrivalCamera.anim";var savedClip=AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
-            if(savedClip){EditorUtility.CopySerialized(clip,savedClip);UnityEngine.Object.DestroyImmediate(clip);}else{AssetDatabase.CreateAsset(clip,clipPath);savedClip=clip;}
+            // Unwrapped Euler curves retain the authored hold at 44–52 seconds. Quaternion
+            // continuity baking recalculated tangents across that hold and caused camera drift.
+            for(int i=0;i<3;i++){Smooth(rotations[i]);clip.SetCurve("",typeof(Transform),"localEulerAnglesRaw."+"xyz"[i],rotations[i]);}
+            var savedClip=SaveClip(clip,Data+"/ArrivalCamera.anim");
             string timelinePath=Data+"/Arrival.playable";var timeline=AssetDatabase.LoadAssetAtPath<TimelineAsset>(timelinePath);
             if(!timeline){timeline=ScriptableObject.CreateInstance<TimelineAsset>();AssetDatabase.CreateAsset(timeline,timelinePath);}
             foreach(var track in System.Linq.Enumerable.ToArray(timeline.GetRootTracks()))timeline.DeleteTrack(track);
@@ -110,10 +112,17 @@ namespace GameUp.Editor
             var cameraClip=cameraTrack.CreateClip<AnimationPlayableAsset>();cameraClip.start=0;cameraClip.duration=OpeningTiming.End;cameraClip.displayName="Unskippable arrival";
             var playable=(AnimationPlayableAsset)cameraClip.asset;playable.clip=savedClip;playable.removeStartOffset=false;
             director.playableAsset=timeline;director.SetGenericBinding(cameraTrack,cameraObject.GetComponent<Animator>());
-            OpeningEffectsAuthoring.Create(timeline,director);
+            OpeningEffectsAuthoring.Create(timeline,director,canvas.transform,celebration.Position,celebration.Look);
+            EntranceDoorAuthoring.Bind(timeline,director);
             cameraObject.transform.position=poses[0].Position;cameraObject.transform.rotation=Quaternion.LookRotation(poses[0].Look-poses[0].Position);
             cameraObject.SetActive(false);canvas.gameObject.SetActive(false);
             EditorUtility.SetDirty(timeline);AssetDatabase.SaveAssets();
+        }
+        internal static AnimationClip SaveClip(AnimationClip clip,string path)
+        {
+            var saved=AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
+            if(saved){EditorUtility.CopySerialized(clip,saved);UnityEngine.Object.DestroyImmediate(clip);return saved;}
+            AssetDatabase.CreateAsset(clip,path);return clip;
         }
         private static void Smooth(AnimationCurve curve)
         {

@@ -29,8 +29,9 @@ namespace GameUp.Editor
             Poster(room,"FoodSecurityPoster",new Vector3(-7.82f,2.9f,1.6f),-90,"SOFRAYI\nKORU","Yerel üretime değer ver.\nGıdayı israf etme.","Assets/Art/Documents/Day1Products.png");
             Poster(room,"ClimateActionPoster",new Vector3(7.82f,2.9f,1.6f),90,"ORTAK\nGELECEK","İklim için birlikte.\nAntalya'dan dünyaya.",null);
             Poster(room,"WasteSortingPoster",new Vector3(0,2.6f,-7.82f),180,"HER ATIĞIN\nBİR YERİ VAR","Temiz ambalajı ayır.\nKontamine ambalajı ayrı tut.",null);
+            OfficeIdentityAuthoring.Create(room);
             foreach(var t in room.GetComponentsInChildren<Transform>())
-                if(!t.GetComponentInParent<GameUp.Gameplay.ShorelineTurtle>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
+                if(!t.GetComponentInParent<GameUp.Gameplay.ShorelineTurtle>()&&!t.GetComponentInParent<Animator>())GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
         }
         private static void Coast(Transform parent)
         {
